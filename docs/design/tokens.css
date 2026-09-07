@@ -1,0 +1,305 @@
+/* ==========================================================================
+   NiMechE Digital Member Development Platform — Design Tokens
+   Companion to docs/design/DESIGN_PLAN.md
+
+   Colour anchors are sampled from the NiMechE crest (orange gear ring,
+   green annulus, crimson detail). Confirm them against the official vector
+   artwork before build — see DESIGN_PLAN.md §2.2. Changing the anchors and
+   their ramps is the ONLY edit needed to recolour the whole system.
+
+   Rules:
+   - Components use SEMANTIC tokens only (--primary, --surface, --text ...).
+     Never reference a ramp step (--green-500) from a component.
+   - Every colour is defined once on bare :root, so the "follow system"
+     theme state works. Dark values are redefined in two places: the
+     prefers-color-scheme block and the [data-theme="dark"] block.
+   - Contrast: every semantic pairing here is verified against WCAG 2.1 AA.
+     Re-verify if you change an anchor.
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* --- Brand anchors (replace with confirmed vector values) -------------- */
+  --anchor-green:   #008A45;  /* logo annulus  */
+  --anchor-orange:  #EE7623;  /* logo gear ring */
+  --anchor-crimson: #C1272D;  /* logo detail    */
+  --anchor-ink:     #12261A;  /* deep green-black */
+
+  /* --- Ramps ------------------------------------------------------------ */
+  --green-50:  #E8F7EE;  --green-100: #C6EBD5;  --green-200: #8BD3AC;
+  --green-300: #3FBF7A;  --green-400: #16A75F;  --green-500: #008A45;
+  --green-600: #00793D;  --green-700: #00713A;  --green-800: #005C30;
+  --green-900: #004226;  --green-950: #0C2318;
+
+  --orange-50:  #FFF3EA; --orange-100: #FFE1CC; --orange-200: #FDC29A;
+  --orange-300: #F79B5E; --orange-400: #EE7623; --orange-500: #D2600F;
+  --orange-600: #B85309; --orange-700: #A24A08; --orange-800: #5C2906;
+
+  --crimson-50:  #FDECEC; --crimson-100: #F9D2D2; --crimson-300: #E8635F;
+  --crimson-500: #C1272D; --crimson-600: #B3231F; --crimson-700: #8E1B18;
+
+  --teal-50: #E6F5F7; --teal-300: #4FC3D4; --teal-600: #0E6E7A; --teal-700: #0B6470;
+
+  --n-0:   #FFFFFF; --n-25:  #F7F9F7; --n-50:  #EFF3F0; --n-100: #E3E9E5;
+  --n-200: #CFD8D2; --n-300: #B0BDB5; --n-400: #75857B; --n-500: #56655C;
+  --n-600: #3F4C45; --n-700: #2C3831; --n-800: #18231C; --n-900: #0F1712;
+  --n-950: #080D0A;
+
+  /* --- Semantic colour: LIGHT (the base theme) -------------------------- */
+  --bg:              var(--n-25);
+  --surface:         var(--n-0);
+  --surface-raised:  var(--n-0);
+  --surface-sunken:  var(--n-50);
+
+  --text:            var(--anchor-ink);
+  --text-muted:      var(--n-500);
+
+  --border:          var(--n-100);
+  --border-strong:   var(--n-400);   /* input/control boundaries — needs 3:1 */
+
+  --primary:         var(--green-700);
+  --primary-hover:   var(--green-800);
+  --primary-text:    var(--green-700);
+  --primary-subtle:  var(--green-50);
+  --on-primary:      #FFFFFF;
+
+  --accent:          var(--orange-400);
+  --accent-hover:    var(--orange-500);
+  --accent-text:     var(--orange-700);
+  --accent-subtle:   var(--orange-50);
+  --on-accent:       #1D2721;
+
+  --success:         var(--green-700);
+  --success-subtle:  var(--green-50);
+  --warning:         var(--orange-700);
+  --warning-subtle:  var(--orange-50);
+  --danger:          var(--crimson-600);
+  --danger-subtle:   var(--crimson-50);
+  --info:            var(--teal-700);
+  --info-subtle:     var(--teal-50);
+
+  --focus-ring:      var(--green-700);
+  --overlay:         rgba(18, 38, 26, .55);
+
+  /* --- Chart palettes (computationally validated — see DESIGN_PLAN §13) -- *
+   * Fixed assignment order, never cycled. Brand green and brand orange are
+   * deliberately NOT adjacent: they separate by only ΔE 4.1 under protanopia. */
+  --chart-1: #00793D;  --chart-2: #7A5CD6;  --chart-3: #C4650F;  --chart-4: #1E6BC4;
+  --chart-5: #C43F86;  --chart-6: #9A8410;  --chart-7: #0F8A7A;  --chart-8: #9C5B33;
+
+  --seq-1: #81C29B; --seq-2: #5EAE80; --seq-3: #3B9966;
+  --seq-4: #207E4C; --seq-5: #0C663A; --seq-6: #034C2B;
+
+  --div-low: #C4650F; --div-mid: #75857B; --div-high: #1E6BC4;
+
+  --chart-grid:    var(--n-100);
+  --chart-axis:    var(--n-300);
+  --chart-surface: var(--surface);
+
+  /* --- Elevation -------------------------------------------------------- */
+  --e1: 0 1px 2px rgba(18,38,26,.06), 0 1px 3px rgba(18,38,26,.08);
+  --e2: 0 4px 12px rgba(18,38,26,.09);
+  --e3: 0 12px 32px rgba(18,38,26,.16);
+
+  /* --- Typography ------------------------------------------------------- */
+  --font-heading: Sora, "Segoe UI", system-ui, sans-serif;
+  --font-body:    Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    ui-monospace, "SFMono-Regular", "Roboto Mono", Menlo, monospace;
+
+  --fs-display:  clamp(2.25rem, 5vw, 3.25rem);
+  --fs-h1:       clamp(1.75rem, 3.5vw, 2.5rem);
+  --fs-h2:       1.75rem;
+  --fs-h3:       1.375rem;
+  --fs-h4:       1.125rem;
+  --fs-body:     1rem;
+  --fs-sm:       0.875rem;
+  --fs-xs:       0.75rem;
+  --fs-overline: 0.6875rem;
+
+  --lh-tight: 1.15;
+  --lh-snug:  1.35;
+  --lh-body:  1.6;
+
+  --measure: 68ch;
+
+  /* --- Space ------------------------------------------------------------ */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 20px;  --space-6: 24px;  --space-7: 32px;  --space-8: 40px;
+  --space-9: 48px;  --space-10: 64px; --space-11: 80px; --space-12: 96px;
+
+  /* --- Shape ------------------------------------------------------------ */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-full: 999px;
+
+  /* --- Layout ----------------------------------------------------------- */
+  --content-max: 1200px;
+  --prose-max:   680px;
+  --admin-max:   1440px;
+
+  /* --- Motion ----------------------------------------------------------- */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+  --ease:     cubic-bezier(.2, .8, .2, 1);
+}
+
+/* ==========================================================================
+   DARK THEME
+   Selected values, not an inversion. Note in particular:
+   - --on-primary is near-black, not white (white on #3FBF7A is only 2.1:1).
+   - --accent steps back from #EE7623 to #F79B5E; the raw logo orange
+     vibrates on a near-black ground.
+   - Elevation stops using shadow and uses surface lightness + a hairline.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:             var(--n-950);
+    --surface:        var(--n-900);
+    --surface-raised: var(--n-800);
+    --surface-sunken: #050A07;
+
+    --text:           #E9F0EB;
+    --text-muted:     #A0B0A6;
+
+    --border:         #22302A;
+    --border-strong:  #5A6C60;
+
+    --primary:        var(--green-300);
+    --primary-hover:  #63CE93;
+    --primary-text:   var(--green-300);
+    --primary-subtle: var(--green-950);
+    --on-primary:     #06110A;
+
+    --accent:         var(--orange-300);
+    --accent-hover:   #FFB27C;
+    --accent-text:    var(--orange-300);
+    --accent-subtle:  #2A1608;
+    --on-accent:      #1A0E04;
+
+    --success:        var(--green-300);
+    --success-subtle: var(--green-950);
+    --warning:        var(--orange-300);
+    --warning-subtle: #2A1608;
+    --danger:         #FF8A80;
+    --danger-subtle:  #2C1211;
+    --info:           var(--teal-300);
+    --info-subtle:    #0A2429;
+
+    --focus-ring:     var(--green-300);
+    --overlay:        rgba(2, 6, 4, .74);
+
+    --chart-1: #2CA162;  --chart-2: #9A82E4;  --chart-3: #C87718;  --chart-4: #3E88DC;
+    --chart-5: #D45F9C;  --chart-6: #9C8E18;  --chart-7: #26A695;  --chart-8: #BC7440;
+
+    --seq-1: #2D5340; --seq-2: #33694C; --seq-3: #38805A;
+    --seq-4: #42996C; --seq-5: #61B387; --seq-6: #8BCCA6;
+
+    --div-low: #C87718; --div-mid: #75857B; --div-high: #3E88DC;
+
+    --chart-grid: #22302A;
+    --chart-axis: #4A5A50;
+
+    --e1: 0 1px 2px rgba(0,0,0,.4);
+    --e2: 0 4px 12px rgba(0,0,0,.5);
+    --e3: 0 12px 32px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:             var(--n-950);
+  --surface:        var(--n-900);
+  --surface-raised: var(--n-800);
+  --surface-sunken: #050A07;
+
+  --text:           #E9F0EB;
+  --text-muted:     #A0B0A6;
+
+  --border:         #22302A;
+  --border-strong:  #5A6C60;
+
+  --primary:        var(--green-300);
+  --primary-hover:  #63CE93;
+  --primary-text:   var(--green-300);
+  --primary-subtle: var(--green-950);
+  --on-primary:     #06110A;
+
+  --accent:         var(--orange-300);
+  --accent-hover:   #FFB27C;
+  --accent-text:    var(--orange-300);
+  --accent-subtle:  #2A1608;
+  --on-accent:      #1A0E04;
+
+  --success:        var(--green-300);
+  --success-subtle: var(--green-950);
+  --warning:        var(--orange-300);
+  --warning-subtle: #2A1608;
+  --danger:         #FF8A80;
+  --danger-subtle:  #2C1211;
+  --info:           var(--teal-300);
+  --info-subtle:    #0A2429;
+
+  --focus-ring:     var(--green-300);
+  --overlay:        rgba(2, 6, 4, .74);
+
+  --chart-1: #2CA162;  --chart-2: #9A82E4;  --chart-3: #C87718;  --chart-4: #3E88DC;
+  --chart-5: #D45F9C;  --chart-6: #9C8E18;  --chart-7: #26A695;  --chart-8: #BC7440;
+
+  --seq-1: #2D5340; --seq-2: #33694C; --seq-3: #38805A;
+  --seq-4: #42996C; --seq-5: #61B387; --seq-6: #8BCCA6;
+
+  --div-low: #C87718; --div-mid: #75857B; --div-high: #3E88DC;
+
+  --chart-grid: #22302A;
+  --chart-axis: #4A5A50;
+
+  --e1: 0 1px 2px rgba(0,0,0,.4);
+  --e2: 0 4px 12px rgba(0,0,0,.5);
+  --e3: 0 12px 32px rgba(0,0,0,.6);
+}
+
+/* Certificates are documents, not UI: they keep the light theme in both modes.
+   Scope this class to the certificate render surface only. */
+.certificate-surface {
+  --surface: #FFFFFF;
+  --text: #12261A;
+  --text-muted: #56655C;
+  --primary: #00713A;
+  --accent: #EE7623;
+  --border: #E3E9E5;
+  background: #FFFFFF;
+  color: #12261A;
+}
+
+/* Photography is dimmed slightly in dark mode so event photos don't glare. */
+:root[data-theme="dark"] img.photo { filter: brightness(.92); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) img.photo { filter: brightness(.92); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-base: 1ms;
+    --dur-slow: 1ms;
+  }
+}
+
+/* --- Baseline ------------------------------------------------------------ */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); line-height: var(--lh-tight); }
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
