@@ -2,13 +2,14 @@
 
 **Status:** Draft v1 for executive review
 **Scope:** Visual and interaction design for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
-**Companion document:** `docs/DEV_PLAN.md` (engineering plan — to be written separately, after this plan is agreed).
+**Companion document:** [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) — the engineering plan (stack, data model, subsystems, delivery, operations).
 **Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in §3–§6.
 
 This document defines *what the platform looks like and how it behaves*. It does not choose a
-framework, a database or a hosting provider; those belong to the development plan. Everything here
-is expressed as design tokens and component specs, so the dev plan can implement it directly
-without re-deciding visual questions.
+framework, a database or a hosting provider, and it does not schedule or cost the build — those
+belong to the dev plan. Everything here is expressed as design tokens and component specs, so the
+dev plan can implement it directly without re-deciding visual questions. §18 sets out exactly which
+document answers which question.
 
 ---
 
@@ -570,18 +571,21 @@ Target **WCAG 2.1 AA**, treated as acceptance criteria rather than aspirations:
 
 ---
 
-## 12. Performance and resilience
+## 12. What performance costs the design
 
-Design constraints, because they change what can be drawn (goal **G5**):
+Performance is engineered in [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) §8–§9. What belongs here
+is the part that changes **what can be drawn** (goal **G5**):
 
-- **Budget:** ≤150KB JS and ≤60KB CSS gzipped on public pages; LCP under 2.5s on a mid-range Android over 3G.
-- **Fonts:** two families, `font-display: swap`, preloaded, subset to Latin. If the budget bites, Sora goes first.
-- **Images:** WebP/AVIF, responsive `srcset`, lazy below the fold, explicit `width`/`height` on every image so nothing shifts (CLS < 0.1).
-- **The logo crest must ship as SVG.** A raster crest at retina sizes is a surprisingly large asset for something on every page.
-- **Public pages are server-rendered** for SEO and first paint; the portal may be client-rendered behind auth.
-- **Skeletons, not spinners,** for content areas.
-- **Offline:** the attendance screen queues check-ins locally and syncs. Everything else shows an honest "you're offline" state rather than an infinite spinner.
-- **Every destructive admin action is confirmed**, and certificate revocation requires typing the certificate code.
+- **Two font families is the ceiling.** If the payload budget bites, Sora goes first and Inter carries headings at heavier weights. The system is designed to survive that.
+- **The crest must exist as SVG.** A raster crest at retina sizes is a surprisingly large asset for something on every page — and it is the design side's job to supply it (§2.2).
+- **Every event needs a generated fallback cover** (§7), so a missing upload never produces a broken-looking card.
+- **Skeletons, not spinners,** for content areas — which means every list and card needs a skeleton drawn, not just a loading state named.
+- **Offline and error states are designed screens**, not afterthoughts: the attendance screen's queued-and-syncing state, and an honest "you're offline" state everywhere else.
+- **Every destructive admin action needs a confirmation design**, and certificate revocation requires typing the certificate code.
+
+The budget the design is drawn against — ≤150KB JS, ≤60KB CSS gzipped on public pages, LCP under
+2.5s on a mid-range Android over 3G — is set and enforced by the dev plan. It is quoted here only so
+that a comp which cannot fit inside it is caught at design time.
 
 ---
 
@@ -685,38 +689,44 @@ certificate or a deadline.
 
 ---
 
-## 16. Deliverables and phasing
+## 16. Design deliverables
 
-Mapped to the proposal's MVP (§15) and implementation approach (§17).
+**What the design track owes, and when.** Build sequencing, effort estimates and cost live in
+[`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) §10; the phase names below match it so the two schedules
+line up.
 
-**Phase 0 — Foundations (design)**
+**Phase 0 — Foundations**
 
-1. Obtain vector logo + knockout lockup + square icon mark; confirm the two brand anchors (§2.2). ← *blocking*
-2. Token file (`tokens.css`, drafted in this folder) + matching Figma variables for both themes.
+1. Obtain the vector logo, a knockout/dark lockup, and a square icon mark; confirm the two brand anchors (§2.2). ← *blocking everything else*
+2. `tokens.css` (drafted in this folder) plus matching Figma variables for both themes.
 3. Core component set in Figma: buttons, inputs, cards, badges, nav, table, modal, empty states.
-4. Interactive style guide page (light/dark) for executive sign-off.
+4. Interactive style guide (light/dark) for executive sign-off.
 
 **Phase 1 — MVP screens**
 
 5. Public: home, events list + detail, opportunities list + detail, about, news, verification page.
 6. Auth: register, sign in, membership profile completion.
 7. Portal: dashboard, profile, certificates, event history, skills.
-8. Admin: members, events + **attendance capture**, certificate issuance, opportunity review, basic analytics.
+8. Admin: members, events + **attendance capture** (designed first — see §9.3), certificate issuance, opportunity review, basic analytics.
 9. Certificate template + OG image templates.
+10. Empty, error, loading and offline states for every list and form in the above.
 
 **Phase 2 — Expansion**
 
-10. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notifications centre, digital membership card, payments and renewal.
+11. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notification centre, digital membership card, payment and renewal flows.
 
-**Design QA gates before each release:** contrast re-verified, keyboard pass on new flows, both
-themes screenshotted at 360 / 768 / 1440, and an empty state plus an error state present for every
-list and form.
+**Design QA gates before each release:** contrast re-verified against §3.4, keyboard pass on new
+flows, both themes screenshotted at 360 / 768 / 1440, and an empty state plus an error state present
+for every list and form. The dev plan wires the automatable ones — contrast and accessibility scans —
+into CI (dev plan §9.5).
 
 ---
 
 ## 17. Open decisions
 
-Each of these needs the executive team, and each changes the design:
+Each of these needs the executive team, and each **changes the design**. Purely technical open
+questions live in [dev plan §13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5 below appear in both
+because they change the interface *and* the data model, which is why they should be answered early.
 
 1. **Vector logo and confirmed brand hexes** — the blocking item in §2.2.
 2. **Naming** — NiMechE vs NIMechE, and whether this is a national-body platform or a student-chapter platform. It changes navigation depth (chapters/branches) and the whole membership model.
@@ -726,19 +736,30 @@ Each of these needs the executive team, and each changes the design:
 6. **Certificate signatories** — which two offices sign, and how the signatures are stored.
 7. **Relationship to NSE branding** — the crest carries the NSE roundel, so does the platform need NSE approval, and is there an NSE brand guideline that constrains any of this?
 8. **Language** — English only in v1? Assumed yes.
-9. **Domain and email sender identity** for certificate verification links.
+9. **Domain and email sender identity** for certificate verification links — the URL is printed on every certificate, so it must be settled before the first one is issued.
 
 ---
 
-## 18. Handoff to the development plan
+## 18. Relationship to the development plan
 
-`docs/DEV_PLAN.md` picks up from here and should cover: stack selection, data model (member,
-activity, credential, skill, opportunity, project), authentication and roles, certificate generation
-and verification service, the offline attendance sync, the analytics pipeline, hosting, CI,
-environments, and a phased delivery schedule with estimates.
+[`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) is the companion document. The split is:
 
-Three things this design plan asserts that the dev plan must honour:
+| Question | Answered in |
+|---|---|
+| What does it look like, and why those colours? | This plan, §2–§7 |
+| What components exist and how do they behave? | This plan, §8 |
+| What screens exist and what is on them? | This plan, §9–§10, §14–§15 |
+| What are the accessibility rules? | This plan, §11 |
+| What is it built with, and how is it structured? | Dev plan §2–§3 |
+| What is the data model and how do the subsystems work? | Dev plan §4–§8 |
+| How is it secured, operated, tested and deployed? | Dev plan §9 |
+| When does it ship, at what cost, and what could go wrong? | Dev plan §10–§13 |
+
+Where they overlap — performance budgets, phasing, the token layer — **this plan states the
+requirement and the dev plan states the enforcement.**
+
+Three requirements this plan places on the build, carried into dev plan §2.2:
 
 - **`tokens.css` is the single source of visual truth.** No component hard-codes a colour, and no component references a ramp step directly — only semantic tokens.
-- **The attendance capture flow is P0 with offline support.** Certificates, skills, the development record and every analytics number depend on data actually being captured in a noisy hall on a bad connection.
+- **Attendance capture is P0 with offline support.** Certificates, skills, the development record and every analytics number depend on data actually being captured in a noisy hall on a bad connection.
 - **The two contrast rules in §3.4 are non-negotiable**: never `#EE7623` as text on light, never `#008A45` as body text on white. Both are easy mistakes to make precisely because they are the logo colours.
