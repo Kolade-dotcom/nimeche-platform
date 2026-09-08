@@ -38,6 +38,12 @@ stale link are the two things that will actually happen.
 `Welcome` (approved, with the membership card) · `Profile` (the record itself).
 **The mobile pass for this stage is next.**
 
+### Type directions
+
+`TypeA` (in use) · `TypeB` · `TypeC` — the same content set three ways, so the comparison is honest
+rather than a specimen sheet of alphabets. Each carries its own case **and** what it costs. Swapping
+the whole product to B or C is one scripted find-and-replace across the artboards plus `tokens.css`.
+
 ### Later stages — mobile v1
 
 `Main`, `EventDetail`, `Certificate`, `Attendance`. Early phone screens for stages not yet worked
@@ -61,8 +67,9 @@ cover band is the other — it is pinned to the deep brand green `#00713A` rathe
 because in dark mode `--primary` lightens to `#3FBF7A` and the white text over it would drop to
 2.35:1.
 
-Type is Sora for headings and Inter for body, per design plan section 4. Icons are inline
-stroke SVG in the Lucide style at 1.75px.
+Type is **IBM Plex** — Serif for `h1`/`h2` and holder names, Sans for everything else, Mono for
+verification codes and matric numbers (design plan section 4). Icons are inline stroke SVG in the
+Lucide style at 1.75px.
 
 ## The hero illustration
 

@@ -269,6 +269,33 @@
       "w": 390,
       "h": 1720,
       "page": "page-2"
+    },
+    {
+      "file": "TypeA.dc.html",
+      "title": "A \u00b7 IBM Plex (in use)",
+      "x": 0,
+      "y": 0,
+      "w": 880,
+      "h": 820,
+      "page": "page-5"
+    },
+    {
+      "file": "TypeB.dc.html",
+      "title": "B \u00b7 Bricolage + Public Sans",
+      "x": 980,
+      "y": 0,
+      "w": 880,
+      "h": 820,
+      "page": "page-5"
+    },
+    {
+      "file": "TypeC.dc.html",
+      "title": "C \u00b7 Source Serif + Karla",
+      "x": 1960,
+      "y": 0,
+      "w": 880,
+      "h": 820,
+      "page": "page-5"
     }
   ],
   "annotations": [
@@ -343,6 +370,14 @@
       "w": 1100,
       "page": "page-2",
       "text": "THE QUEUE IS NOT A TABLE ON A PHONE\nA five-column table cannot survive 390px, so the mobile queue is cards \u2014 and it re-sorts:\nthe one that did NOT match the roll comes first under 'Needs a look', the six that matched follow.\nA summary at the top offers to approve all six together, and the bottom bar makes that one tap.\nSo the executive's job on a phone is: read one applicant properly, approve the rest in a tap."
+    },
+    {
+      "id": "n-type",
+      "x": 0,
+      "y": -230,
+      "w": 1300,
+      "page": "page-5",
+      "text": "TYPE DIRECTIONS\nSame content, three pairings, so the comparison is honest rather than a specimen sheet of alphabets.\nA is applied across the whole product right now \u2014 say the word and B or C goes in instead; it is a one-command swap.\nEach one carries its own case AND what it costs, because a set where only the favourite gets an argument is a rigged vote."
     }
   ],
   "pages": [
@@ -361,10 +396,14 @@
     {
       "id": "page-4",
       "name": "Later stages (mobile v1)"
+    },
+    {
+      "id": "page-5",
+      "name": "Type directions"
     }
   ],
   "launch": {
     "view": "canvas",
-    "page": "page-2"
+    "page": "page-5"
   }
 }

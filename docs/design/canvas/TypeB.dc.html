@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Public+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap">
+  <style>
+    body { margin:0; background:#F7F9F7; }
+    .screen {
+      --bg:#F7F9F7; --surface:#FFFFFF; --raised:#FFFFFF; --sunken:#EFF3F0;
+      --text:#12261A; --muted:#56655C; --border:#E3E9E5; --border-strong:#75857B;
+      --primary:#00713A; --primary-text:#00713A; --primary-subtle:#E8F7EE; --on-primary:#FFFFFF;
+      --accent:#EE7623; --accent-text:#A24A08; --accent-subtle:#FFF3EA; --on-accent:#1D2721;
+      font-family:'Public Sans',system-ui,sans-serif; background:var(--bg); color:var(--text);
+    }
+    .screen * { box-sizing:border-box; }
+    .hd { font-family:'Bricolage Grotesque','Segoe UI',sans-serif; margin:0; }
+    .mn { font-family:'Space Mono',ui-monospace,monospace; }
+    .ov { font-size:11px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+    p { margin:0; }
+    a { color:var(--primary-text); } a:hover { color:var(--accent-text); }
+  </style>
+</helmet>
+<div class="screen" style="width:880px; min-height:820px; display:flex; flex-direction:column;">
+<div style="padding:40px 44px; display:flex; flex-direction:column; gap:28px;">
+
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding-bottom:22px;
+              border-bottom:1px solid var(--border);">
+    <div>
+      <div class="ov">Direction B</div>
+      <div class="hd" style="font-size:25px; font-weight:700; margin-top:8px;">Bricolage Grotesque + Public Sans</div>
+    </div>
+  </div>
+
+  <div style="display:flex; flex-direction:column; gap:16px;">
+    <div class="ov">NiMechE-SF &middot; Tech-U student branch</div>
+    <h1 class="hd" style="font-size:44px; font-weight:700; line-height:1.08; max-width:16ch;">Your years at Tech-U, on the record.</h1>
+    <p style="font-size:17px; color:var(--muted); line-height:1.65; max-width:56ch;">Every workshop, competition and
+      project you do through NiMechE-SF becomes part of a professional record you can show an employer.</p>
+  </div>
+
+  <div style="display:flex; gap:20px; align-items:stretch;">
+    <div style="flex:1 1 0; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px;
+                display:flex; flex-direction:column; gap:11px;">
+      <div class="hd" style="font-size:18px; font-weight:600;">Certificates that verify</div>
+      <p style="font-size:14px; color:var(--muted); line-height:1.6;">Finish a programme and the certificate arrives on
+        its own, carrying a code anyone can check.</p>
+      <div style="margin-top:6px; display:flex; align-items:center; gap:10px;">
+        <span class="mn" style="font-size:14px; font-weight:600;">NM-7K4Q-2X9</span>
+        <span style="font-size:12px; color:var(--muted);">verification code</span></div>
+    </div>
+    <div style="flex:0 0 250px; display:flex; flex-direction:column; gap:14px;">
+      <div style="background:var(--primary); color:var(--on-primary); min-height:50px; border-radius:10px;
+                  display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:600;">Join NiMechE-SF</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <label style="font-size:13px; font-weight:600;">Tech-U email</label>
+        <div style="min-height:48px; padding:0 14px; border:1px solid var(--border-strong); border-radius:8px;
+                    background:var(--surface); display:flex; align-items:center; font-size:15px;">adaeze.nwosu@tech-u.edu.ng</div>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <div style="flex:1 1 0; background:var(--sunken); border-radius:10px; padding:12px;">
+          <div class="hd" style="font-size:22px; font-weight:700; font-variant-numeric:tabular-nums;">186</div>
+          <div style="font-size:11px; color:var(--muted); margin-top:3px;">members</div></div>
+        <div style="flex:1 1 0; background:var(--sunken); border-radius:10px; padding:12px;">
+          <div class="mn" style="font-size:15px; font-weight:600;">MEE/2022/0431</div>
+          <div style="font-size:11px; color:var(--muted); margin-top:5px;">matric</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:auto; padding-top:22px; border-top:1px solid var(--border); display:flex; gap:36px;">
+    <div style="flex:1 1 0;"><div class="ov" style="margin-bottom:8px;">Why</div>
+      <p style="font-size:14px; line-height:1.65; color:var(--text);">All sans, and more energy. Bricolage has real character in its headlines — tight, slightly irregular, contemporary — and it reads younger, which suits a student branch talking to students. Public Sans is a clean civic workhorse underneath it.</p></div>
+    <div style="flex:1 1 0;"><div class="ov" style="margin-bottom:8px;">What it costs</div>
+      <p style="font-size:14px; line-height:1.65; color:var(--muted);">It reads more like a product than an institution, which cuts against the certificate having to persuade an employer. Space Mono is characterful but wide, so long codes take more room.</p></div>
+  </div>
+</div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":880,"height":820}}'>
+class Component extends DCLogic {}
+</script>
+</body>
+</html>

@@ -129,7 +129,7 @@ Request at the same time:
 
 | Context | Treatment |
 |---|---|
-| Public header (light) | Full-colour crest, 36px mobile / 44px desktop, beside a "NiMechE" wordmark set in Sora 600 |
+| Public header (light) | Full-colour crest, 36px mobile / 44px desktop, beside a "NiMechE-SF" wordmark set in IBM Plex Sans 700 |
 | Public header (dark) | Crest on a **white circular plinth** with 6px padding, or the knockout lockup once supplied — never the full-colour crest bare on a dark field |
 | Portal sidebar | Icon mark when collapsed, crest + wordmark when expanded |
 | Certificates | Full-colour crest at print resolution, plus a small monochrome mark beside the verification code |
@@ -141,7 +141,7 @@ effects, or use the orange gear ring alone as a decorative motif at large scale 
 reads as a warning graphic.
 
 **The branch lockup is the primary lockup here**, not an exception: the unmodified crest beside
-`NiMechE-SF · AATU`, set in Sora. Never a modified crest, never AATU's own logo merged into the
+`NiMechE-SF · Tech-U`, set in IBM Plex Sans. Never a modified crest, never AATU's own logo merged into the
 crest, and never the crest alone where a reader could take the page for the national body's.
 
 ### 2.4 This is a branch platform, and that changes things
@@ -302,35 +302,56 @@ applies and both pass comfortably.
 
 ## 4. Typography
 
-Two families, both on Google Fonts, both free, both with good Latin coverage.
+**One superfamily, three jobs: IBM Plex.** All three faces are on Google Fonts, free, and share a
+skeleton, so the page never looks stitched together from unrelated fonts.
 
 | Role | Family | Fallback stack |
 |---|---|---|
-| Headings, display, wordmark | **Sora** | `Sora, "Segoe UI", system-ui, sans-serif` |
-| Body, UI, forms, tables | **Inter** | `Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` |
-| Numerals in stats and tables | Inter with `font-variant-numeric: tabular-nums` | — |
+| Page headlines (`h1`, `h2`, hero, holder names on certificates and cards) | **IBM Plex Serif** 600/700 | `'IBM Plex Serif', Georgia, 'Times New Roman', serif` |
+| Everything else — UI, body, forms, tables, `h3`/`h4` | **IBM Plex Sans** 400/500/600/700 | `'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif` |
+| Verification codes, matric numbers, member numbers | **IBM Plex Mono** 500/600 | `'IBM Plex Mono', ui-monospace, Menlo, monospace` |
+| Numerals in stats and tables | IBM Plex Sans with `font-variant-numeric: tabular-nums` | — |
 
-Sora's geometric, slightly technical character suits an engineering institution and separates
-cleanly from Inter at body sizes. If payload becomes a problem (section 12), drop Sora and run Inter at
-heavier weights for headings — the system survives it.
+**Why a serif at all.** Design principle 1 asks for institutional rather than startup-generic, and a
+serif headline is the single strongest move toward it. It also separates this from every other
+student platform, which are uniformly set in the same handful of geometric sans faces.
+
+**Why Plex.** It was drawn for IBM, so its whole heritage is engineering, and the mono is not
+decoration here — this product is full of codes an employer will read off a certificate, and a
+proper mono makes `NM-7K4Q-2X9` unambiguous where a proportional face makes it a guess.
+
+**Where the serif stops.** `h1` and `h2` only. Card titles (`h3`, `h4`), labels, buttons and table
+headers are all Plex Sans — a serif at 14px in a dense queue of applicants gets muddy, and the
+admin console is where that would hurt.
+
+**Alternatives considered** are on the canvas's *Type directions* page, each with its own case and
+its own cost: **Bricolage Grotesque + Public Sans** (all sans, more energy, reads younger — but more
+product than institution) and **Source Serif 4 + Karla** (warmer and more editorial — but Karla gets
+busy in dense tables, and the pairing would suit a humanities society equally well).
 
 **Type scale** (1.250 major third, 16px base, fluid where it matters):
 
 | Token | Size | Line height | Weight | Use |
 |---|---|---|---|---|
-| `--fs-display` | `clamp(2.25rem, 5vw, 3.25rem)` | 1.08 | 700 | Home hero only |
-| `--fs-h1` | `clamp(1.75rem, 3.5vw, 2.5rem)` | 1.15 | 700 | Page title |
-| `--fs-h2` | `1.75rem` | 1.20 | 650 | Section |
-| `--fs-h3` | `1.375rem` | 1.30 | 600 | Card group / subsection |
-| `--fs-h4` | `1.125rem` | 1.35 | 600 | Card title |
-| `--fs-body` | `1rem` | 1.60 | 400 | Default |
-| `--fs-sm` | `0.875rem` | 1.50 | 400 | Secondary, table cells |
-| `--fs-xs` | `0.75rem` | 1.40 | 500 | Badges, metadata, captions |
-| `--fs-overline` | `0.6875rem` | 1.30 | 600, `.08em` tracking, uppercase | Eyebrow labels |
+| `--fs-display` | `clamp(2.25rem, 5vw, 3.25rem)` | 1.08 | 700 serif | Home hero only |
+| `--fs-h1` | `clamp(1.75rem, 3.5vw, 2.5rem)` | 1.14 | 700 serif | Page title |
+| `--fs-h2` | `1.75rem` | 1.18 | 650 serif | Section |
+| `--fs-h3` | `1.375rem` | 1.25 | 600 sans | Card group / subsection |
+| `--fs-h4` | `1.125rem` | 1.25 | 600 sans | Card title |
+| `--fs-body` | `1rem` | 1.60 | 400 sans | Default |
+| `--fs-sm` | `0.875rem` | 1.50 | 400 sans | Secondary, table cells |
+| `--fs-xs` | `0.75rem` | 1.40 | 500 sans | Badges, metadata, captions |
+| `--fs-overline` | `0.6875rem` | 1.30 | 600 sans, `.08em` tracking, uppercase | Eyebrow labels |
+| `--fs-code` | `0.875rem` | 1.4 | 500/600 mono | Verification codes, matric, member numbers |
 
-**Rules.** Body copy maxes at **68 characters** per line. Headings never below 600 weight. Uppercase
-is reserved for overlines and badges — never headings or buttons. Never centre a paragraph longer
-than two lines.
+**Rules.** Body copy maxes at **68 characters** per line. Headings carry `letter-spacing: -0.01em`
+in the serif; the sans is left alone. Uppercase is reserved for overlines and badges — never
+headings or buttons. Never centre a paragraph longer than two lines.
+
+**Payload.** Three faces is one more than the previous pairing, so subset all three to Latin,
+`font-display: swap`, and preload the two used above the fold (Serif 700, Sans 400). **Plex Mono is
+the first thing to drop** if the budget in section 12 bites — codes fall back to `ui-monospace`,
+which is a real system mono on every platform and costs nothing.
 
 ---
 
@@ -648,7 +669,7 @@ Target **WCAG 2.1 AA**, treated as acceptance criteria rather than aspirations:
 Performance is engineered in [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) sections 8–9. What belongs here
 is the part that changes **what can be drawn** (goal **G5**):
 
-- **Two font families is the ceiling.** If the payload budget bites, Sora goes first and Inter carries headings at heavier weights. The system is designed to survive that.
+- **Three faces is the ceiling, and one is expendable.** If the payload budget bites, IBM Plex Mono goes first — codes fall back to the system monospace and nothing else moves.
 - **The crest must exist as SVG.** A raster crest at retina sizes is a surprisingly large asset for something on every page — and it is the design side's job to supply it (section 2.2).
 - **Every event needs a generated fallback cover** (section 7), so a missing upload never produces a broken-looking card.
 - **Skeletons, not spinners,** for content areas — which means every list and card needs a skeleton drawn, not just a loading state named.
@@ -720,10 +741,10 @@ have never heard of the platform.
 │ ▌                                                        │
 │ ▌  CERTIFICATE OF COMPLETION          (overline, green)   │
 │ ▌                                                        │
-│ ▌  Adaeze Nwosu                       (Sora 700, 44pt)   │
+│ ▌  Adaeze Nwosu                       (Plex Serif 700, 44pt)   │
 │ ▌  ─────────────────────────                             │
 │ ▌  has completed                                         │
-│ ▌  Design of Pressure Vessels              (Sora 600)    │
+│ ▌  Design of Pressure Vessels              (Plex Serif 600)    │
 │ ▌  a NiMechE professional development programme          │
 │ ▌                                                        │
 │ ▌  12 September 2026     [signature]    [signature]      │
