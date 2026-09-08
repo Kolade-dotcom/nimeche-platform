@@ -6,39 +6,44 @@ The screens published as the NiMechE-SF (AATU) member platform design canvas.
 canvas — never edit the generated `nimeche-member-platform.html` at the repo root, which is a
 build output and is gitignored.
 
-The canvas has four pages, switched from the toolbar. The first three are **flows** — read each
-left to right.
+The canvas has four pages, switched from the toolbar. **Each stage is worked through completely —
+desktop and mobile — before moving to the next.**
 
-**1 · Landing & sign in** (desktop, 1440px)
+### 1 · Landing & sign in — done
 
-| File | Screen |
-|---|---|
-| `Landing.dc.html` | Public landing page — what NiMechE-SF is, what membership gives you, how it works |
-| `Join.dc.html` | Sign up — four fields, no password |
-| `CheckEmail.dc.html` | Magic link sent |
-| `Login.dc.html` | Sign in, returning member |
+Desktop row (1440px), then the same flow again at 390px below it. Read each row left to right.
 
-**2 · Membership** (desktop) — the same journey from both sides
+| Desktop | Mobile | Screen |
+|---|---|---|
+| `Landing` | `MLanding` | Public landing page — what NiMechE-SF is, what membership gives you, how it works |
+| `Join` | `MJoin` | Sign up — four fields, no password |
+| `JoinError` | `MJoinError` | Sign up with a non-Tech-U address |
+| `CheckEmail` | `MCheckEmail` | Magic link sent |
+| `Login` | `MLogin` | Sign in, returning member |
+| `LinkExpired` | `MLinkExpired` | Expired sign-in link |
 
-| File | Screen |
-|---|---|
-| `Pending.dc.html` | Member: application under review |
-| `ReviewQueue.dc.html` | Executive: the review queue, with matric numbers checked against the department roll |
-| `ReviewMember.dc.html` | Executive: one applicant, approve or decline |
-| `Welcome.dc.html` | Member: approved, first run, with the digital membership card |
-| `Profile.dc.html` | The membership record itself — details, derived skills, card |
+The two `…Error` / `…Expired` screens are part of the flow, not edge cases: a wrong address and a
+stale link are the two things that will actually happen.
 
-**3 · Quick join** (desktop)
+### 1b · Quick join — done
 
-| File | Screen |
-|---|---|
-| `QuickJoin.dc.html` | A shareable link for WhatsApp or a QR on a flyer — same four fields, no landing page in the way, carries who shared it |
-| `QuickJoinDone.dc.html` | Confirmation, what happens next, and a QR to pass on |
+| Desktop | Mobile | Screen |
+|---|---|---|
+| `QuickJoin` | `MQuickJoin` | A shareable link for WhatsApp or a QR on a flyer — same four fields, no landing page in the way, carries who shared it |
+| `QuickJoinDone` | `MQuickJoinDone` | Confirmation, what happens next, and a QR to pass on |
 
-**Mobile (v1)** — `Main`, `Home`, `SignUp`, `EventDetail`, `Certificate`, `Attendance`. The earlier
-phone screens, unchanged, parked until the desktop flows are settled.
+### 2 · Membership — desktop only so far
 
-`canvas.json` holds the page assignments, frame positions, artboard titles and the flow notes.
+`Pending` (member waiting) · `ReviewQueue` (executive) · `ReviewMember` (approve one) ·
+`Welcome` (approved, with the membership card) · `Profile` (the record itself).
+**The mobile pass for this stage is next.**
+
+### Later stages — mobile v1
+
+`Main`, `EventDetail`, `Certificate`, `Attendance`. Early phone screens for stages not yet worked
+through. They will be redone properly, desktop and mobile, when we reach them.
+
+`canvas.json` holds page assignments, frame positions, artboard titles and the stage notes.
 
 ## How they are built
 
@@ -63,8 +68,8 @@ stroke SVG in the Lucide style at 1.75px.
 
 - **The crest is drawn from the raster logo**, not the official vector artwork. Replace it once the secretariat supplies the vector (design plan section 2.2). It appears in `Main`, `Home`, `SignUp`, `EventDetail` and `Certificate`.
 - **All content is sample data** — member names, matric numbers, programmes, dates, organisations. Plausible, not real, and sized to a branch of a few hundred rather than a national body.
-- **The student email pattern** is rendered as `firstname.lastname@tech-u.edu.ng`. Confirm the `@` placement before this reaches a real form.
-- **The verification domain** is `nimeche-aatu.vercel.app/verify` — a working stand-in until the branch has its own.
+- **The student email pattern** is `firstname.lastname@tech-u.edu.ng` — confirmed.
+- **The verification domain** is `nimeche-aatu.vercel.app/verify` — the working address, and fine for building and reviewing. It goes on certificates an employer will check years from now, so a branch-owned domain should replace it before the first real certificate is issued.
 - **`[branch domain]`** stands in on the certificate and verification copy until the branch has its own domain (design plan section 17.9).
 - **The wordmark reads `NiMechE-SF / AATU`** as a text lockup beside the crest. It is not an approved lockup yet — design plan section 2.2 lists getting one signed off by the national body.
 

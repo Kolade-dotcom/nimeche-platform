@@ -19,9 +19,18 @@
       "page": "page-1"
     },
     {
+      "file": "JoinError.dc.html",
+      "title": "2b \u00b7 Sign up \u2014 not a Tech-U address",
+      "x": 3160,
+      "y": 0,
+      "w": 1440,
+      "h": 940,
+      "page": "page-1"
+    },
+    {
       "file": "CheckEmail.dc.html",
       "title": "3 \u00b7 Check your email",
-      "x": 3160,
+      "x": 4740,
       "y": 0,
       "w": 1440,
       "h": 820,
@@ -30,10 +39,73 @@
     {
       "file": "Login.dc.html",
       "title": "4 \u00b7 Sign in (returning)",
-      "x": 4740,
+      "x": 6320,
       "y": 0,
       "w": 1440,
       "h": 820,
+      "page": "page-1"
+    },
+    {
+      "file": "LinkExpired.dc.html",
+      "title": "4b \u00b7 Link expired",
+      "x": 7900,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-1"
+    },
+    {
+      "file": "MLanding.dc.html",
+      "title": "1 \u00b7 Landing",
+      "x": 0,
+      "y": 2880,
+      "w": 390,
+      "h": 2540,
+      "page": "page-1"
+    },
+    {
+      "file": "MJoin.dc.html",
+      "title": "2 \u00b7 Sign up",
+      "x": 500,
+      "y": 2880,
+      "w": 390,
+      "h": 940,
+      "page": "page-1"
+    },
+    {
+      "file": "MJoinError.dc.html",
+      "title": "2b \u00b7 Sign up \u2014 wrong address",
+      "x": 1000,
+      "y": 2880,
+      "w": 390,
+      "h": 970,
+      "page": "page-1"
+    },
+    {
+      "file": "MCheckEmail.dc.html",
+      "title": "3 \u00b7 Check your email",
+      "x": 1500,
+      "y": 2880,
+      "w": 390,
+      "h": 800,
+      "page": "page-1"
+    },
+    {
+      "file": "MLogin.dc.html",
+      "title": "4 \u00b7 Sign in",
+      "x": 2000,
+      "y": 2880,
+      "w": 390,
+      "h": 780,
+      "page": "page-1"
+    },
+    {
+      "file": "MLinkExpired.dc.html",
+      "title": "4b \u00b7 Link expired",
+      "x": 2500,
+      "y": 2880,
+      "w": 390,
+      "h": 720,
       "page": "page-1"
     },
     {
@@ -100,8 +172,26 @@
       "page": "page-3"
     },
     {
+      "file": "MQuickJoin.dc.html",
+      "title": "10 \u00b7 Quick join",
+      "x": 0,
+      "y": 1180,
+      "w": 390,
+      "h": 940,
+      "page": "page-3"
+    },
+    {
+      "file": "MQuickJoinDone.dc.html",
+      "title": "11 \u00b7 Done",
+      "x": 500,
+      "y": 1180,
+      "w": 390,
+      "h": 840,
+      "page": "page-3"
+    },
+    {
       "file": "Main.dc.html",
-      "title": "Dashboard",
+      "title": "Dashboard (mobile v1)",
       "x": 0,
       "y": 0,
       "w": 390,
@@ -109,46 +199,28 @@
       "page": "page-4"
     },
     {
-      "file": "Home.dc.html",
-      "title": "Home",
-      "x": 480,
-      "y": 0,
-      "w": 390,
-      "h": 1290,
-      "page": "page-4"
-    },
-    {
-      "file": "SignUp.dc.html",
-      "title": "Sign up",
-      "x": 960,
-      "y": 0,
-      "w": 390,
-      "h": 900,
-      "page": "page-4"
-    },
-    {
       "file": "EventDetail.dc.html",
-      "title": "Event",
-      "x": 0,
-      "y": 1420,
+      "title": "Event (mobile v1)",
+      "x": 500,
+      "y": 0,
       "w": 390,
       "h": 1150,
       "page": "page-4"
     },
     {
       "file": "Certificate.dc.html",
-      "title": "Certificate",
-      "x": 480,
-      "y": 1420,
+      "title": "Certificate (mobile v1)",
+      "x": 1000,
+      "y": 0,
       "w": 390,
       "h": 960,
       "page": "page-4"
     },
     {
       "file": "Attendance.dc.html",
-      "title": "Attendance",
-      "x": 960,
-      "y": 1420,
+      "title": "Attendance (mobile v1)",
+      "x": 1500,
+      "y": 0,
       "w": 390,
       "h": 940,
       "page": "page-4"
@@ -156,52 +228,68 @@
   ],
   "annotations": [
     {
-      "id": "n-p1",
+      "id": "n1a",
       "x": 0,
-      "y": -190,
-      "w": 900,
+      "y": -210,
+      "w": 1000,
       "page": "page-1",
-      "text": "1 \u00b7 LANDING AND SIGN IN\nRead left to right \u2014 this is the whole first-visit path.\nA stranger lands, learns what the branch is, joins with four fields, gets an email link, and is in.\nNo password anywhere in this flow, by design."
+      "text": "STAGE 1 \u00b7 LANDING AND SIGN IN \u2014 DESKTOP\nRead left to right: the whole first-visit path.\nA stranger arrives, learns what the branch is, joins with four fields, gets an email link, and is in.\nNo password exists anywhere in this stage, so there is no forgot-password flow to design."
     },
     {
-      "id": "n-p1b",
+      "id": "n1b",
       "x": 1580,
-      "y": -190,
-      "w": 760,
+      "y": -210,
+      "w": 1000,
       "page": "page-1",
-      "text": "Four fields only: name, Tech-U email, department (Mechanical or Mechatronics), level (100\u2013500).\nInstitution is never asked \u2014 the tech-u.edu.ng address already answers it."
+      "text": "Four fields: name, Tech-U email, department, level.\nInstitution is never asked \u2014 a @tech-u.edu.ng address answers it, and the server rejects anything else (2b).\nDepartment and level are buttons rather than dropdowns: two options and five, so showing them is fewer taps than hiding them."
     },
     {
-      "id": "n-p2",
+      "id": "n1c",
+      "x": 4740,
+      "y": -210,
+      "w": 1000,
+      "page": "page-1",
+      "text": "The two screens ending in 'b' are the paths where things go wrong.\nThey are part of the flow, not edge cases: a wrong address and an expired link are the two things\nthat will actually happen, and both are written in plain words with a way forward."
+    },
+    {
+      "id": "n1d",
       "x": 0,
-      "y": -190,
-      "w": 900,
+      "y": 2740,
+      "w": 1000,
+      "page": "page-1",
+      "text": "THE SAME STAGE ON A PHONE\nNot the desktop shrunk \u2014 laid out again at 390px.\nThe landing page becomes one column with the four steps on a vertical rail; the level buttons tighten to fit five across;\nCheck-your-email leads with 'Open my mail app', which is the actual next action on a phone and pointless on a desktop."
+    },
+    {
+      "id": "n2",
+      "x": 0,
+      "y": -210,
+      "w": 1400,
       "page": "page-2",
-      "text": "2 \u00b7 MEMBERSHIP, END TO END\nScreen 5 is what the new member sees while waiting. Screens 6 and 7 are the same moment from the executive's side.\nScreen 8 is the member the evening they are approved; screen 9 is the record itself, months later."
+      "text": "STAGE 2 \u00b7 MEMBERSHIP \u2014 DESKTOP ONLY SO FAR\nScreen 5 is the new member waiting. Screens 6 and 7 are that same moment from the executive's side.\nScreen 8 is the evening they are approved; screen 9 is the record months later.\nThe mobile pass for this stage is next."
     },
     {
-      "id": "n-p2b",
+      "id": "n2b",
       "x": 1580,
-      "y": -190,
+      "y": -210,
       "w": 1600,
       "page": "page-2",
-      "text": "The executive's job here is one comparison: does this matric number appear on the department roll?\nThe queue answers it for them \u2014 'On list' or 'Not found' \u2014 so approving is a glance, not an investigation.\nThat only works if the HOD shares the roll. It is an open question in the plan (design plan section 17.7)."
+      "text": "Nobody types a matric number, at any point.\nA firstname.lastname@tech-u.edu.ng address already carries the name, so the server matches the applicant\nagainst the department roll and reads the matric number off it. The reviewer sees 'On list' or 'Not found'\nand approves with a glance.\nThis depends entirely on the departments sharing their rolls \u2014 the single highest-leverage ask in the project."
     },
     {
-      "id": "n-p3",
+      "id": "n3",
       "x": 0,
-      "y": -190,
-      "w": 900,
+      "y": -210,
+      "w": 1200,
       "page": "page-3",
-      "text": "3 \u00b7 QUICK JOIN\nOne link to drop in a WhatsApp group or print as a QR on a flyer.\nSame four fields as the full sign up, no landing page in the way, and it carries who shared it."
+      "text": "STAGE 1b \u00b7 QUICK JOIN \u2014 DESKTOP AND MOBILE\nOne link to drop in a WhatsApp group, or a QR on a flyer at a departmental event.\nSame four fields, no landing page in the way, and it carries who shared it.\nThe mobile pair below is the one that matters: this link will be opened on a phone almost every time."
     },
     {
-      "id": "n-p4",
+      "id": "n4",
       "x": 0,
-      "y": -190,
-      "w": 900,
+      "y": -210,
+      "w": 1200,
       "page": "page-4",
-      "text": "MOBILE (v1)\nThe earlier phone screens, kept as they are.\nThey come back once the desktop flows are settled \u2014 the token layer is shared, so they follow."
+      "text": "LATER STAGES \u2014 MOBILE V1\nEarly phone screens for events, certificates and attendance.\nThey belong to stages we have not worked through yet and will be redone properly, desktop and mobile,\nwhen we get to them."
     }
   ],
   "pages": [
@@ -211,15 +299,15 @@
     },
     {
       "id": "page-2",
-      "name": "2 \u00b7 Membership"
+      "name": "2 \u00b7 Membership (desktop)"
     },
     {
       "id": "page-3",
-      "name": "3 \u00b7 Quick join"
+      "name": "1b \u00b7 Quick join"
     },
     {
       "id": "page-4",
-      "name": "Mobile (v1)"
+      "name": "Later stages (mobile v1)"
     }
   ],
   "launch": {

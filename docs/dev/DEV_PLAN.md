@@ -2,7 +2,7 @@
 
 **Status:** Draft v1 for technical review
 **Scope:** Engineering plan for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
-**Whose platform this is:** **NiMechE-SF, AATU** — one student branch at one university, a few hundred members. Not the national institution. This sets the scale for every number below (design plan section 2.4).
+**Whose platform this is:** **NiMechE-SF, AATU** — the branch at **Abiola Ajimobi Technical University (Tech-U)**. One campus, a few hundred members, two departments. Not the national institution. This sets the scale for every number below (design plan section 2.4).
 **Companion document:** [`docs/design/DESIGN_PLAN.md`](../design/DESIGN_PLAN.md) — brand, colour, components, screens, accessibility.
 
 This document covers **how the platform gets built**: architecture, stack, data model, subsystems,
@@ -287,14 +287,26 @@ all of them.
 ### 6.1 Membership lifecycle
 
 **Register → executive review → active.** Note what is *not* in that chain: there is no "complete
-your profile" gate. Registration collects **name, matric number, email, level** — four fields
+your profile" gate. Registration collects **name, Tech-U email, department, level** — four fields
 (section 1.1) — and nothing else is required to become a member.
 
-**Institution is not a field.** Every member is an AATU mechanical engineering student, so asking
-would be asking a question whose answer is already known. The **matric number** takes its place and
-earns it twice over: it shortens the form *and* it is what an executive checks against the
-department's list during review. If the department will share that list (design plan section 17.7),
-review becomes a lookup rather than a judgement call.
+**Institution is not a field.** A `@tech-u.edu.ng` address already answers it, so asking would be
+asking a question whose answer arrived with the email. Validate the domain server-side and reject
+personal addresses with plain-language copy, not a regex error.
+
+**Department and level are closed sets** — `mechanical | mechatronics` and `100 | 200 | 300 | 400 |
+500`. Model them as enums, not free text: it keeps the data clean for analytics and lets the form
+use buttons instead of dropdowns.
+
+**The matric number is never typed by anyone.** It is what the executive checks against the
+department roll — but a `firstname.lastname@tech-u.edu.ng` address already carries the name, so the
+server matches the applicant to a roll entry and *reads* the matric number off it. The reviewer sees
+"matched to MEE/2022/0431 on the Mechanical roll" rather than a field someone had to fill in.
+
+That is the rule in section 1.1 applied to its hardest case: a value the association genuinely needs,
+obtained without asking a single person for it. It costs one thing — the department has to share the
+roll (design plan section 17.7). Without that, the fallback is asking for the matric number in the
+profile after approval, where it is not in the way of anyone joining.
 
 **Progressive profiling** fills the rest, in context and always skippable: interests are asked the
 first time the member opens the Opportunities Hub ("so we can match you — skip for now"); a photo is

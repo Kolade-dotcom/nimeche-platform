@@ -2,8 +2,8 @@
 
 **Status:** Draft v1 for executive review
 **Scope:** Visual and interaction design for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
-**Whose platform this is:** **NiMechE-SF, AATU** — the student branch at AATU, not the national institution. Everything below is sized and worded for one campus of a few hundred members. See section 2.4.
-**Names to confirm:** what **SF** expands to in formal use, and AATU's full registered name. Both appear on certificates, so neither is guessed anywhere in this plan.
+**Whose platform this is:** **NiMechE-SF, AATU** — the student branch at **Abiola Ajimobi Technical University**, known as **Tech-U** — not the national institution. Everything below is sized and worded for one campus of a few hundred members. See section 2.4.
+**Still to confirm:** what **SF** expands to in formal use. It appears on certificates, so it is not guessed anywhere in this plan.
 **Companion document:** [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) — the engineering plan (stack, data model, subsystems, delivery, operations).
 **Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in sections 3–6.
 
@@ -63,7 +63,7 @@ exceeds its budget does not ship until it is redesigned or the budget is renegot
 
 | Journey | Who | Budget |
 |---|---|---|
-| Sign up → submitted for membership | Member | **≤4 fields, ≤2 minutes, no document upload** — name, matric number, email, level. Institution is not asked; everyone is AATU. |
+| Sign up → submitted for membership | Member | **≤4 fields, ≤2 minutes, no document upload** — name, Tech-U email, department, level. Institution is not asked; the email domain answers it. |
 | Register for an event, arriving from a WhatsApp link | Member | **≤2 taps** when signed in; ≤2 taps after a passwordless sign-in that returns to the event |
 | Receive a certificate after completing a programme | Member | **0 actions** — it arrives; there is no "claim" step |
 | Record a developed skill | Member | **0 actions** — derived from activity, never a form |
@@ -151,7 +151,7 @@ branch at one university**, and several decisions follow from that rather than f
 
 | Because it is one campus | The design does this |
 |---|---|
-| Every member is an AATU mechanical engineering student | **Registration never asks for institution.** It asks for a matric number instead — which doubles as what the executive checks against the department's own list. |
+| Every member is a Tech-U student in one of two departments | **Registration never asks for institution.** A `@tech-u.edu.ng` address already answers it. Department is a two-option choice (Mechanical or Mechatronics) and level a five-option one (100–500) — shown as buttons rather than dropdowns, because showing three fewer taps beats hiding five options. |
 | A few hundred members, not thousands | Directory and analytics screens are designed for **hundreds of rows**: search and a flat list beat pagination and heavy filtering. Impact numbers on the public site are honest branch numbers, not inflated ones. |
 | Events are on campus or on Zoom, weekly-ish | The event card leads with **day and time**, not city. The attendance screen matters more than the calendar. |
 | Employers do not know this branch | The certificate must carry the **national institution's identity as well as the branch's**, or it does not travel. This is the strongest argument for getting the branding sign-off in section 2.2. |
@@ -729,7 +729,7 @@ have never heard of the platform.
 │ ▌  12 September 2026     [signature]    [signature]      │
 │ ▌                        President      Programmes Sec.  │
 │ ▌                                                        │
-│ ▌ [QR]  Verify at [BRANCH DOMAIN]/verify/  NM-7K4Q-2X9   │
+│ ▌ [QR]  nimeche-aatu.vercel.app/verify   NM-7K4Q-2X9    │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -835,9 +835,9 @@ because they change the interface *and* the data model, which is why they should
 4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
 5. **Verification authority** — who signs off a "verified" skill? The chip in section 8.2 is worthless if the process behind it isn't defined.
 6. **Certificate signatories** — which two offices sign, and how the signatures are stored.
-7. **Does the department endorse it?** If the AATU mechanical engineering department recognises the record — or better, supplies the member list — verification gets much stronger and registration gets much shorter. Worth asking before build, not after.
+7. **Will the Mechanical and Mechatronics departments share their student rolls?** This is the highest-leverage ask in the project. With the rolls, the executive reviewing a new member sees "matched on the roll" and approves with a glance, and nobody ever types a matric number. Without them, review is a judgement call and the matric number becomes a field someone has to fill in. Ask before build, not after.
 8. **Language** — English only in v1? Assumed yes.
-9. **Domain and email sender identity** for certificate verification links. The branch cannot use the national body's domain, so it needs its own — printed on every certificate, and therefore settled before the first one is issued. It must also outlive the current executive (dev plan section 11).
+9. **A permanent domain.** `nimeche-aatu.vercel.app` is the working address and is fine for building and reviewing. But it is printed on every certificate an employer will check years from now, and it belongs to a hosting account rather than to the branch — so a branch-owned domain, held by the office and not by a student, should be settled before the first real certificate is issued (dev plan section 11).
 
 ---
 
