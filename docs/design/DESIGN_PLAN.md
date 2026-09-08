@@ -3,12 +3,12 @@
 **Status:** Draft v1 for executive review
 **Scope:** Visual and interaction design for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
 **Companion document:** [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) — the engineering plan (stack, data model, subsystems, delivery, operations).
-**Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in §3–§6.
+**Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in sections 3–6.
 
 This document defines *what the platform looks like and how it behaves*. It does not choose a
 framework, a database or a hosting provider, and it does not schedule or cost the build — those
 belong to the dev plan. Everything here is expressed as design tokens and component specs, so the
-dev plan can implement it directly without re-deciding visual questions. §18 sets out exactly which
+dev plan can implement it directly without re-deciding visual questions. Section 18 sets out exactly which
 document answers which question.
 
 ---
@@ -27,7 +27,7 @@ governs all the others.
 >
 > This outranks every other goal in this document. Where G0 conflicts with elegance, density,
 > feature completeness or engineering convenience, **G0 wins**, and the conflict gets recorded in
-> §1.1 rather than quietly resolved in favour of the more interesting option.
+> Section 1.1 rather than quietly resolved in favour of the more interesting option.
 >
 > The failure mode this guards against is specific and common: an association builds a capable
 > platform, the executives keep using the WhatsApp group because it is faster, members never log in
@@ -50,8 +50,8 @@ Five supporting goals follow from the proposal, each subordinate to G0:
 2. **Evidence over decoration.** Every element either carries information or gets cut.
 3. **Green carries the structure, orange carries the moment.** The orange is the loudest colour in the brand; it is reserved for achievement, urgency and a single call to action per view. Large orange fields are forbidden.
 4. **Density where it earns it.** Public pages breathe; the admin console and analytics are dense and tabular. Different jobs, different rhythm.
-5. **Dark mode is a designed theme, not an inversion.** Every dark value is chosen and contrast-checked independently (§5).
-6. **The system does the work, not the member.** Anything the platform can derive, it derives. A member should never be asked to type something the system already knows, or to claim something they have already earned (§1.1).
+5. **Dark mode is a designed theme, not an inversion.** Every dark value is chosen and contrast-checked independently (section 5).
+6. **The system does the work, not the member.** Anything the platform can derive, it derives. A member should never be asked to type something the system already knows, or to claim something they have already earned (section 1.1).
 7. **No dead ends.** Every empty state, error and zero-result view names the next action. "Nothing here" without a way forward is a bug.
 
 ### 1.1 The friction budget
@@ -76,7 +76,7 @@ exceeds its budget does not ship until it is redesigned or the budget is renegot
 
 - **Progressive profiling.** Registration collects only what is needed to identify a member. Everything else — interests, skills, bio, photo — is requested later, in context, at the moment it becomes useful, and is always skippable.
 - **Derive, never ask.** Skills, activity history, certificates, participation counts and the development ring are all computed from what the member has done. The profile fills itself as they participate; that is the product working, and it is also the reason the sign-up form can be short.
-- **Plain words, always.** No interface text uses a term a first-year student would have to look up. Not "credential issuance", but "certificates". Not "authenticate", but "sign in". Not "submit for validation", but "send for review". This applies to buttons, headings, empty states, emails and error messages alike (§15).
+- **Plain words, always.** No interface text uses a term a first-year student would have to look up. Not "credential issuance", but "certificates". Not "authenticate", but "sign in". Not "submit for validation", but "send for review". This applies to buttons, headings, empty states, emails and error messages alike (section 15).
 
 **How G0 gets tested, since nobody can self-assess this:** before each release, three people who have
 never seen the screen attempt its main task, unaided and unprompted — two members and one executive.
@@ -112,12 +112,12 @@ own signature.
 
 These are read from the raster artwork supplied, not from vector source. **Before build, get the
 official logo file from the secretariat** (ideally SVG or the original vector), confirm the two
-anchor values, and update only the anchors in §3.1 — every other colour derives from them, so a
+anchor values, and update only the anchors in section 3.1 — every other colour derives from them, so a
 correction is a contained edit, not a redesign.
 
 Request at the same time:
 
-- **A knockout / single-colour lockup for dark mode.** The emblem has a white inner field, so it cannot sit directly on a dark ground without looking like a sticker. Either a white-on-transparent version, or the rule in §2.3.
+- **A knockout / single-colour lockup for dark mode.** The emblem has a white inner field, so it cannot sit directly on a dark ground without looking like a sticker. Either a white-on-transparent version, or the rule in section 2.3.
 - A **square icon mark** (the gear ring alone, or a simplified device) for favicons, app icons and avatars — the full crest is illegible at 32px because the annulus text disappears.
 - Minimum clear space and minimum size rules, if a brand sheet exists.
 - **Confirmation of the written form.** The proposal uses **NiMechE**; the national body's own materials use **NIMechE**. Pick one and use it everywhere, including in every page `<title>`. This plan uses NiMechE, per the proposal.
@@ -131,7 +131,7 @@ Request at the same time:
 | Portal sidebar | Icon mark when collapsed, crest + wordmark when expanded |
 | Certificates | Full-colour crest at print resolution, plus a small monochrome mark beside the verification code |
 | Favicon / app icon | Square icon mark on `#00713A`, never the full crest |
-| Social / OG images | Crest on white, bottom-left, with the orange rule (§14) |
+| Social / OG images | Crest on white, bottom-left, with the orange rule (section 14) |
 
 **Never:** recolour the crest, place it on a busy photograph without a white scrim, stretch it, add
 effects, or use the orange gear ring alone as a decorative motif at large scale — at large sizes it
@@ -146,7 +146,7 @@ crest. Never a modified crest.
 
 ### 3.1 Brand anchors
 
-The only hand-picked values in the system. Replace these when the vector artwork is confirmed (§2.2).
+The only hand-picked values in the system. Replace these when the vector artwork is confirmed (section 2.2).
 
 ```
 --anchor-green    #008A45   /* logo annulus — primary */
@@ -237,7 +237,7 @@ double duty:
 **The rule that makes both safe: status is never carried by colour alone.** Every status badge,
 alert and inline state ships with a glyph and a word. A green tick and the word "Attended"; an
 orange clock and "Closes in 2 days". Colour is reinforcement, never the message. This is an
-accessibility requirement anyway (§11) — here it also does structural work.
+accessibility requirement anyway (section 11) — here it also does structural work.
 
 **On dark-mode primary buttons:** `--primary` in dark is `#3FBF7A` with **`#06110A` text**
 (8.19:1), not white — white on that green is only 2.1:1. This is exactly what a naive light/dark
@@ -289,7 +289,7 @@ Two families, both on Google Fonts, both free, both with good Latin coverage.
 | Numerals in stats and tables | Inter with `font-variant-numeric: tabular-nums` | — |
 
 Sora's geometric, slightly technical character suits an engineering institution and separates
-cleanly from Inter at body sizes. If payload becomes a problem (§12), drop Sora and run Inter at
+cleanly from Inter at body sizes. If payload becomes a problem (section 12), drop Sora and run Inter at
 heavier weights for headings — the system survives it.
 
 **Type scale** (1.250 major third, 16px base, fluid where it matters):
@@ -350,12 +350,12 @@ privacy modes, and an uncaught error here blocks first paint.
 
 **What changes in dark mode beyond colour:**
 
-- **The logo swaps** to the knockout lockup, or gets a white circular plinth (§2.3). This is the single most visible dark-mode task and it needs artwork, not CSS.
+- **The logo swaps** to the knockout lockup, or gets a white circular plinth (section 2.3). This is the single most visible dark-mode task and it needs artwork, not CSS.
 - **Elevation flips from shadow to surface lightness.** Shadows are nearly invisible on dark grounds; a raised panel gets `--surface-raised` plus a `--border` hairline instead.
 - **The orange is stepped back** from `#EE7623` to `#F79B5E`. The raw logo orange vibrates unpleasantly on a near-black ground; the lighter step keeps the brand read without the glare.
 - **Photography** gets `filter: brightness(.92)` inside `[data-theme="dark"]` so bright event photos don't glare.
-- **Certificates always render in their light theme**, in both modes. A certificate is a document, not a UI surface, and must look identical to its printed and downloaded form (§14).
-- **Charts re-step from the same ramps** — they are never an inverted light chart (§13).
+- **Certificates always render in their light theme**, in both modes. A certificate is a document, not a UI surface, and must look identical to its printed and downloaded form (section 14).
+- **Charts re-step from the same ramps** — they are never an inverted light chart (section 13).
 
 ---
 
@@ -392,7 +392,7 @@ else it becomes noise.
 
 ## 7. Iconography and imagery
 
-- **Icons:** Lucide (or Phosphor), 1.75px stroke, 20px default / 16px in dense tables / 24px in nav. Icons never carry meaning alone — always a label or an `aria-label`.
+- **Icons: Lucide**, 1.75px stroke, 20px default / 16px in dense tables / 24px in nav. Icons never carry meaning alone — always a label or an `aria-label`.
 - **Commission a small domain set:** certificate, gear/project, opportunity, mentorship, skill level. These five recur across the whole product and generic icons blur them together.
 - **Photography:** real members and real events, always. Stock engineering photography undermines a platform whose entire value proposition is authentic record. 16:9 event covers, 4:3 project galleries, 1:1 avatars. Every image needs alt text. Every event needs a **generated fallback cover** — the event title on a green field with the orange rule — so an admin in a hurry never produces a broken-looking card.
 - **Illustration:** none in v1 beyond single-colour empty-state line drawings in `--border-strong`.
@@ -409,7 +409,7 @@ else it becomes noise.
 | **Input / Select / Textarea** | default · error · disabled · with prefix/suffix | 40px (44px touch target on mobile), `--r-sm`, `--border-strong` at rest, `--primary` + 2px ring on focus. Label always visible above the field — **never placeholder-as-label**. Helper text below; error text replaces it, wired via `aria-describedby` and `role="alert"`. |
 | **Checkbox / Radio / Switch** | — | 20px control, 44px hit area. Switch only for immediate-effect settings; a form that needs Save uses a checkbox. |
 | **Card** | plain · interactive · stat | `--r-lg`, `--surface`, 1px `--border`, `e1`. Interactive cards lift to `e2` and shift the border to `--border-strong` on hover; the **title is the real `<a>`**, with a stretched pseudo-element making the whole card clickable — keyboard and screen-reader users get one sensible link, not a card-sized one. |
-| **Badge / Chip** | neutral · brand · success · warning · danger · accent | `--fs-xs`, `--r-full`, subtle background + strong text, **always with a 12px glyph** (§3.3). |
+| **Badge / Chip** | neutral · brand · success · warning · danger · accent | `--fs-xs`, `--r-full`, subtle background + strong text, **always with a 12px glyph** (section 3.3). |
 | **Tabs** | underline (page level) · segmented (in-card filters) | Active tab = 2px `--primary` underline + 600 weight. Horizontally scrollable on mobile with a fade mask; never wrapped to two rows. |
 | **Table** | default · compact (admin) | Sticky header, zebra via `--surface-sunken`, right-aligned tabular numerics, per-column sort. **Below 768px tables become stacked cards** — a horizontally scrolling table on a phone is unusable for an exec capturing attendance. |
 | **Pagination** | load-more · numbered | Load-more on member-facing lists; numbered in the admin console. |
@@ -417,7 +417,7 @@ else it becomes noise.
 | **Toast** | success · error · info | Bottom-right desktop / top mobile, auto-dismiss 5s (never for errors), `aria-live="polite"`. |
 | **Empty state** | — | Line icon + one-sentence explanation + one action. Every list needs one written before launch: "you have no certificates yet" is the *first* thing most new members will see, so it must point at the next event. |
 | **Skeleton** | text · card · table row | Shimmer respects reduced-motion (static tint instead). |
-| **Nav** | public header · member sidebar · admin sidebar · mobile bottom bar | See §9. |
+| **Nav** | public header · member sidebar · admin sidebar · mobile bottom bar | See section 9. |
 
 ### 8.2 Domain components — the ones that make this NiMechE and not a template
 
@@ -426,7 +426,7 @@ edge**, `--accent-subtle` ground, programme title, issue date, verification code
 a Verify affordance. This is the platform's signature object and should be the most carefully
 crafted component in the library.
 
-**Skill level chip** — the four levels from §7 of the proposal, encoded so they are never confusable
+**Skill level chip** — the four levels from section 7 of the proposal, encoded so they are never confusable
 and never colour-alone:
 
 | Level | Fill | Glyph | Shape cue |
@@ -451,7 +451,7 @@ for CV export in phase 2.
 organisation, **deadline with urgency treatment** (`--danger` text and a clock glyph at ≤3 days,
 `--warning` at ≤7), location/remote chip, and a clear distinction between *Register through NiMechE*
 (internal, tracked) and *Apply on external site* (outbound, external-link glyph). The proposal's
-§9.1 depends on this dual path; the UI must never blur it — a member should always know whether
+Section 9.1 depends on this dual path; the UI must never blur it — a member should always know whether
 NiMechE has recorded their interest.
 
 **Event card** — cover image, stacked day/month date block in brand green, title, mode chip
@@ -487,7 +487,7 @@ issuing body. No marketing chrome. Credibility comes from restraint.
 /join                 Membership explainer → registration
 ```
 
-These pages carry the visibility burden from §11 of the proposal: server-rendered, semantic
+These pages carry the visibility burden from section 11 of the proposal: server-rendered, semantic
 headings, per-page meta and OG images, `Event` / `Organization` / `JobPosting` structured data, and
 a sitemap. Public project and news pages are what make NiMechE discoverable.
 
@@ -533,7 +533,7 @@ gets captured — and certificates, skills, the development record and every ana
 downstream all depend on it. Design it first, prototype it with real execs at a real event, and
 treat it as P0.
 
-Roles map to the proposal's §14 — Member, Executive/Admin, Content Manager, Project Lead, Partner
+Roles map to the proposal's section 14 — Member, Executive/Admin, Content Manager, Project Lead, Partner
 Contributor. Navigation is filtered by permission: a Project Lead sees `/admin/projects` only, not a
 greyed-out full console.
 
@@ -541,7 +541,7 @@ greyed-out full console.
 
 ## 10. Key screen designs
 
-Block-level layouts; detailed comps follow in Figma (§16).
+Block-level layouts; detailed comps follow in Figma (section 16).
 
 ### 10.1 Member dashboard (`/me`) — the platform's centre of gravity
 
@@ -570,7 +570,7 @@ Block-level layouts; detailed comps follow in Figma (§16).
 └────────────────────────────────────────────────────────────┘
 ```
 
-The "feedback due → unlocks your certificate" card is deliberate. §5 of the proposal makes
+The "feedback due → unlocks your certificate" card is deliberate. Section 5 of the proposal makes
 certificates conditional on a participation requirement; the interface should make the outstanding
 requirement feel like a small step toward a reward, not an obstacle. It is the one place the orange
 accent earns a full card treatment.
@@ -600,7 +600,7 @@ produced it, the skills it evidences, and the verification record.
 A row of stat tiles (members · active members · events held · certificates issued · opportunity
 registrations) → engagement trend over time → programme popularity → completion funnel
 (registered → attended → completed → certified). Date-range control in a single row above the
-charts. Every chart has a table-view toggle. Charts follow §13 exactly.
+charts. Every chart has a table-view toggle. Charts follow section 13 exactly.
 
 ---
 
@@ -608,13 +608,13 @@ charts. Every chart has a table-view toggle. Charts follow §13 exactly.
 
 Target **WCAG 2.1 AA**, treated as acceptance criteria rather than aspirations:
 
-- Every semantic pairing in §3.3 is contrast-verified (§3.4). Re-run the check whenever the brand anchors change — the orange in particular has almost no headroom.
+- Every semantic pairing in section 3.3 is contrast-verified (section 3.4). Re-run the check whenever the brand anchors change — the orange in particular has almost no headroom.
 - Visible focus on every interactive element: 2px `--focus-ring`, 2px offset. Never `outline: none` without a replacement.
 - Full keyboard operability, including the attendance screen, modals and the mobile bottom bar. A skip-to-content link on every page.
 - Touch targets ≥44×44px.
 - Semantic HTML first, ARIA only where HTML cannot express the pattern. One `<h1>` per page, no skipped heading levels.
 - Form errors are text, tied to their field, and announced — never a red border alone.
-- **Status is never colour-alone** (§3.3): badges carry glyphs, chart series carry direct labels, the skill meter carries segments.
+- **Status is never colour-alone** (section 3.3): badges carry glyphs, chart series carry direct labels, the skill meter carries segments.
 - `prefers-reduced-motion` honoured everywhere, including the gear spinner.
 - Alt text is a required field on image upload in the admin console, with a "decorative" checkbox as the deliberate opt-out.
 - Screen-reader testing (NVDA or VoiceOver) on five critical flows: register, sign in, register for an event, download a certificate, register interest in an opportunity.
@@ -623,12 +623,12 @@ Target **WCAG 2.1 AA**, treated as acceptance criteria rather than aspirations:
 
 ## 12. What performance costs the design
 
-Performance is engineered in [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) §8–§9. What belongs here
+Performance is engineered in [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) sections 8–9. What belongs here
 is the part that changes **what can be drawn** (goal **G5**):
 
 - **Two font families is the ceiling.** If the payload budget bites, Sora goes first and Inter carries headings at heavier weights. The system is designed to survive that.
-- **The crest must exist as SVG.** A raster crest at retina sizes is a surprisingly large asset for something on every page — and it is the design side's job to supply it (§2.2).
-- **Every event needs a generated fallback cover** (§7), so a missing upload never produces a broken-looking card.
+- **The crest must exist as SVG.** A raster crest at retina sizes is a surprisingly large asset for something on every page — and it is the design side's job to supply it (section 2.2).
+- **Every event needs a generated fallback cover** (section 7), so a missing upload never produces a broken-looking card.
 - **Skeletons, not spinners,** for content areas — which means every list and card needs a skeleton drawn, not just a loading state named.
 - **Offline and error states are designed screens**, not afterthoughts: the attendance screen's queued-and-syncing state, and an honest "you're offline" state everywhere else.
 - **Every destructive admin action needs a confirmation design**, and certificate revocation requires typing the certificate code.
@@ -641,7 +641,7 @@ that a comp which cannot fit inside it is caught at design time.
 
 ## 13. Data visualization
 
-The analytics dashboard is a core deliverable (§13 of the proposal), so the chart system is
+The analytics dashboard is a core deliverable (section 13 of the proposal), so the chart system is
 specified here rather than left to implementation. **The palettes below were computationally
 validated** — lightness band, chroma floor, colour-vision-deficiency separation, normal-vision
 separation and contrast against their surface. They are not eyeballed.
@@ -676,7 +676,7 @@ confusable is worse than useless, because it inverts meaning rather than merely 
 
 - **Never a dual-axis chart.** Two measures of different scale become two charts, small multiples, or an indexed common base. This is the most common charting error.
 - Colour follows the entity, never its rank — filtering out a series must not repaint the survivors.
-- Identity is never colour-alone: a legend for ≥2 series, plus direct labels when ≤4. Given the brand's status/accent collisions (§3.3), **direct labelling is mandatory, not optional**, on any chart that also shows status.
+- Identity is never colour-alone: a legend for ≥2 series, plus direct labels when ≤4. Given the brand's status/accent collisions (section 3.3), **direct labelling is mandatory, not optional**, on any chart that also shows status.
 - Text wears text tokens; only the mark carries the series colour.
 - Thin marks, 2px lines, ≥8px markers, 4px rounded data-ends anchored to the baseline, a 2px surface gap between stacked segments and adjacent bars.
 - Crosshair tooltips on line/area, per-mark tooltips on bar/dot/cell, filters in one row above the charts.
@@ -763,12 +763,12 @@ before publishing an event is exactly the failure G0 describes.
 ## 16. Design deliverables
 
 **What the design track owes, and when.** Build sequencing, effort estimates and cost live in
-[`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) §10; the phase names below match it so the two schedules
+[`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) section 10; the phase names below match it so the two schedules
 line up.
 
 **Phase 0 — Foundations**
 
-1. Obtain the vector logo, a knockout/dark lockup, and a square icon mark; confirm the two brand anchors (§2.2). ← *blocking everything else*
+1. Obtain the vector logo, a knockout/dark lockup, and a square icon mark; confirm the two brand anchors (section 2.2). ← *blocking everything else*
 2. `tokens.css` (drafted in this folder) plus matching Figma variables for both themes.
 3. Core component set in Figma: buttons, inputs, cards, badges, nav, table, modal, empty states.
 4. Interactive style guide (light/dark) for executive sign-off.
@@ -778,7 +778,7 @@ line up.
 5. Public: home, events list + detail, opportunities list + detail, about, news, verification page.
 6. Auth: register, sign in, membership profile completion.
 7. Portal: dashboard, profile, certificates, event history, skills.
-8. Admin: members, events + **attendance capture** (designed first — see §9.3), certificate issuance, opportunity review, basic analytics.
+8. Admin: members, events + **attendance capture** (designed first — see section 9.3), certificate issuance, opportunity review, basic analytics.
 9. Certificate template + OG image templates.
 10. Empty, error, loading and offline states for every list and form in the above.
 
@@ -788,15 +788,15 @@ line up.
 
 **Design QA gates before each release:**
 
-- Contrast re-verified against §3.4.
+- Contrast re-verified against section 3.4.
 - Keyboard pass on new flows.
 - Both themes screenshotted at 360 / 768 / 1440.
 - An empty state, an error state and a loading state present for every list and form — each naming a next action (principle 7).
-- **Friction budget measured** for every journey the release touches: taps and fields counted against the §1.1 table, recorded in the PR.
-- **Unaided task test** — three people who have not seen the screen complete its main task without asking a question (§1.1).
+- **Friction budget measured** for every journey the release touches: taps and fields counted against the section 1.1 table, recorded in the PR.
+- **Unaided task test** — three people who have not seen the screen complete its main task without asking a question (section 1.1).
 
 The dev plan wires the automatable ones — contrast, accessibility scans and the tap/field counts —
-into CI (dev plan §9.5). The unaided task test cannot be automated and is the one gate that must
+into CI (dev plan section 9.5). The unaided task test cannot be automated and is the one gate that must
 stay human.
 
 ---
@@ -804,14 +804,14 @@ stay human.
 ## 17. Open decisions
 
 Each of these needs the executive team, and each **changes the design**. Purely technical open
-questions live in [dev plan §13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5 below appear in both
+questions live in [dev plan section 13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5 below appear in both
 because they change the interface *and* the data model, which is why they should be answered early.
 
-1. **Vector logo and confirmed brand hexes** — the blocking item in §2.2.
+1. **Vector logo and confirmed brand hexes** — the blocking item in section 2.2.
 2. **Naming** — NiMechE vs NIMechE, and whether this is a national-body platform or a student-chapter platform. It changes navigation depth (chapters/branches) and the whole membership model.
 3. **Membership tiers** — student, graduate, corporate? Tiers mean gated content and a visible tier badge throughout the UI.
-4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; §9.1 of the proposal supports keeping application detail private.
-5. **Verification authority** — who signs off a "verified" skill? The chip in §8.2 is worthless if the process behind it isn't defined.
+4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
+5. **Verification authority** — who signs off a "verified" skill? The chip in section 8.2 is worthless if the process behind it isn't defined.
 6. **Certificate signatories** — which two offices sign, and how the signatures are stored.
 7. **Relationship to NSE branding** — the crest carries the NSE roundel, so does the platform need NSE approval, and is there an NSE brand guideline that constrains any of this?
 8. **Language** — English only in v1? Assumed yes.
@@ -825,21 +825,21 @@ because they change the interface *and* the data model, which is why they should
 
 | Question | Answered in |
 |---|---|
-| What does it look like, and why those colours? | This plan, §2–§7 |
-| What components exist and how do they behave? | This plan, §8 |
-| What screens exist and what is on them? | This plan, §9–§10, §14–§15 |
-| What are the accessibility rules? | This plan, §11 |
-| What is it built with, and how is it structured? | Dev plan §2–§3 |
-| What is the data model and how do the subsystems work? | Dev plan §4–§8 |
-| How is it secured, operated, tested and deployed? | Dev plan §9 |
-| When does it ship, at what cost, and what could go wrong? | Dev plan §10–§13 |
+| What does it look like, and why those colours? | This plan, sections 2–7 |
+| What components exist and how do they behave? | This plan, section 8 |
+| What screens exist and what is on them? | This plan, sections 9–10, 14–15 |
+| What are the accessibility rules? | This plan, section 11 |
+| What is it built with, and how is it structured? | Dev plan sections 2–3 |
+| What is the data model and how do the subsystems work? | Dev plan sections 4–8 |
+| How is it secured, operated, tested and deployed? | Dev plan section 9 |
+| When does it ship, at what cost, and what could go wrong? | Dev plan sections 10–13 |
 
 Where they overlap — performance budgets, phasing, the token layer — **this plan states the
 requirement and the dev plan states the enforcement.**
 
-Three requirements this plan places on the build, carried into dev plan §2.2:
+Three requirements this plan places on the build, carried into dev plan section 2.2:
 
 - **`tokens.css` is the single source of visual truth.** No component hard-codes a colour, and no component references a ramp step directly — only semantic tokens.
 - **Attendance capture is P0 with offline support.** Certificates, skills, the development record and every analytics number depend on data actually being captured in a noisy hall on a bad connection.
-- **The two contrast rules in §3.4 are non-negotiable**: never `#EE7623` as text on light, never `#008A45` as body text on white. Both are easy mistakes to make precisely because they are the logo colours.
-- **G0 and the friction budgets in §1.1 are acceptance criteria, not preferences.** A flow that exceeds its budget is not done. The dev plan's §1.1 carries the engineering consequences — passwordless sign-in, zero-action certificates, derived skills, no-account partner submission — and its §9.5 gates them in CI.
+- **The two contrast rules in section 3.4 are non-negotiable**: never `#EE7623` as text on light, never `#008A45` as body text on white. Both are easy mistakes to make precisely because they are the logo colours.
+- **G0 and the friction budgets in section 1.1 are acceptance criteria, not preferences.** A flow that exceeds its budget is not done. The dev plan's section 1.1 carries the engineering consequences — passwordless sign-in, zero-action certificates, derived skills, no-account partner submission — and its section 9.5 gates them in CI.

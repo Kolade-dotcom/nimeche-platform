@@ -4,7 +4,7 @@
 
    Colour anchors are sampled from the NiMechE crest (orange gear ring,
    green annulus, crimson detail). Confirm them against the official vector
-   artwork before build — see DESIGN_PLAN.md §2.2. Changing the anchors and
+   artwork before build — see DESIGN_PLAN.md section 2.2. Changing the anchors and
    their ramps is the ONLY edit needed to recolour the whole system.
 
    Rules:
@@ -82,7 +82,7 @@
   --focus-ring:      var(--green-700);
   --overlay:         rgba(18, 38, 26, .55);
 
-  /* --- Chart palettes (computationally validated — see DESIGN_PLAN §13) -- *
+  /* --- Chart palettes (computationally validated — see DESIGN_PLAN.md section 13) -- *
    * Fixed assignment order, never cycled. Brand green and brand orange are
    * deliberately NOT adjacent: they separate by only ΔE 4.1 under protanopia. */
   --chart-1: #00793D;  --chart-2: #7A5CD6;  --chart-3: #C4650F;  --chart-4: #1E6BC4;

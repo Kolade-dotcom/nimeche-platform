@@ -17,8 +17,8 @@ thing it replaces, not merely more capable.
 That is **G0** in the design plan, and it outranks every other goal in both documents. It is written
 as measurable budgets rather than a slogan — five fields to sign up, two taps to register for an
 event from a shared link, **zero actions** to receive a certificate or record a skill, no account at
-all to verify a credential or submit an opportunity. Design plan §1.1 sets the budgets, dev plan §1.1
-commits to the engineering that makes them possible, and dev plan §9.5 gates them in CI.
+all to verify a credential or submit an opportunity. Design plan section 1.1 sets the budgets, dev plan section 1.1
+commits to the engineering that makes them possible, and dev plan section 9.5 gates them in CI.
 
 ## The two plans
 
@@ -32,17 +32,17 @@ the platform is; the dev plan says how it gets built.
 | **[`docs/dev/DEV_PLAN.md`](docs/dev/DEV_PLAN.md)** | The frictionless mandate, architecture, stack and the alternatives rejected, data model, subsystems, passwordless auth, API conventions, security and NDPA compliance, CI/testing, delivery phases and pilot, running cost, continuity, risk |
 
 Where the two overlap — performance budgets, phasing, the token layer — the design plan states the
-requirement and the dev plan states the enforcement. Full mapping in design plan §18 and dev plan §14.
+requirement and the dev plan states the enforcement. Full mapping in design plan section 18 and dev plan section 14.
 
 ## Status
 
 Both plans drafted, pending review.
 
 **Blocking item:** obtain the official NiMechE logo as vector artwork, plus a dark-mode knockout
-lockup and a square icon mark, so the two brand colour anchors can be confirmed (design plan §2.2).
+lockup and a square icon mark, so the two brand colour anchors can be confirmed (design plan section 2.2).
 Everything visual derives from those anchors.
 
-Open questions for the executive team are in design plan §17 (they change the interface) and dev
-plan §13 (they change the build). Four appear in both — membership tiers, chapters/branches, public
+Open questions for the executive team are in design plan section 17 (they change the interface) and dev
+plan section 13 (they change the build). Four appear in both — membership tiers, chapters/branches, public
 profile default, and who may grant a "verified" skill — because they change the data model as well
 as the UI, and are cheap to answer now and expensive to retrofit.
