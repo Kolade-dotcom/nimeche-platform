@@ -1,65 +1,229 @@
 {
   "artboards": [
     {
+      "file": "Landing.dc.html",
+      "title": "1 \u00b7 Landing page",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 2620,
+      "page": "page-1"
+    },
+    {
+      "file": "Join.dc.html",
+      "title": "2 \u00b7 Sign up",
+      "x": 1580,
+      "y": 0,
+      "w": 1440,
+      "h": 940,
+      "page": "page-1"
+    },
+    {
+      "file": "CheckEmail.dc.html",
+      "title": "3 \u00b7 Check your email",
+      "x": 3160,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-1"
+    },
+    {
+      "file": "Login.dc.html",
+      "title": "4 \u00b7 Sign in (returning)",
+      "x": 4740,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-1"
+    },
+    {
+      "file": "Pending.dc.html",
+      "title": "5 \u00b7 Member: under review",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2"
+    },
+    {
+      "file": "ReviewQueue.dc.html",
+      "title": "6 \u00b7 Exec: review queue",
+      "x": 1580,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2"
+    },
+    {
+      "file": "ReviewMember.dc.html",
+      "title": "7 \u00b7 Exec: approve one",
+      "x": 3160,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2"
+    },
+    {
+      "file": "Welcome.dc.html",
+      "title": "8 \u00b7 Member: approved",
+      "x": 4740,
+      "y": 0,
+      "w": 1440,
+      "h": 1020,
+      "page": "page-2"
+    },
+    {
+      "file": "Profile.dc.html",
+      "title": "9 \u00b7 Membership record",
+      "x": 6320,
+      "y": 0,
+      "w": 1440,
+      "h": 1140,
+      "page": "page-2"
+    },
+    {
+      "file": "QuickJoin.dc.html",
+      "title": "10 \u00b7 Quick join (shared link)",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 920,
+      "page": "page-3"
+    },
+    {
+      "file": "QuickJoinDone.dc.html",
+      "title": "11 \u00b7 Quick join: done",
+      "x": 1580,
+      "y": 0,
+      "w": 1440,
+      "h": 760,
+      "page": "page-3"
+    },
+    {
       "file": "Main.dc.html",
+      "title": "Dashboard",
       "x": 0,
       "y": 0,
       "w": 390,
-      "h": 1220
+      "h": 1220,
+      "page": "page-4"
     },
     {
       "file": "Home.dc.html",
-      "x": 470,
+      "title": "Home",
+      "x": 480,
       "y": 0,
       "w": 390,
-      "h": 1290
+      "h": 1290,
+      "page": "page-4"
     },
     {
       "file": "SignUp.dc.html",
-      "x": 940,
+      "title": "Sign up",
+      "x": 960,
       "y": 0,
       "w": 390,
-      "h": 900
+      "h": 900,
+      "page": "page-4"
     },
     {
       "file": "EventDetail.dc.html",
+      "title": "Event",
       "x": 0,
       "y": 1420,
       "w": 390,
-      "h": 1150
+      "h": 1150,
+      "page": "page-4"
     },
     {
       "file": "Certificate.dc.html",
-      "x": 470,
+      "title": "Certificate",
+      "x": 480,
       "y": 1420,
       "w": 390,
-      "h": 960
+      "h": 960,
+      "page": "page-4"
     },
     {
       "file": "Attendance.dc.html",
-      "x": 940,
+      "title": "Attendance",
+      "x": 960,
       "y": 1420,
       "w": 390,
-      "h": 940
+      "h": 940,
+      "page": "page-4"
     }
   ],
   "annotations": [
     {
-      "id": "note-tokens",
+      "id": "n-p1",
       "x": 0,
-      "y": -150,
-      "w": 560,
-      "text": "Built from docs/design/tokens.css \u2014 exact semantic tokens, Sora + Inter, Lucide-style icons.\nEvery artboard has a Light/Dark switch above it. The crest is a placeholder until the vector artwork arrives."
+      "y": -190,
+      "w": 900,
+      "page": "page-1",
+      "text": "1 \u00b7 LANDING AND SIGN IN\nRead left to right \u2014 this is the whole first-visit path.\nA stranger lands, learns what the branch is, joins with four fields, gets an email link, and is in.\nNo password anywhere in this flow, by design."
     },
     {
-      "id": "note-cert",
-      "x": 940,
-      "y": 1324,
-      "w": 390,
-      "text": "The certificate stays on its light theme in both modes \u2014 it is a document, not a UI surface."
+      "id": "n-p1b",
+      "x": 1580,
+      "y": -190,
+      "w": 760,
+      "page": "page-1",
+      "text": "Four fields only: name, Tech-U email, department (Mechanical or Mechatronics), level (100\u2013500).\nInstitution is never asked \u2014 the tech-u.edu.ng address already answers it."
+    },
+    {
+      "id": "n-p2",
+      "x": 0,
+      "y": -190,
+      "w": 900,
+      "page": "page-2",
+      "text": "2 \u00b7 MEMBERSHIP, END TO END\nScreen 5 is what the new member sees while waiting. Screens 6 and 7 are the same moment from the executive's side.\nScreen 8 is the member the evening they are approved; screen 9 is the record itself, months later."
+    },
+    {
+      "id": "n-p2b",
+      "x": 1580,
+      "y": -190,
+      "w": 1600,
+      "page": "page-2",
+      "text": "The executive's job here is one comparison: does this matric number appear on the department roll?\nThe queue answers it for them \u2014 'On list' or 'Not found' \u2014 so approving is a glance, not an investigation.\nThat only works if the HOD shares the roll. It is an open question in the plan (design plan section 17.7)."
+    },
+    {
+      "id": "n-p3",
+      "x": 0,
+      "y": -190,
+      "w": 900,
+      "page": "page-3",
+      "text": "3 \u00b7 QUICK JOIN\nOne link to drop in a WhatsApp group or print as a QR on a flyer.\nSame four fields as the full sign up, no landing page in the way, and it carries who shared it."
+    },
+    {
+      "id": "n-p4",
+      "x": 0,
+      "y": -190,
+      "w": 900,
+      "page": "page-4",
+      "text": "MOBILE (v1)\nThe earlier phone screens, kept as they are.\nThey come back once the desktop flows are settled \u2014 the token layer is shared, so they follow."
+    }
+  ],
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "1 \u00b7 Landing & sign in"
+    },
+    {
+      "id": "page-2",
+      "name": "2 \u00b7 Membership"
+    },
+    {
+      "id": "page-3",
+      "name": "3 \u00b7 Quick join"
+    },
+    {
+      "id": "page-4",
+      "name": "Mobile (v1)"
     }
   ],
   "launch": {
-    "view": "canvas"
+    "view": "canvas",
+    "page": "page-1"
   }
 }
