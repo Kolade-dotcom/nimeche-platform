@@ -1,11 +1,18 @@
 # NiMechE Digital Member Development Platform
 
-A digital ecosystem for the Nigerian Institution of Mechanical Engineers — membership, professional
-development, events, credentials, opportunities, projects and association analytics in one place.
+A digital platform for **NiMechE-SF, AATU** — the student branch at AATU — covering membership,
+professional development, events, certificates, opportunities, projects and branch analytics in one
+place.
 
 The premise, from the presidential proposal: **membership should produce a durable, visible record
-of a member's development.** Every webinar, workshop, competition, project and leadership role a
-member takes part in feeds a structured professional profile they can build on for years.
+of a member's development.** Every workshop, competition, project and leadership role a member takes
+part in feeds a structured professional profile they can build on for years.
+
+**Scope:** this is one branch at one university, a few hundred members — not the national
+institution. That is not a caveat, it shapes the build: registration never asks which school you
+attend, screens are designed for hundreds of rows rather than thousands, and because the whole
+membership turns over in about four years, graduating without losing your record is a core feature
+rather than an edge case. Design plan section 2.4 sets this out.
 
 ## The governing principle
 
@@ -43,6 +50,6 @@ lockup and a square icon mark, so the two brand colour anchors can be confirmed 
 Everything visual derives from those anchors.
 
 Open questions for the executive team are in design plan section 17 (they change the interface) and dev
-plan section 13 (they change the build). Four appear in both — membership tiers, chapters/branches, public
-profile default, and who may grant a "verified" skill — because they change the data model as well
-as the UI, and are cheap to answer now and expensive to retrofit.
+plan section 13 (they change the build). The two to chase first are **branding sign-off from the
+national body** — it decides whether a certificate carries weight outside AATU — and **what happens
+to a member at graduation**, which at branch scale is not an edge case but the main event.

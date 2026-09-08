@@ -1,6 +1,6 @@
 # Design canvas — artboard sources
 
-The six mobile screens published as the NiMechE Member Platform design canvas.
+The six mobile screens published as the NiMechE-SF (AATU) member platform design canvas.
 
 **These files are the source.** To change a screen, edit its `.dc.html` here and re-seed the
 canvas — never edit the generated `nimeche-member-platform.html` at the repo root, which is a
@@ -38,7 +38,9 @@ stroke SVG in the Lucide style at 1.75px.
 ## Known placeholders
 
 - **The crest is drawn from the raster logo**, not the official vector artwork. Replace it once the secretariat supplies the vector (design plan section 2.2). It appears in `Main`, `Home`, `SignUp`, `EventDetail` and `Certificate`.
-- **All content is sample data** — member names, programmes, dates, organisations. Plausible, not real.
+- **All content is sample data** — member names, matric numbers, programmes, dates, organisations. Plausible, not real, and sized to a branch of a few hundred rather than a national body.
+- **`[branch domain]`** stands in on the certificate and verification copy until the branch has its own domain (design plan section 17.9).
+- **The wordmark reads `NiMechE-SF / AATU`** as a text lockup beside the crest. It is not an approved lockup yet — design plan section 2.2 lists getting one signed off by the national body.
 
 ## Re-seeding
 

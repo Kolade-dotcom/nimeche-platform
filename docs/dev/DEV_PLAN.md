@@ -2,6 +2,7 @@
 
 **Status:** Draft v1 for technical review
 **Scope:** Engineering plan for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
+**Whose platform this is:** **NiMechE-SF, AATU** — one student branch at one university, a few hundred members. Not the national institution. This sets the scale for every number below (design plan section 2.4).
 **Companion document:** [`docs/design/DESIGN_PLAN.md`](../design/DESIGN_PLAN.md) — brand, colour, components, screens, accessibility.
 
 This document covers **how the platform gets built**: architecture, stack, data model, subsystems,
@@ -18,9 +19,11 @@ wrong is what kills association software.
 | Constraint | Consequence for the plan |
 |---|---|
 | **Nobody involved is obliged to use this** | Members, executives and partners all have a working alternative: the WhatsApp group. The platform has to be *easier* than the thing it replaces, not merely more capable. This is the governing constraint — see section 1.1. |
+| **It is one branch: a few hundred members, one campus** | Scale is never the problem here, and must not be designed for. A single Postgres instance on a free tier holds this comfortably for years. Spend the effort on ease and on data that survives handover — not on caching, sharding or queues nothing will exercise. |
+| **The whole membership turns over in about four years** | Graduation is a routine state transition, not an edge case, and the alumni path has to exist early or the branch loses its own history. |
 | **The executive turns over every year** | The system must be operable by whoever inherits it. Boring, well-documented, mainstream technology beats clever technology. Every runbook is written as if the author has graduated. |
 | **The dev team is small, part-time and volunteer** | One language across front and back end. Managed services over self-hosted infrastructure. No microservices. |
-| **Budget is association-scale, not company-scale** | Target under $30/month at MVP scale (section 10.4). Free tiers are a legitimate architecture input, but never a single point of failure for member records. |
+| **Budget is a student branch's, not a company's** | Realistic steady state is $0–15/month (section 10.5), most of it the domain and email. Free tiers are the right answer at this scale, but never a single point of failure for member records. |
 | **Members are on cheap Android phones and unreliable data** | Mobile-first, small payloads, and genuine offline handling on the one flow that needs it (section 6.4). |
 | **Records must outlive the platform** | Certificates and member history are the product. Export must work from day one, and data must never be locked into a vendor's proprietary format. |
 | **Nigeria Data Protection Act 2023 applies** | Members are data subjects; the association is a data controller. Lawful basis, minimisation, retention and export are build requirements, not paperwork (section 9.2). |
@@ -42,7 +45,7 @@ achievable.**
 
 | Budget (design plan section 1.1) | What the build must do |
 |---|---|
-| Sign up ≤5 fields, ≤2 min | **Passwordless-first auth** (section 5). Registration writes a minimal `Member` row; every other column is nullable and filled by progressive profiling. A schema that demands more than five fields at insert has already broken the budget. |
+| Sign up ≤4 fields, ≤2 min | **Passwordless-first auth** (section 5). Registration writes a minimal `Member` row; every other column is nullable and filled by progressive profiling. A schema that demands more than four fields at insert has already broken the budget. |
 | Event registration ≤2 taps from a WhatsApp link | **Deep links that survive sign-in** (section 8). The event page renders publicly; the sign-in round trip returns to the *event*, never to a dashboard. `?next=` is preserved through the entire auth flow, including the magic-link email. |
 | Certificate: **0 actions** | Certificates are **pushed**, not claimed. The completion job issues, renders and emails the certificate, and it is already in the portal before the member looks (section 6.3). There is no claim endpoint to build, because building one would be building friction. |
 | Skills: **0 actions** | `MemberSkill` is derived by the skills engine (section 6.6). **There is no skills form and no endpoint that lets a member set their own level.** The absence of that write path is the feature. |
@@ -152,7 +155,7 @@ Core entities. Names are indicative; the point is the shape and where the integr
 ```
 Member
   id, email(unique), phone, full_name, handle(unique, nullable)
-  institution_id, department, level, graduation_year
+  matric_number(unique), level, graduation_year
   membership_number(unique), status(pending|active|lapsed|alumni)
   interests[], bio, avatar_url
   public_profile_enabled(bool, default false)   ← opt-in, design plan section 17.4
@@ -160,7 +163,7 @@ Member
   created_at, verified_at
 
 Role            id, key(member|admin|content|project_lead|partner), label
-MemberRole      member_id, role_id, scope(nullable: chapter/project)   ← many-to-many
+MemberRole      member_id, role_id, scope(nullable: project)   ← many-to-many
 
 Event
   id, slug(unique), title, description, cover_url
@@ -284,8 +287,14 @@ all of them.
 ### 6.1 Membership lifecycle
 
 **Register → executive review → active.** Note what is *not* in that chain: there is no "complete
-your profile" gate. Registration collects **name, email, institution, department, level** — five
-fields (section 1.1) — and nothing else is required to become a member.
+your profile" gate. Registration collects **name, matric number, email, level** — four fields
+(section 1.1) — and nothing else is required to become a member.
+
+**Institution is not a field.** Every member is an AATU mechanical engineering student, so asking
+would be asking a question whose answer is already known. The **matric number** takes its place and
+earns it twice over: it shortens the form *and* it is what an executive checks against the
+department's list during review. If the department will share that list (design plan section 17.7),
+review becomes a lookup rather than a judgement call.
 
 **Progressive profiling** fills the rest, in context and always skippable: interests are asked the
 first time the member opens the Opportunities Hub ("so we can match you — skip for now"); a photo is
@@ -579,8 +588,10 @@ Mentorship matching, public member profiles (`/u/:handle`), CV and portfolio exp
 centre and digests, digital membership cards, membership renewal and payments (Paystack or
 Flutterwave), advanced skill verification, partner/employer portal, advanced analytics, mobile app.
 
-**Sequencing note:** payments should come only after the membership model and tiers are settled
-(section 13.2). Building billing on an undecided membership structure is rework with financial consequences.
+**Sequencing note:** payments should come only after the branch decides whether it charges dues at
+all (section 13.2). Building billing on an undecided membership structure is rework with financial
+consequences — and at branch scale, a term's dues collected by transfer and recorded by an
+executive may simply be cheaper than integrating a payment gateway.
 
 ### 10.5 Indicative running cost (MVP scale)
 
@@ -593,9 +604,11 @@ Flutterwave), advanced skill verification, partner/employer portal, advanced ana
 | Error tracking (Sentry free) | $0 |
 | **Total** | **$0–60**, realistically **under $30** at launch volumes |
 
-The free tiers are genuinely adequate at association scale. The paid tiers become necessary at
-roughly 1,000+ active members or when backup retention needs to exceed the free window — and
-**backup retention is the line worth paying for first**, ahead of any performance tier.
+**At one branch's scale — a few hundred members — the free tiers are not a stopgap, they are the
+right answer, with room to spare.** The paid tiers become relevant only if backup retention needs
+to exceed the free window, and **that is the one line worth paying for**, ahead of any performance
+tier: nothing here will ever strain a database, but losing four years of member records would end
+the project. Realistic steady state is **$0–15/month**, most of it the domain and email.
 
 ---
 
@@ -625,7 +638,7 @@ association software. Required before the technical lead hands over:
 |---|---|---|
 | **It works, but people find WhatsApp easier** | The platform becomes a website with a login button; every other risk becomes moot | **The top risk in this plan.** G0 as the governing goal, the friction budgets in section 1.1 gated in CI (section 9.5), the unaided task test before every release, and a pilot (section 10.3) measured on *whether executives keep using it unprompted* — not on whether it works |
 | **Attendance capture fails in the field** | Everything downstream is empty; the platform's premise collapses | P0, offline-first, idempotent sync, rehearsed at a real event before launch (section 6.4) |
-| **Executive turnover strands the system** | Abandonment within a year | Section 11 continuity requirements; association-owned accounts; mainstream stack |
+| **Executive turnover strands the system** | Abandonment within a year | Section 11 continuity requirements; **branch-owned** accounts, never a student's personal one; mainstream stack. Acute at branch scale: the membership itself turns over in about four years, so the domain, database and email accounts must belong to the office rather than the person holding it |
 | **Content goes stale after launch** | Members stop returning; the hub loses credibility | Proposal section 12's content cycle needs an owner and a schedule, not just a CMS; auto-close expired opportunities |
 | **Volunteer capacity evaporates mid-build** | Phase 1 stalls half-finished | Ship MVP modules in independently useful slices; each phase exit is a working product, not a partial one |
 | **Certificates issued on wrong or edited rules** | Credibility damage — the hardest thing to repair | Rules versioned and snapshotted (section 6.5); credentials immutable; revocation audited |
@@ -641,13 +654,15 @@ association software. Required before the technical lead hands over:
 Some depend on the executive answering the design plan's section 17; those are marked.
 
 1. **Team's actual language skills** — the one input that could legitimately overrule section 3.1.
-2. **Membership tiers and whether renewal/payment is in scope for year one** *(design plan section 17.3)* — determines whether Phase 2 billing is planned now or deferred.
-3. **Deletion vs credential retention** (section 9.2) — needs an executive decision on how a deletion request interacts with issued certificates and historical statistics.
-4. **Who may grant a `verified` skill** *(design plan section 17.5)* — section 6.6 is blocked on this.
-5. **Chapters and branches** *(design plan section 17.2)* — whether the data model needs a chapter dimension on members, events and roles. **Cheap to add now, expensive to retrofit**, so this one should be answered early even if chapters ship later.
-6. **Domain, and the email sending identity** for certificate verification links *(design plan section 17.9)*.
-7. **Assessment engine scope** — a simple built-in quiz, or an integration with an existing tool.
-8. **Whether the mobile app in proposal section 16 is a PWA or native.** The PWA built for attendance (section 6.4) may already satisfy the need, at a fraction of the cost.
+2. **Does the branch charge dues, and is collecting them in scope?** At this scale, transfers recorded by an executive may beat a payment gateway outright. Decide before Phase 2 is planned, not during it.
+3. **Graduation and alumni access** *(design plan section 17.3)* — with the whole membership turning over in about four years, this decides whether the branch keeps its own history. It sets the `Member.status` transitions, what an alumnus can still see, and whether `/verify` outlives their membership. Answer it in Phase 1, not Phase 2.
+4. **Deletion vs credential retention** (section 9.2) — needs an executive decision on how a deletion request interacts with issued certificates and historical statistics.
+5. **Who may grant a `verified` skill** *(design plan section 17.5)* — section 6.6 is blocked on this.
+6. **Whether other NiMechE-SF branches will want this.** Resolved for now: **no chapter dimension is built** — one branch, one member list. The cheap insurance is keeping the branch name in content and configuration rather than hard-coded into layouts and templates, which costs nothing today. Multi-tenancy is a rewrite either way and should not be pre-paid for on a maybe.
+7. **Domain, and the email sending identity** for certificate verification links *(design plan section 17.9)* — the branch cannot use the national body's domain and needs its own.
+8. **Will the department share its student list?** *(design plan section 17.7)* — if yes, membership review becomes a matric-number lookup instead of a judgement call, and section 6.1 gets materially shorter.
+9. **Assessment engine scope** — a simple built-in quiz, or an integration with an existing tool.
+10. **Whether the mobile app in proposal section 16 is a PWA or native.** The PWA built for attendance (section 6.4) may already satisfy the need, at a fraction of the cost.
 
 ---
 

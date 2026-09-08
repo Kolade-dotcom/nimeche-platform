@@ -2,6 +2,8 @@
 
 **Status:** Draft v1 for executive review
 **Scope:** Visual and interaction design for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
+**Whose platform this is:** **NiMechE-SF, AATU** — the student branch at AATU, not the national institution. Everything below is sized and worded for one campus of a few hundred members. See section 2.4.
+**Names to confirm:** what **SF** expands to in formal use, and AATU's full registered name. Both appear on certificates, so neither is guessed anywhere in this plan.
 **Companion document:** [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) — the engineering plan (stack, data model, subsystems, delivery, operations).
 **Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in sections 3–6.
 
@@ -46,7 +48,7 @@ Five supporting goals follow from the proposal, each subordinate to G0:
 
 ### Design principles
 
-1. **Institutional, not startup-generic.** NiMechE is a professional body under the NSE. The design should feel closer to a chartered institution than to a SaaS landing page.
+1. **Institutional, not startup-generic.** This is a student branch, but it sits under a professional body, and its certificates are meant to persuade employers. The design should feel closer to a chartered institution than to a campus club or a SaaS landing page — the student-branch scope is a reason for *restraint*, never for looking amateur.
 2. **Evidence over decoration.** Every element either carries information or gets cut.
 3. **Green carries the structure, orange carries the moment.** The orange is the loudest colour in the brand; it is reserved for achievement, urgency and a single call to action per view. Large orange fields are forbidden.
 4. **Density where it earns it.** Public pages breathe; the admin console and analytics are dense and tabular. Different jobs, different rhythm.
@@ -61,7 +63,7 @@ exceeds its budget does not ship until it is redesigned or the budget is renegot
 
 | Journey | Who | Budget |
 |---|---|---|
-| Sign up → submitted for membership | Member | **≤5 fields, ≤2 minutes, no document upload** |
+| Sign up → submitted for membership | Member | **≤4 fields, ≤2 minutes, no document upload** — name, matric number, email, level. Institution is not asked; everyone is AATU. |
 | Register for an event, arriving from a WhatsApp link | Member | **≤2 taps** when signed in; ≤2 taps after a passwordless sign-in that returns to the event |
 | Receive a certificate after completing a programme | Member | **0 actions** — it arrives; there is no "claim" step |
 | Record a developed skill | Member | **0 actions** — derived from activity, never a form |
@@ -120,7 +122,8 @@ Request at the same time:
 - **A knockout / single-colour lockup for dark mode.** The emblem has a white inner field, so it cannot sit directly on a dark ground without looking like a sticker. Either a white-on-transparent version, or the rule in section 2.3.
 - A **square icon mark** (the gear ring alone, or a simplified device) for favicons, app icons and avatars — the full crest is illegible at 32px because the annulus text disappears.
 - Minimum clear space and minimum size rules, if a brand sheet exists.
-- **Confirmation of the written form.** The proposal uses **NiMechE**; the national body's own materials use **NIMechE**. Pick one and use it everywhere, including in every page `<title>`. This plan uses NiMechE, per the proposal.
+- **A branch lockup.** The crest belongs to the national institution; this platform belongs to the AATU branch. The branch needs its own approved lockup — the unmodified crest beside a text block reading **NiMechE-SF · AATU** — rather than a redrawn crest. Get this signed off by whoever owns branding at the national body (section 2.4).
+- **Confirmation of the written form.** The proposal uses **NiMechE**; the national body's own materials use **NIMechE**. The branch string is **NiMechE-SF, AATU**. Settle the exact rendering once — including how it appears on a certificate — and use it in every page `<title>`.
 
 ### 2.3 Logo usage in the product
 
@@ -137,8 +140,27 @@ Request at the same time:
 effects, or use the orange gear ring alone as a decorative motif at large scale — at large sizes it
 reads as a warning graphic.
 
-**Chapter and branch sub-brands** get a text lockup (`NiMechE · UNILAG`) beside the unmodified
-crest. Never a modified crest.
+**The branch lockup is the primary lockup here**, not an exception: the unmodified crest beside
+`NiMechE-SF · AATU`, set in Sora. Never a modified crest, never AATU's own logo merged into the
+crest, and never the crest alone where a reader could take the page for the national body's.
+
+### 2.4 This is a branch platform, and that changes things
+
+The proposal is written in the voice of a national institution. This platform serves **one student
+branch at one university**, and several decisions follow from that rather than from the proposal:
+
+| Because it is one campus | The design does this |
+|---|---|
+| Every member is an AATU mechanical engineering student | **Registration never asks for institution.** It asks for a matric number instead — which doubles as what the executive checks against the department's own list. |
+| A few hundred members, not thousands | Directory and analytics screens are designed for **hundreds of rows**: search and a flat list beat pagination and heavy filtering. Impact numbers on the public site are honest branch numbers, not inflated ones. |
+| Events are on campus or on Zoom, weekly-ish | The event card leads with **day and time**, not city. The attendance screen matters more than the calendar. |
+| Employers do not know this branch | The certificate must carry the **national institution's identity as well as the branch's**, or it does not travel. This is the strongest argument for getting the branding sign-off in section 2.2. |
+| No chapters, no branch hierarchy | **No chapter dimension anywhere in the navigation.** One branch, one member list, one calendar. |
+| The people running it are students with exams | Admin screens are designed for someone doing this at 11pm between deadlines — which is what section 1.1 already demands, and here it is the literal case. |
+
+The one thing worth keeping in view: if this works, **other NiMechE-SF branches will ask for it.**
+That is a reason to keep the branch name in content rather than hard-coded into layouts, not a
+reason to build multi-tenancy now.
 
 ---
 
@@ -495,7 +517,7 @@ a sitemap. Public project and news pages are what make NiMechE discoverable.
 
 ```
 /me                   Dashboard — development ring, next event, new opportunities, recent activity
-/me/profile           Identity, institution, department, interests, skills
+/me/profile           Identity, matric number, level, interests, skills
 /me/activity          Full timeline
 /me/certificates      Credential list → viewer → share / download / verify
 /me/skills            Skill matrix by level, with the activities that produced each
@@ -707,7 +729,7 @@ have never heard of the platform.
 │ ▌  12 September 2026     [signature]    [signature]      │
 │ ▌                        President      Programmes Sec.  │
 │ ▌                                                        │
-│ ▌ [QR]  Verify at nimeche.org/verify/  NM-7K4Q-2X9       │
+│ ▌ [QR]  Verify at [BRANCH DOMAIN]/verify/  NM-7K4Q-2X9   │
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -808,14 +830,14 @@ questions live in [dev plan section 13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5
 because they change the interface *and* the data model, which is why they should be answered early.
 
 1. **Vector logo and confirmed brand hexes** — the blocking item in section 2.2.
-2. **Naming** — NiMechE vs NIMechE, and whether this is a national-body platform or a student-chapter platform. It changes navigation depth (chapters/branches) and the whole membership model.
-3. **Membership tiers** — student, graduate, corporate? Tiers mean gated content and a visible tier badge throughout the UI.
+2. **Branding sign-off from the national body** — may the branch use the crest in a `NiMechE-SF · AATU` lockup, on the platform and on certificates? This is the item that decides whether a certificate carries weight outside AATU (section 2.4), so chase it alongside the vector artwork.
+3. **What happens at graduation** — does a final-year member become an alumnus with a read-only profile, and does their certificate record stay reachable? For a student branch this is not an edge case: **the entire membership turns over in four years**, and a platform that loses graduates loses its own history.
 4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
 5. **Verification authority** — who signs off a "verified" skill? The chip in section 8.2 is worthless if the process behind it isn't defined.
 6. **Certificate signatories** — which two offices sign, and how the signatures are stored.
-7. **Relationship to NSE branding** — the crest carries the NSE roundel, so does the platform need NSE approval, and is there an NSE brand guideline that constrains any of this?
+7. **Does the department endorse it?** If the AATU mechanical engineering department recognises the record — or better, supplies the member list — verification gets much stronger and registration gets much shorter. Worth asking before build, not after.
 8. **Language** — English only in v1? Assumed yes.
-9. **Domain and email sender identity** for certificate verification links — the URL is printed on every certificate, so it must be settled before the first one is issued.
+9. **Domain and email sender identity** for certificate verification links. The branch cannot use the national body's domain, so it needs its own — printed on every certificate, and therefore settled before the first one is issued. It must also outlive the current executive (dev plan section 11).
 
 ---
 
