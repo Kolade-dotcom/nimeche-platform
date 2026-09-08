@@ -1,0 +1,65 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 1220
+    },
+    {
+      "file": "Home.dc.html",
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 1290
+    },
+    {
+      "file": "SignUp.dc.html",
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 900
+    },
+    {
+      "file": "EventDetail.dc.html",
+      "x": 0,
+      "y": 1420,
+      "w": 390,
+      "h": 1150
+    },
+    {
+      "file": "Certificate.dc.html",
+      "x": 470,
+      "y": 1420,
+      "w": 390,
+      "h": 960
+    },
+    {
+      "file": "Attendance.dc.html",
+      "x": 940,
+      "y": 1420,
+      "w": 390,
+      "h": 940
+    }
+  ],
+  "annotations": [
+    {
+      "id": "note-tokens",
+      "x": 0,
+      "y": -150,
+      "w": 560,
+      "text": "Built from docs/design/tokens.css \u2014 exact semantic tokens, Sora + Inter, Lucide-style icons.\nEvery artboard has a Light/Dark switch above it. The crest is a placeholder until the vector artwork arrives."
+    },
+    {
+      "id": "note-cert",
+      "x": 940,
+      "y": 1324,
+      "w": 390,
+      "text": "The certificate stays on its light theme in both modes \u2014 it is a document, not a UI surface."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
