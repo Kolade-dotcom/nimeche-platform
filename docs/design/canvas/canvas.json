@@ -224,6 +224,51 @@
       "w": 390,
       "h": 940,
       "page": "page-4"
+    },
+    {
+      "file": "MPending.dc.html",
+      "title": "5 \u00b7 Member: under review",
+      "x": 0,
+      "y": 1400,
+      "w": 390,
+      "h": 1180,
+      "page": "page-2"
+    },
+    {
+      "file": "MReviewQueue.dc.html",
+      "title": "6 \u00b7 Exec: review queue",
+      "x": 500,
+      "y": 1400,
+      "w": 390,
+      "h": 1560,
+      "page": "page-2"
+    },
+    {
+      "file": "MReviewMember.dc.html",
+      "title": "7 \u00b7 Exec: approve one",
+      "x": 1000,
+      "y": 1400,
+      "w": 390,
+      "h": 1500,
+      "page": "page-2"
+    },
+    {
+      "file": "MWelcome.dc.html",
+      "title": "8 \u00b7 Member: approved",
+      "x": 1500,
+      "y": 1400,
+      "w": 390,
+      "h": 1620,
+      "page": "page-2"
+    },
+    {
+      "file": "MProfile.dc.html",
+      "title": "9 \u00b7 Membership record",
+      "x": 2000,
+      "y": 1400,
+      "w": 390,
+      "h": 1720,
+      "page": "page-2"
     }
   ],
   "annotations": [
@@ -265,7 +310,7 @@
       "y": -210,
       "w": 1400,
       "page": "page-2",
-      "text": "STAGE 2 \u00b7 MEMBERSHIP \u2014 DESKTOP ONLY SO FAR\nScreen 5 is the new member waiting. Screens 6 and 7 are that same moment from the executive's side.\nScreen 8 is the evening they are approved; screen 9 is the record months later.\nThe mobile pass for this stage is next."
+      "text": "STAGE 2 \u00b7 MEMBERSHIP \u2014 DESKTOP AND MOBILE\nDesktop on top, the same five screens at 390px below.\nScreen 5 is the new member waiting. Screens 6 and 7 are that same moment from the executive's side.\nScreen 8 is the evening they are approved; screen 9 is the record months later."
     },
     {
       "id": "n2b",
@@ -290,6 +335,14 @@
       "w": 1200,
       "page": "page-4",
       "text": "LATER STAGES \u2014 MOBILE V1\nEarly phone screens for events, certificates and attendance.\nThey belong to stages we have not worked through yet and will be redone properly, desktop and mobile,\nwhen we get to them."
+    },
+    {
+      "id": "n2c",
+      "x": 0,
+      "y": 1270,
+      "w": 1100,
+      "page": "page-2",
+      "text": "THE QUEUE IS NOT A TABLE ON A PHONE\nA five-column table cannot survive 390px, so the mobile queue is cards \u2014 and it re-sorts:\nthe one that did NOT match the roll comes first under 'Needs a look', the six that matched follow.\nA summary at the top offers to approve all six together, and the bottom bar makes that one tap.\nSo the executive's job on a phone is: read one applicant properly, approve the rest in a tap."
     }
   ],
   "pages": [
@@ -299,7 +352,7 @@
     },
     {
       "id": "page-2",
-      "name": "2 \u00b7 Membership (desktop)"
+      "name": "2 \u00b7 Membership"
     },
     {
       "id": "page-3",
@@ -312,6 +365,6 @@
   ],
   "launch": {
     "view": "canvas",
-    "page": "page-1"
+    "page": "page-2"
   }
 }
