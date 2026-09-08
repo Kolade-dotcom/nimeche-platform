@@ -26,6 +26,12 @@ both modes (design plan section 5: a certificate is a document, not a UI surface
 
 Each artboard exposes one control, a Light/Dark switch, which sets `data-theme` on that wrapper.
 
+Two places deliberately hold literal colours instead of tokens, and both are the same call: a
+surface that must read identically in either theme. The certificate document is one; the event
+cover band is the other — it is pinned to the deep brand green `#00713A` rather than `--primary`,
+because in dark mode `--primary` lightens to `#3FBF7A` and the white text over it would drop to
+2.35:1.
+
 Type is Sora for headings and Inter for body, per design plan section 4. Icons are inline
 stroke SVG in the Lucide style at 1.75px.
 
