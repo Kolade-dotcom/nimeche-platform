@@ -64,6 +64,20 @@ because in dark mode `--primary` lightens to `#3FBF7A` and the white text over i
 Type is Sora for headings and Inter for body, per design plan section 4. Icons are inline
 stroke SVG in the Lucide style at 1.75px.
 
+## The hero illustration
+
+`Landing` and `MLanding` share one inline SVG: a small stack of credentials with the front one
+detailed — crest, an orange gear-rule down the left edge, abstract rules where the name and
+programme go, a verified badge, and one real string, the verification code.
+
+It replaced a mock member dashboard showing fake activity counts. That was a screenshot of the
+product standing in for the idea, and it sold nothing to a visitor who is not a member yet.
+
+Two rules it keeps: the holder's name and programme are **abstract rounded rules rather than
+invented text**, so the picture never reads as a real person's certificate; and there is **no large
+orange gear**, which design plan section 2.3 rules out at scale. Everything is painted through CSS
+custom properties, so it themes with the rest of the page rather than needing a dark variant.
+
 ## Known placeholders
 
 - **The crest is drawn from the raster logo**, not the official vector artwork. Replace it once the secretariat supplies the vector (design plan section 2.2). It appears in `Main`, `Home`, `SignUp`, `EventDetail` and `Certificate`.
