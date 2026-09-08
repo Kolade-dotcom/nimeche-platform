@@ -17,6 +17,7 @@ wrong is what kills association software.
 
 | Constraint | Consequence for the plan |
 |---|---|
+| **Nobody involved is obliged to use this** | Members, executives and partners all have a working alternative: the WhatsApp group. The platform has to be *easier* than the thing it replaces, not merely more capable. This is the governing constraint — see §1.1. |
 | **The executive turns over every year** | The system must be operable by whoever inherits it. Boring, well-documented, mainstream technology beats clever technology. Every runbook is written as if the author has graduated. |
 | **The dev team is small, part-time and volunteer** | One language across front and back end. Managed services over self-hosted infrastructure. No microservices. |
 | **Budget is association-scale, not company-scale** | Target under $30/month at MVP scale (§10.4). Free tiers are a legitimate architecture input, but never a single point of failure for member records. |
@@ -26,6 +27,44 @@ wrong is what kills association software.
 
 **The maintainability rule:** if a feature cannot be explained to next year's technical officer in
 one page, it is too clever for this project.
+
+### 1.1 The frictionless mandate
+
+The design plan's **G0** — *effortless for people who do not consider themselves technical* — is the
+governing goal of the whole project, and it is an **engineering** commitment before it is a design
+one. Most friction in software of this kind is created by backend decisions that were never
+presented to a designer: a required field that exists because a column is `NOT NULL`, a "claim your
+certificate" step that exists because delivery was easier as a pull than a push, a password because
+that was the default in the auth library.
+
+**The design plan's §1.1 sets the budgets. This section commits to the engineering that makes them
+achievable.**
+
+| Budget (design plan §1.1) | What the build must do |
+|---|---|
+| Sign up ≤5 fields, ≤2 min | **Passwordless-first auth** (§5). Registration writes a minimal `Member` row; every other column is nullable and filled by progressive profiling. A schema that demands more than five fields at insert has already broken the budget. |
+| Event registration ≤2 taps from a WhatsApp link | **Deep links that survive sign-in** (§8). The event page renders publicly; the sign-in round trip returns to the *event*, never to a dashboard. `?next=` is preserved through the entire auth flow, including the magic-link email. |
+| Certificate: **0 actions** | Certificates are **pushed**, not claimed. The completion job issues, renders and emails the certificate, and it is already in the portal before the member looks (§6.3). There is no claim endpoint to build, because building one would be building friction. |
+| Skills: **0 actions** | `MemberSkill` is derived by the skills engine (§6.6). **There is no skills form and no endpoint that lets a member set their own level.** The absence of that write path is the feature. |
+| Attendance: member does nothing | The member is checked in by an executive or by showing their code. Nothing in the attendance flow requires the member to have data, battery or network (§6.4). |
+| Certificate verification: 0 accounts, 1 tap | `/verify/:code` is public, unauthenticated and cached. No login wall, ever — a login wall here would defeat the entire purpose of a verifiable credential. |
+| Executive: publish an event in ≤3 min, one screen | One form, sensible defaults, autosaved draft, no wizard, no modal chain. Optional fields are visibly optional. |
+| Executive: 100 check-ins in ≤5 min, offline | §6.4, built as P0. |
+| Executive: issue a cohort's certificates in **1 action** | Bulk issuance is a single background job over an event's completions — not a per-member loop the executive has to sit through. |
+| Partner: submit an opportunity, **no account** | A public submission endpoint with rate limiting and a review queue (§6.7). Requiring an industry contact to register before they can offer members an internship is friction that costs the association opportunities. |
+
+**Five engineering rules that follow:**
+
+1. **Every required field must have a named justification.** A column is `NOT NULL` at registration only if a feature is broken without it. Default to nullable and ask later, in context.
+2. **Never make a person do what the system can derive.** Skills, participation counts, activity history, the development ring, membership number, and profile completeness are all computed. If we can work it out, we do not ask.
+3. **Push, don't pull.** Anything a member has earned arrives — certificate, skill advance, outcome recorded. "Go somewhere and claim it" is a design smell that almost always originates in a backend convenience.
+4. **The happy path never requires an install.** The PWA is an enhancement for executives capturing attendance, never a prerequisite for a member doing anything.
+5. **Errors say what to do next, in plain words** (design plan §15). An error message that names an internal state — `sync failed`, `invalid input`, `constraint violation` — is a defect, and error copy is written by whoever writes the endpoint, at the time they write it.
+
+**Where this costs engineering time, it is spent.** Passwordless auth with a returning deep link is
+more work than a password form. Push delivery of certificates is more work than a claim button.
+Deriving skills is more work than a form. Those costs are the point: they are transferred from
+thousands of member interactions to one build.
 
 ---
 
@@ -70,11 +109,12 @@ extracted later if it ever needs to be, without paying distributed-systems costs
 
 ### 2.2 Contracts inherited from the design plan
 
-Three commitments this plan must honour, carried over from the design plan's §18:
+Four commitments this plan must honour, carried over from the design plan's §18:
 
-1. **`docs/design/tokens.css` is the single source of visual truth.** No component hard-codes a colour; no component references a ramp step directly, only semantic tokens. This is enforceable in CI with a lint rule that fails on hex literals outside the token file.
-2. **Attendance capture is P0 and must work offline.** Certificates, skills, the development record and every analytics number depend on data being captured in a noisy hall on a bad connection. It is built first, in Phase 1, not deferred.
-3. **Two contrast rules are non-negotiable:** never `#EE7623` as text on a light surface, never `#008A45` as body text on white. Both are easy mistakes precisely because they are the logo colours; the CI contrast check (§9.5) exists to catch them.
+1. **G0 governs.** *Effortless for people who do not consider themselves technical* outranks every other goal in both documents, and the friction budgets in design plan §1.1 are acceptance criteria rather than targets. §1.1 of this plan is the engineering that delivers them; §9.5 is where they are gated.
+2. **`docs/design/tokens.css` is the single source of visual truth.** No component hard-codes a colour; no component references a ramp step directly, only semantic tokens. This is enforceable in CI with a lint rule that fails on hex literals outside the token file.
+3. **Attendance capture is P0 and must work offline.** Certificates, skills, the development record and every analytics number depend on data being captured in a noisy hall on a bad connection. It is built first, in Phase 1, not deferred.
+4. **Two contrast rules are non-negotiable:** never `#EE7623` as text on a light surface, never `#008A45` as body text on white. Both are easy mistakes precisely because they are the logo colours; the CI contrast check (§9.5) exists to catch them.
 
 ---
 
@@ -206,9 +246,20 @@ AuditLog        id, actor_id, action, entity_type, entity_id, diff(jsonb), creat
 
 ## 5. Authentication and authorisation
 
-**Authentication.** Email + password with verification, plus magic link (students lose passwords),
-plus Google sign-in. Sessions are HTTP-only cookies. Phone number is collected but not used as an
-auth factor in v1.
+**Authentication is passwordless-first** — the single highest-leverage decision for G0. A password
+is a thing to forget, and a forgotten password on a student's phone at 11pm is a member lost.
+
+- **Primary: magic link / email code.** Enter your email, tap the link, you are in. No password to create at sign-up and none to remember later. This removes the password field, the confirm-password field, the strength meter and the entire forgot-password flow from the member's world in one move — a quarter of the sign-up budget recovered before anything else is designed.
+- **Also: Google sign-in.** One tap for the large share of students already signed into Google on their phone.
+- **Optional: a password**, offered later in settings for members who want one. Offered, never required.
+- Sessions are **long-lived** HTTP-only cookies with silent refresh. A member who signed in last month should still be signed in — re-authentication on a phone is pure friction and buys us nothing at this risk level.
+- Sign-in always returns to where the person was going (`?next=`), preserved through the magic-link email. Landing on a dashboard after clicking an event link is a broken journey, not a neutral one.
+- Phone number is collected for contact and is **not** an auth factor in v1 — SMS costs money per message and adds a failure mode. Revisit if email deliverability to student addresses proves poor in the pilot; that is a real risk worth measuring rather than guessing.
+
+**Executives get the same passwordless flow**, plus mandatory step-up (a fresh code) for destructive
+actions only: certificate revocation, role changes, bulk deletion. Step-up on the *actions* rather
+than the *session* keeps day-to-day admin work frictionless while protecting the few operations that
+warrant it.
 
 **Membership is not the same as an account.** Anyone can create an account; membership `status`
 moves `pending → active` only after an executive verifies the person against the association's own
@@ -232,9 +283,24 @@ all of them.
 
 ### 6.1 Membership lifecycle
 
-Register → verify email → complete profile → executive review → active. Bulk import from the
-association's existing spreadsheet on day one (CSV with a dry-run preview and a per-row error
-report — a bulk importer that fails on row 400 without telling you why will be abandoned).
+**Register → executive review → active.** Note what is *not* in that chain: there is no "complete
+your profile" gate. Registration collects **name, email, institution, department, level** — five
+fields (§1.1) — and nothing else is required to become a member.
+
+**Progressive profiling** fills the rest, in context and always skippable: interests are asked the
+first time the member opens the Opportunities Hub ("so we can match you — skip for now"); a photo is
+asked when they first appear on a project team; a bio is asked when they enable a public profile.
+Each prompt appears once, is dismissible, and never blocks the thing the member came to do. This is
+also why every non-identity column is nullable (§1.1 rule 1).
+
+**Membership number is generated, not entered.** Asking a student to find their membership number
+before they can register would fail at the first field.
+
+**Bulk import** from the association's existing spreadsheet on day one: CSV with a dry-run preview
+and a per-row error report naming the row, the column and the fix. A bulk importer that fails on row
+400 without saying why gets abandoned, and the executive goes back to the spreadsheet — which is the
+G0 failure mode in miniature.
+
 Lapsed and alumni states preserve history and public profile visibility, and revoke portal write
 access.
 
@@ -246,6 +312,7 @@ requirement from proposal §11 is a concrete build task, not a nice-to-have.
 
 ### 6.3 Certificate generation and verification
 
+- **Delivered, never claimed.** The completion job issues the credential, renders the PDF, emails it, and it is in the portal before the member goes looking. There is no claim step and no claim endpoint — a member's only action is to have completed the programme (§1.1).
 - Rendered server-side from **one HTML template** — the same one the certificate viewer shows on screen (design plan §14).
 - Rendering happens in a **background job**, not in the request. Bulk issuance for a 200-person webinar must not time out a web request.
 - PDFs are stored in object storage; the database keeps the URL. Regeneration is possible from stored data if a template changes, but **the verification code and issued content never change**.
@@ -306,14 +373,24 @@ The thresholds are configuration, not code, so the executive can tune them witho
 level shows the activities that produced it — that traceability is what makes the claim credible,
 and it is the whole point of goal G4 in the design plan.
 
+**There is no skills form, and no API path by which a member sets their own level.** The absence of
+that write path is deliberate: it is simultaneously the honesty guarantee (nobody can self-declare
+"verified") and the friction guarantee (nobody has to maintain a skills list). One design decision
+serving G0 and G4 at once.
+
 **Blocked on a decision:** who is authorised to grant `verified` (design plan §17.5). Until that is
 answered, the level exists in the model and is not issuable.
 
 ### 6.7 Opportunities Hub
 
-Submission (member, executive, or partner) → review queue → published. Deadline-driven: a nightly
-job closes expired opportunities so the hub never shows stale listings — the fastest way to lose
-member trust.
+Submission (member, executive, or partner) → review queue → published. **Partner submission requires
+no account** (§1.1): a public, rate-limited form with an email confirmation, landing in the same
+review queue. An industry contact offering members an internship should not have to register first —
+that friction costs the association opportunities, and the review queue already provides the
+control that an account would have.
+
+Deadline-driven: a nightly job closes expired opportunities so the hub never shows stale listings —
+the fastest way to lose member trust.
 
 **Internal vs external registration** is a first-class distinction (proposal §9.1). An internal
 registration records `OpportunityInterest`; an external one records the interest *and* sends the
@@ -341,6 +418,16 @@ digest emails ("3 new opportunities match your interests") come in Phase 2.
 Every non-transactional email has an unsubscribe link and honours the preference. The sending domain
 needs SPF, DKIM and DMARC configured before the first send, or certificate emails land in spam.
 
+**Every email is a deep link, not an instruction.** "Your certificate is ready" links straight to the
+certificate; "an event you registered for starts in an hour" links straight to the meeting. An email
+that tells someone to sign in and navigate has spent the member's attention and given nothing back.
+
+**Design for the WhatsApp reality.** The association's members live in WhatsApp groups, and that is
+where every link will actually be shared. So: every public page carries a correct OG image and title
+(design plan §14), every shared link is short and readable, and **every link works for a signed-out
+visitor** — showing the content and offering sign-in at the point of action, never a login wall in
+front of the information. A link that opens to a sign-in screen dies in the group chat.
+
 ---
 
 ## 7. API and code conventions
@@ -360,6 +447,8 @@ needs SPF, DKIM and DMARC configured before the first send, or certificate email
 - **Tailwind's theme maps to `tokens.css` custom properties**, so a utility class resolves to a semantic token and the theme swap is automatic.
 - **Theme init** is the inline pre-paint script from design plan §5, plus persistence of `theme_preference` on the member record so it follows them across devices.
 - **Component library is built once, in Phase 1**, against the design plan's §8 spec, with Storybook. Screens compose it; screens do not invent components.
+- **Deep links are a first-class requirement, not a routing detail.** Every public URL renders for a signed-out visitor; `?next=` survives the whole auth round trip including the magic-link email; and sign-in returns the person to what they clicked (§1.1). This is tested in E2E, because it silently regresses.
+- **No install is ever required of a member.** The PWA exists for executives capturing attendance offline; nothing a member does depends on it.
 - **Performance budget: ≤150KB JS, ≤60KB CSS gzipped on public pages, LCP under 2.5s on a mid-range Android over 3G.** Enforced in CI (§9.5), because a budget nobody measures is a wish.
 - **Fonts** subset to Latin, `font-display: swap`, preloaded. Sora is dropped first if the budget bites.
 - **Images** through the framework's image pipeline: WebP/AVIF, responsive `srcset`, lazy below the fold, explicit dimensions so nothing shifts.
@@ -412,10 +501,20 @@ a dashboard nobody opens is not monitoring.
 | **Accessibility scan** (axe) on key pages, both themes | Every PR |
 | **Contrast check** against the design plan's §3.4 table | Every PR |
 | Lighthouse budget check on public pages | Every PR |
+| **Friction budget check** — E2E asserts the tap and field counts in design plan §1.1 (registration field count, taps from a shared event link to registered, zero-action certificate delivery) | Every PR |
+| **Deep-link round trip** — signed-out visitor → event link → sign-in → lands back on that event | Every PR |
+| **Plain-language lint** — fails on the banned jargon list in design plan §15 appearing in user-facing strings | Every push |
 | Migration dry-run against a production clone | Before deploy |
 
 Environments: **local → preview (per PR) → staging → production**. Staging carries anonymised data.
 Production deploys from `main` only.
+
+**The one gate that cannot be automated.** Before each release, three people who have never seen the
+screen attempt its main task unaided — two members and one executive (design plan §1.1). Preview
+deploys per PR exist partly to make this cheap: it is a link sent to three people in a group chat,
+not a lab session. **Task completion without asking a question is the pass mark**, and a failure is
+a defect with an owner, not feedback to file. Nothing else in this plan substitutes for it, because
+the team cannot assess its own product's obviousness.
 
 ---
 
@@ -457,6 +556,22 @@ Proposal §17 calls for a limited pilot, and it should be treated as a phase wit
 Run 2–3 real events with a limited member group. Instrument everything. Expect the attendance flow
 and the registration form to need rework — those are where real conditions differ most from a desk.
 Fix, then open to the wider membership.
+
+**The pilot's exit criteria are about ease, not correctness** — correctness is what the test suite is
+for. What the pilot has to establish:
+
+| Measure | Bar |
+|---|---|
+| Members who start registration and finish it | **≥90%** |
+| Members who registered for an event without asking anyone how | **≥90%** |
+| Executives who published an event unaided, first attempt | **100%** |
+| Attendance captured on the platform rather than on paper or in a group chat | **100% of pilot events** |
+| Support questions per event, in the exec group | **Trending to zero by the third event** |
+| Executives still choosing the platform over WhatsApp by event 3 | **The real signal** |
+
+A pilot where everything works and the executives quietly go back to a spreadsheet has **failed**,
+and should be treated as failed rather than signed off. Drop-off points and the questions people
+actually ask are the primary output of this phase — more valuable than the bug list.
 
 ### 10.4 Phase 2 — Expansion *(post-launch, prioritised by pilot findings)*
 
@@ -508,6 +623,7 @@ association software. Required before the technical lead hands over:
 
 | Risk | Impact | Mitigation |
 |---|---|---|
+| **It works, but people find WhatsApp easier** | The platform becomes a website with a login button; every other risk becomes moot | **The top risk in this plan.** G0 as the governing goal, the friction budgets in §1.1 gated in CI (§9.5), the unaided task test before every release, and a pilot (§10.3) measured on *whether executives keep using it unprompted* — not on whether it works |
 | **Attendance capture fails in the field** | Everything downstream is empty; the platform's premise collapses | P0, offline-first, idempotent sync, rehearsed at a real event before launch (§6.4) |
 | **Executive turnover strands the system** | Abandonment within a year | §11 continuity requirements; association-owned accounts; mainstream stack |
 | **Content goes stale after launch** | Members stop returning; the hub loses credibility | Proposal §12's content cycle needs an owner and a schedule, not just a CMS; auto-close expired opportunities |
@@ -545,6 +661,7 @@ The two documents divide as follows:
 | What components exist and how do they behave? | Design plan §8 |
 | What screens exist and what is on them? | Design plan §9–§10, §14–§15 |
 | What are the accessibility rules? | Design plan §11 (this plan enforces them in CI, §9.5) |
+| How easy must it be, and how is that measured? | Design plan §1 (G0) and §1.1 set the budgets; this plan §1.1 builds them and §9.5 gates them |
 | What is it built with, and how is it structured? | This plan §2–§3 |
 | What is the data model and how do the subsystems work? | This plan §4–§8 |
 | How is it secured, operated, tested and deployed? | This plan §9 |

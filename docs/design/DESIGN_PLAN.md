@@ -16,7 +16,25 @@ document answers which question.
 ## 1. Design goals
 
 The proposal's central claim is that **membership should produce a durable, visible record of a
-member's development**. Five goals follow, and every decision in this document traces back to one.
+member's development**. That record only exists if people actually use the platform — so one goal
+governs all the others.
+
+> ### G0 — Effortless for people who do not consider themselves technical
+>
+> **Every party — member, executive, content manager, project lead, industry partner — must be able
+> to do their job without being taught how.** No manual, no training session, no WhatsApp message
+> explaining where to click.
+>
+> This outranks every other goal in this document. Where G0 conflicts with elegance, density,
+> feature completeness or engineering convenience, **G0 wins**, and the conflict gets recorded in
+> §1.1 rather than quietly resolved in favour of the more interesting option.
+>
+> The failure mode this guards against is specific and common: an association builds a capable
+> platform, the executives keep using the WhatsApp group because it is faster, members never log in
+> twice, and within a year the platform is a website with a login button. **A feature nobody can
+> find has a value of zero**, regardless of how well it is built.
+
+Five supporting goals follow from the proposal, each subordinate to G0:
 
 | # | Goal | What it means in the interface |
 |---|------|--------------------------------|
@@ -33,6 +51,38 @@ member's development**. Five goals follow, and every decision in this document t
 3. **Green carries the structure, orange carries the moment.** The orange is the loudest colour in the brand; it is reserved for achievement, urgency and a single call to action per view. Large orange fields are forbidden.
 4. **Density where it earns it.** Public pages breathe; the admin console and analytics are dense and tabular. Different jobs, different rhythm.
 5. **Dark mode is a designed theme, not an inversion.** Every dark value is chosen and contrast-checked independently (§5).
+6. **The system does the work, not the member.** Anything the platform can derive, it derives. A member should never be asked to type something the system already knows, or to claim something they have already earned (§1.1).
+7. **No dead ends.** Every empty state, error and zero-result view names the next action. "Nothing here" without a way forward is a bug.
+
+### 1.1 The friction budget
+
+G0 is only real if it is measurable. These are **acceptance criteria**, not aspirations — a flow that
+exceeds its budget does not ship until it is redesigned or the budget is renegotiated in the open.
+
+| Journey | Who | Budget |
+|---|---|---|
+| Sign up → submitted for membership | Member | **≤5 fields, ≤2 minutes, no document upload** |
+| Register for an event, arriving from a WhatsApp link | Member | **≤2 taps** when signed in; ≤2 taps after a passwordless sign-in that returns to the event |
+| Receive a certificate after completing a programme | Member | **0 actions** — it arrives; there is no "claim" step |
+| Record a developed skill | Member | **0 actions** — derived from activity, never a form |
+| Find a relevant opportunity | Member | **≤3 taps** from landing to a full listing |
+| Verify a certificate | Employer | **0 accounts, 1 tap** from the code or QR |
+| Create and publish an event | Executive | **≤3 minutes, one screen**, no jargon |
+| Capture attendance for 100 people | Executive | **≤5 minutes**, one hand, works with no network |
+| Issue certificates for a completed event | Executive | **1 action** for the whole cohort |
+| Submit an opportunity | Partner | **≤6 fields, no account required** |
+
+**Three rules that make the budgets hold:**
+
+- **Progressive profiling.** Registration collects only what is needed to identify a member. Everything else — interests, skills, bio, photo — is requested later, in context, at the moment it becomes useful, and is always skippable.
+- **Derive, never ask.** Skills, activity history, certificates, participation counts and the development ring are all computed from what the member has done. The profile fills itself as they participate; that is the product working, and it is also the reason the sign-up form can be short.
+- **Plain words, always.** No interface text uses a term a first-year student would have to look up. Not "credential issuance", but "certificates". Not "authenticate", but "sign in". Not "submit for validation", but "send for review". This applies to buttons, headings, empty states, emails and error messages alike (§15).
+
+**How G0 gets tested, since nobody can self-assess this:** before each release, three people who have
+never seen the screen attempt its main task, unaided and unprompted — two members and one executive.
+The measure is **task completion without asking a question**. Anything under 100% is a design defect
+with a name and an owner, not feedback to file. For the admin console the bar is explicit: **an
+executive who has never seen it must publish an event without a manual and without asking anyone.**
 
 ---
 
@@ -687,6 +737,27 @@ Plain, warm, professional Nigerian English. Second person. No exclamation marks 
 Dates render as `12 Sep 2026`; times carry the zone (`6:00pm WAT`). Never a bare relative date on a
 certificate or a deadline.
 
+**The jargon ban (G0).** Interface text never uses a word a first-year student would have to look
+up, and never uses the system's internal vocabulary. Our data model has `credentials`,
+`activity completions` and `member roles`; the interface has certificates, things you finished, and
+what you can do. The words in the left column are banned from user-facing text — buttons, headings,
+empty states, emails, errors and admin screens alike.
+
+| Never | Always |
+|---|---|
+| Credential issuance | Certificates |
+| Authenticate / authentication | Sign in |
+| Submit for validation | Send for review |
+| Completion criteria not met | You still need to *(name the one thing)* |
+| Entity / record / object | The actual noun — member, event, project |
+| Invalid input | *(what is wrong, and what to type instead)* |
+| Sync failed | Not saved yet — we'll retry when you're back online |
+| Deactivate | Turn off |
+| Portal / dashboard *(as a nav label)* | Home |
+
+This applies with equal force to the admin console. An executive who has to learn our vocabulary
+before publishing an event is exactly the failure G0 describes.
+
 ---
 
 ## 16. Design deliverables
@@ -715,10 +786,18 @@ line up.
 
 11. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notification centre, digital membership card, payment and renewal flows.
 
-**Design QA gates before each release:** contrast re-verified against §3.4, keyboard pass on new
-flows, both themes screenshotted at 360 / 768 / 1440, and an empty state plus an error state present
-for every list and form. The dev plan wires the automatable ones — contrast and accessibility scans —
-into CI (dev plan §9.5).
+**Design QA gates before each release:**
+
+- Contrast re-verified against §3.4.
+- Keyboard pass on new flows.
+- Both themes screenshotted at 360 / 768 / 1440.
+- An empty state, an error state and a loading state present for every list and form — each naming a next action (principle 7).
+- **Friction budget measured** for every journey the release touches: taps and fields counted against the §1.1 table, recorded in the PR.
+- **Unaided task test** — three people who have not seen the screen complete its main task without asking a question (§1.1).
+
+The dev plan wires the automatable ones — contrast, accessibility scans and the tap/field counts —
+into CI (dev plan §9.5). The unaided task test cannot be automated and is the one gate that must
+stay human.
 
 ---
 
@@ -763,3 +842,4 @@ Three requirements this plan places on the build, carried into dev plan §2.2:
 - **`tokens.css` is the single source of visual truth.** No component hard-codes a colour, and no component references a ramp step directly — only semantic tokens.
 - **Attendance capture is P0 with offline support.** Certificates, skills, the development record and every analytics number depend on data actually being captured in a noisy hall on a bad connection.
 - **The two contrast rules in §3.4 are non-negotiable**: never `#EE7623` as text on light, never `#008A45` as body text on white. Both are easy mistakes to make precisely because they are the logo colours.
+- **G0 and the friction budgets in §1.1 are acceptance criteria, not preferences.** A flow that exceeds its budget is not done. The dev plan's §1.1 carries the engineering consequences — passwordless sign-in, zero-action certificates, derived skills, no-account partner submission — and its §9.5 gates them in CI.
