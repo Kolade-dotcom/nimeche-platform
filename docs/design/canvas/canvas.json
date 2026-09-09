@@ -2,7 +2,7 @@
   "artboards": [
     {
       "file": "Landing.dc.html",
-      "title": "1 \u00b7 Landing page",
+      "title": "Landing page",
       "x": 0,
       "y": 0,
       "w": 1440,
@@ -11,7 +11,7 @@
     },
     {
       "file": "Join.dc.html",
-      "title": "2 \u00b7 Sign up",
+      "title": "Sign up",
       "x": 1580,
       "y": 0,
       "w": 1440,
@@ -20,7 +20,7 @@
     },
     {
       "file": "JoinError.dc.html",
-      "title": "2b \u00b7 Sign up \u2014 not a Tech-U address",
+      "title": "Sign up \u2014 wrong address",
       "x": 3160,
       "y": 0,
       "w": 1440,
@@ -29,7 +29,7 @@
     },
     {
       "file": "CheckEmail.dc.html",
-      "title": "3 \u00b7 Check your email",
+      "title": "Check your email",
       "x": 4740,
       "y": 0,
       "w": 1440,
@@ -38,7 +38,7 @@
     },
     {
       "file": "Login.dc.html",
-      "title": "4 \u00b7 Sign in (returning)",
+      "title": "Sign in",
       "x": 6320,
       "y": 0,
       "w": 1440,
@@ -47,7 +47,7 @@
     },
     {
       "file": "LinkExpired.dc.html",
-      "title": "4b \u00b7 Link expired",
+      "title": "Link expired",
       "x": 7900,
       "y": 0,
       "w": 1440,
@@ -55,355 +55,419 @@
       "page": "page-1"
     },
     {
+      "file": "QuickJoin.dc.html",
+      "title": "Quick join link",
+      "x": 9480,
+      "y": 0,
+      "w": 1440,
+      "h": 920,
+      "page": "page-1"
+    },
+    {
+      "file": "QuickJoinDone.dc.html",
+      "title": "Quick join \u2014 done",
+      "x": 11060,
+      "y": 0,
+      "w": 1440,
+      "h": 760,
+      "page": "page-1"
+    },
+    {
       "file": "MLanding.dc.html",
-      "title": "1 \u00b7 Landing",
+      "title": "Landing",
       "x": 0,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 2540,
       "page": "page-1"
     },
     {
       "file": "MJoin.dc.html",
-      "title": "2 \u00b7 Sign up",
+      "title": "Sign up",
       "x": 500,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 940,
       "page": "page-1"
     },
     {
       "file": "MJoinError.dc.html",
-      "title": "2b \u00b7 Sign up \u2014 wrong address",
+      "title": "Wrong address",
       "x": 1000,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 970,
       "page": "page-1"
     },
     {
       "file": "MCheckEmail.dc.html",
-      "title": "3 \u00b7 Check your email",
+      "title": "Check your email",
       "x": 1500,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 800,
       "page": "page-1"
     },
     {
       "file": "MLogin.dc.html",
-      "title": "4 \u00b7 Sign in",
+      "title": "Sign in",
       "x": 2000,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 780,
       "page": "page-1"
     },
     {
       "file": "MLinkExpired.dc.html",
-      "title": "4b \u00b7 Link expired",
+      "title": "Link expired",
       "x": 2500,
-      "y": 2880,
+      "y": 2900,
       "w": 390,
       "h": 720,
       "page": "page-1"
     },
     {
-      "file": "Pending.dc.html",
-      "title": "5 \u00b7 Member: under review",
+      "file": "MQuickJoin.dc.html",
+      "title": "Quick join",
+      "x": 3000,
+      "y": 2900,
+      "w": 390,
+      "h": 940,
+      "page": "page-1"
+    },
+    {
+      "file": "MQuickJoinDone.dc.html",
+      "title": "Done",
+      "x": 3500,
+      "y": 2900,
+      "w": 390,
+      "h": 840,
+      "page": "page-1"
+    },
+    {
+      "file": "Main.dc.html",
+      "title": "Dashboard",
       "x": 0,
       "y": 0,
       "w": 1440,
-      "h": 900,
+      "h": 1240,
       "page": "page-2"
     },
     {
-      "file": "ReviewQueue.dc.html",
-      "title": "6 \u00b7 Exec: review queue",
+      "file": "MyEvents.dc.html",
+      "title": "My events",
       "x": 1580,
       "y": 0,
       "w": 1440,
-      "h": 900,
+      "h": 1180,
       "page": "page-2"
     },
     {
-      "file": "ReviewMember.dc.html",
-      "title": "7 \u00b7 Exec: approve one",
+      "file": "MyCertificates.dc.html",
+      "title": "Certificates",
       "x": 3160,
       "y": 0,
       "w": 1440,
-      "h": 900,
+      "h": 1080,
       "page": "page-2"
     },
     {
-      "file": "Welcome.dc.html",
-      "title": "8 \u00b7 Member: approved",
+      "file": "CertificateView.dc.html",
+      "title": "Certificate",
       "x": 4740,
       "y": 0,
       "w": 1440,
-      "h": 1020,
+      "h": 1060,
+      "page": "page-2"
+    },
+    {
+      "file": "MySkills.dc.html",
+      "title": "Skills",
+      "x": 6320,
+      "y": 0,
+      "w": 1440,
+      "h": 1160,
+      "page": "page-2"
+    },
+    {
+      "file": "MyOpportunities.dc.html",
+      "title": "My opportunities",
+      "x": 7900,
+      "y": 0,
+      "w": 1440,
+      "h": 1100,
+      "page": "page-2"
+    },
+    {
+      "file": "MyActivity.dc.html",
+      "title": "Activity",
+      "x": 9480,
+      "y": 0,
+      "w": 1440,
+      "h": 1120,
       "page": "page-2"
     },
     {
       "file": "Profile.dc.html",
-      "title": "9 \u00b7 Membership record",
-      "x": 6320,
+      "title": "Profile",
+      "x": 11060,
       "y": 0,
       "w": 1440,
       "h": 1140,
       "page": "page-2"
     },
     {
-      "file": "QuickJoin.dc.html",
-      "title": "10 \u00b7 Quick join (shared link)",
+      "file": "Settings.dc.html",
+      "title": "Settings",
+      "x": 12640,
+      "y": 0,
+      "w": 1440,
+      "h": 1400,
+      "page": "page-2"
+    },
+    {
+      "file": "MDashboard.dc.html",
+      "title": "Dashboard",
+      "x": 0,
+      "y": 1680,
+      "w": 390,
+      "h": 1980,
+      "page": "page-2"
+    },
+    {
+      "file": "MMyEvents.dc.html",
+      "title": "My events",
+      "x": 500,
+      "y": 1680,
+      "w": 390,
+      "h": 1560,
+      "page": "page-2"
+    },
+    {
+      "file": "MMyCertificates.dc.html",
+      "title": "Certificates",
+      "x": 1000,
+      "y": 1680,
+      "w": 390,
+      "h": 1420,
+      "page": "page-2"
+    },
+    {
+      "file": "MCertificateView.dc.html",
+      "title": "Certificate",
+      "x": 1500,
+      "y": 1680,
+      "w": 390,
+      "h": 1500,
+      "page": "page-2"
+    },
+    {
+      "file": "MMySkills.dc.html",
+      "title": "Skills",
+      "x": 2000,
+      "y": 1680,
+      "w": 390,
+      "h": 1620,
+      "page": "page-2"
+    },
+    {
+      "file": "MMyOpportunities.dc.html",
+      "title": "My opportunities",
+      "x": 2500,
+      "y": 1680,
+      "w": 390,
+      "h": 1420,
+      "page": "page-2"
+    },
+    {
+      "file": "MMyActivity.dc.html",
+      "title": "Activity",
+      "x": 3000,
+      "y": 1680,
+      "w": 390,
+      "h": 1420,
+      "page": "page-2"
+    },
+    {
+      "file": "MProfile.dc.html",
+      "title": "Profile",
+      "x": 3500,
+      "y": 1680,
+      "w": 390,
+      "h": 1720,
+      "page": "page-2"
+    },
+    {
+      "file": "MSettings.dc.html",
+      "title": "Settings",
+      "x": 4000,
+      "y": 1680,
+      "w": 390,
+      "h": 1780,
+      "page": "page-2"
+    },
+    {
+      "file": "Pending.dc.html",
+      "title": "Under review",
+      "x": 0,
+      "y": 3940,
+      "w": 1440,
+      "h": 900,
+      "page": "page-2"
+    },
+    {
+      "file": "Welcome.dc.html",
+      "title": "Approved",
+      "x": 1580,
+      "y": 3940,
+      "w": 1440,
+      "h": 1020,
+      "page": "page-2"
+    },
+    {
+      "file": "MPending.dc.html",
+      "title": "Under review",
+      "x": 3160,
+      "y": 3940,
+      "w": 390,
+      "h": 1180,
+      "page": "page-2"
+    },
+    {
+      "file": "MWelcome.dc.html",
+      "title": "Approved",
+      "x": 3660,
+      "y": 3940,
+      "w": 390,
+      "h": 1620,
+      "page": "page-2"
+    },
+    {
+      "file": "MemberComponents.dc.html",
+      "title": "Components",
+      "x": 0,
+      "y": 5840,
+      "w": 1440,
+      "h": 2540,
+      "page": "page-2"
+    },
+    {
+      "file": "ReviewQueue.dc.html",
+      "title": "Member review queue",
       "x": 0,
       "y": 0,
       "w": 1440,
-      "h": 920,
+      "h": 900,
       "page": "page-3"
     },
     {
-      "file": "QuickJoinDone.dc.html",
-      "title": "11 \u00b7 Quick join: done",
+      "file": "ReviewMember.dc.html",
+      "title": "Approve one member",
       "x": 1580,
       "y": 0,
       "w": 1440,
-      "h": 760,
+      "h": 900,
       "page": "page-3"
     },
     {
-      "file": "MQuickJoin.dc.html",
-      "title": "10 \u00b7 Quick join",
+      "file": "MReviewQueue.dc.html",
+      "title": "Review queue",
       "x": 0,
       "y": 1180,
       "w": 390,
-      "h": 940,
+      "h": 1560,
       "page": "page-3"
     },
     {
-      "file": "MQuickJoinDone.dc.html",
-      "title": "11 \u00b7 Done",
+      "file": "MReviewMember.dc.html",
+      "title": "Approve one",
       "x": 500,
       "y": 1180,
       "w": 390,
-      "h": 840,
+      "h": 1500,
       "page": "page-3"
-    },
-    {
-      "file": "Main.dc.html",
-      "title": "Dashboard (mobile v1)",
-      "x": 0,
-      "y": 0,
-      "w": 390,
-      "h": 1220,
-      "page": "page-4"
     },
     {
       "file": "EventDetail.dc.html",
-      "title": "Event (mobile v1)",
-      "x": 500,
+      "title": "Event detail (mobile v1)",
+      "x": 0,
       "y": 0,
       "w": 390,
       "h": 1150,
       "page": "page-4"
     },
     {
-      "file": "Certificate.dc.html",
-      "title": "Certificate (mobile v1)",
-      "x": 1000,
-      "y": 0,
-      "w": 390,
-      "h": 960,
-      "page": "page-4"
-    },
-    {
       "file": "Attendance.dc.html",
-      "title": "Attendance (mobile v1)",
-      "x": 1500,
+      "title": "Attendance capture (mobile v1)",
+      "x": 500,
       "y": 0,
       "w": 390,
       "h": 940,
       "page": "page-4"
-    },
-    {
-      "file": "MPending.dc.html",
-      "title": "5 \u00b7 Member: under review",
-      "x": 0,
-      "y": 1400,
-      "w": 390,
-      "h": 1180,
-      "page": "page-2"
-    },
-    {
-      "file": "MReviewQueue.dc.html",
-      "title": "6 \u00b7 Exec: review queue",
-      "x": 500,
-      "y": 1400,
-      "w": 390,
-      "h": 1560,
-      "page": "page-2"
-    },
-    {
-      "file": "MReviewMember.dc.html",
-      "title": "7 \u00b7 Exec: approve one",
-      "x": 1000,
-      "y": 1400,
-      "w": 390,
-      "h": 1500,
-      "page": "page-2"
-    },
-    {
-      "file": "MWelcome.dc.html",
-      "title": "8 \u00b7 Member: approved",
-      "x": 1500,
-      "y": 1400,
-      "w": 390,
-      "h": 1620,
-      "page": "page-2"
-    },
-    {
-      "file": "MProfile.dc.html",
-      "title": "9 \u00b7 Membership record",
-      "x": 2000,
-      "y": 1400,
-      "w": 390,
-      "h": 1720,
-      "page": "page-2"
-    },
-    {
-      "file": "TypeA.dc.html",
-      "title": "A \u00b7 IBM Plex (in use)",
-      "x": 0,
-      "y": 0,
-      "w": 880,
-      "h": 820,
-      "page": "page-5"
-    },
-    {
-      "file": "TypeB.dc.html",
-      "title": "B \u00b7 Bricolage + Public Sans",
-      "x": 980,
-      "y": 0,
-      "w": 880,
-      "h": 820,
-      "page": "page-5"
-    },
-    {
-      "file": "TypeC.dc.html",
-      "title": "C \u00b7 Source Serif + Karla",
-      "x": 1960,
-      "y": 0,
-      "w": 880,
-      "h": 820,
-      "page": "page-5"
     }
   ],
   "annotations": [
     {
-      "id": "n1a",
-      "x": 0,
-      "y": -210,
-      "w": 1000,
-      "page": "page-1",
-      "text": "STAGE 1 \u00b7 LANDING AND SIGN IN \u2014 DESKTOP\nRead left to right: the whole first-visit path.\nA stranger arrives, learns what the branch is, joins with four fields, gets an email link, and is in.\nNo password exists anywhere in this stage, so there is no forgot-password flow to design."
-    },
-    {
-      "id": "n1b",
-      "x": 1580,
-      "y": -210,
-      "w": 1000,
-      "page": "page-1",
-      "text": "Four fields: name, Tech-U email, department, level.\nInstitution is never asked \u2014 a @tech-u.edu.ng address answers it, and the server rejects anything else (2b).\nDepartment and level are buttons rather than dropdowns: two options and five, so showing them is fewer taps than hiding them."
-    },
-    {
-      "id": "n1c",
-      "x": 4740,
-      "y": -210,
-      "w": 1000,
-      "page": "page-1",
-      "text": "The two screens ending in 'b' are the paths where things go wrong.\nThey are part of the flow, not edge cases: a wrong address and an expired link are the two things\nthat will actually happen, and both are written in plain words with a way forward."
-    },
-    {
-      "id": "n1d",
-      "x": 0,
-      "y": 2740,
-      "w": 1000,
-      "page": "page-1",
-      "text": "THE SAME STAGE ON A PHONE\nNot the desktop shrunk \u2014 laid out again at 390px.\nThe landing page becomes one column with the four steps on a vertical rail; the level buttons tighten to fit five across;\nCheck-your-email leads with 'Open my mail app', which is the actual next action on a phone and pointless on a desktop."
-    },
-    {
-      "id": "n2",
-      "x": 0,
-      "y": -210,
-      "w": 1400,
-      "page": "page-2",
-      "text": "STAGE 2 \u00b7 MEMBERSHIP \u2014 DESKTOP AND MOBILE\nDesktop on top, the same five screens at 390px below.\nScreen 5 is the new member waiting. Screens 6 and 7 are that same moment from the executive's side.\nScreen 8 is the evening they are approved; screen 9 is the record months later."
-    },
-    {
-      "id": "n2b",
-      "x": 1580,
-      "y": -210,
-      "w": 1600,
-      "page": "page-2",
-      "text": "Nobody types a matric number, at any point.\nA firstname.lastname@tech-u.edu.ng address already carries the name, so the server matches the applicant\nagainst the department roll and reads the matric number off it. The reviewer sees 'On list' or 'Not found'\nand approves with a glance.\nThis depends entirely on the departments sharing their rolls \u2014 the single highest-leverage ask in the project."
-    },
-    {
-      "id": "n3",
-      "x": 0,
-      "y": -210,
-      "w": 1200,
-      "page": "page-3",
-      "text": "STAGE 1b \u00b7 QUICK JOIN \u2014 DESKTOP AND MOBILE\nOne link to drop in a WhatsApp group, or a QR on a flyer at a departmental event.\nSame four fields, no landing page in the way, and it carries who shared it.\nThe mobile pair below is the one that matters: this link will be opened on a phone almost every time."
-    },
-    {
-      "id": "n4",
-      "x": 0,
-      "y": -210,
-      "w": 1200,
-      "page": "page-4",
-      "text": "LATER STAGES \u2014 MOBILE V1\nEarly phone screens for events, certificates and attendance.\nThey belong to stages we have not worked through yet and will be redone properly, desktop and mobile,\nwhen we get to them."
-    },
-    {
-      "id": "n2c",
-      "x": 0,
-      "y": 1270,
-      "w": 1100,
-      "page": "page-2",
-      "text": "THE QUEUE IS NOT A TABLE ON A PHONE\nA five-column table cannot survive 390px, so the mobile queue is cards \u2014 and it re-sorts:\nthe one that did NOT match the roll comes first under 'Needs a look', the six that matched follow.\nA summary at the top offers to approve all six together, and the bottom bar makes that one tap.\nSo the executive's job on a phone is: read one applicant properly, approve the rest in a tap."
-    },
-    {
-      "id": "n-type",
+      "id": "n-p1",
       "x": 0,
       "y": -230,
-      "w": 1300,
-      "page": "page-5",
-      "text": "TYPE DIRECTIONS\nSame content, three pairings, so the comparison is honest rather than a specimen sheet of alphabets.\nA is applied across the whole product right now \u2014 say the word and B or C goes in instead; it is a one-command swap.\nEach one carries its own case AND what it costs, because a set where only the favourite gets an argument is a rigged vote."
+      "w": 1200,
+      "page": "page-1",
+      "text": "PUBLIC SITE AND JOINING\nEverything a visitor sees before they are a member, desktop on top and mobile below.\nThe two screens ending in 'wrong address' and 'link expired' are part of the set, not edge cases \u2014\nthey are the two things that will actually happen."
+    },
+    {
+      "id": "n-p2",
+      "x": 0,
+      "y": -260,
+      "w": 1400,
+      "page": "page-2",
+      "text": "MEMBER AREA \u2014 THE WHOLE SECTION\nNine screens on desktop, the same nine at 390px on the row below, then the two onboarding states,\nthen the component sheet everything is built from.\n\nThis is the area a member lives in. The rule running through all of it: the member never maintains their own record.\nSkills are derived, certificates arrive, activity accumulates. The only things they ever fill in are settings and a profile they chose to make public."
+    },
+    {
+      "id": "n-p2b",
+      "x": 0,
+      "y": -90,
+      "w": 1400,
+      "page": "page-2",
+      "text": "Order left to right: Dashboard \u00b7 My events \u00b7 Certificates \u00b7 One certificate \u00b7 Skills \u00b7 My opportunities \u00b7 Activity \u00b7 Profile \u00b7 Settings"
+    },
+    {
+      "id": "n-p3",
+      "x": 0,
+      "y": -230,
+      "w": 1200,
+      "page": "page-3",
+      "text": "EXECUTIVE AREA \u2014 ONLY THE MEMBER REVIEW SO FAR\nThis is the next section to work through in full: overview, members, events, attendance,\ncertificate issuing, opportunity review, content and analytics.\nWhat is here is the member-approval part, built earlier."
+    },
+    {
+      "id": "n-p4",
+      "x": 0,
+      "y": -230,
+      "w": 1200,
+      "page": "page-4",
+      "text": "NOT YET REWORKED\nTwo early phone screens belonging to sections we have not reached: the public event detail page,\nand the executive attendance capture screen. Both get done properly, desktop and mobile,\nwhen their section comes up."
     }
   ],
   "pages": [
     {
       "id": "page-1",
-      "name": "1 \u00b7 Landing & sign in"
+      "name": "Public site & joining"
     },
     {
       "id": "page-2",
-      "name": "2 \u00b7 Membership"
+      "name": "Member area"
     },
     {
       "id": "page-3",
-      "name": "1b \u00b7 Quick join"
+      "name": "Executive area (started)"
     },
     {
       "id": "page-4",
-      "name": "Later stages (mobile v1)"
-    },
-    {
-      "id": "page-5",
-      "name": "Type directions"
+      "name": "Not yet reworked"
     }
   ],
   "launch": {
     "view": "canvas",
-    "page": "page-5"
+    "page": "page-2"
   }
 }

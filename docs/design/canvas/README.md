@@ -6,70 +6,47 @@ The screens published as the NiMechE-SF (AATU) member platform design canvas.
 canvas — never edit the generated `nimeche-member-platform.html` at the repo root, which is a
 build output and is gitignored.
 
-The canvas has four pages, switched from the toolbar. **Each stage is worked through completely —
-desktop and mobile — before moving to the next.**
+The canvas is organised by **area of the app**, not by user journey. Each page holds every screen
+in one area — desktop on the top row, the same screens at 390px on the row below.
 
-### 1 · Landing & sign in — done
+### Public site & joining — done
 
-Desktop row (1440px), then the same flow again at 390px below it. Read each row left to right.
+`Landing` · `Join` · `JoinError` · `CheckEmail` · `Login` · `LinkExpired` · `QuickJoin` ·
+`QuickJoinDone`, each with its `M…` mobile counterpart. The "wrong address" and "link expired"
+screens are part of the set rather than edge cases: they are the two things that will actually happen.
 
-| Desktop | Mobile | Screen |
-|---|---|---|
-| `Landing` | `MLanding` | Public landing page — what NiMechE-SF is, what membership gives you, how it works |
-| `Join` | `MJoin` | Sign up — four fields, no password |
-| `JoinError` | `MJoinError` | Sign up with a non-Tech-U address |
-| `CheckEmail` | `MCheckEmail` | Magic link sent |
-| `Login` | `MLogin` | Sign in, returning member |
-| `LinkExpired` | `MLinkExpired` | Expired sign-in link |
+### Member area — done
 
-The two `…Error` / `…Expired` screens are part of the flow, not edge cases: a wrong address and a
-stale link are the two things that will actually happen.
-
-### 1b · Quick join — done
+Nine screens, both viewports, plus two onboarding states and the component sheet.
 
 | Desktop | Mobile | Screen |
 |---|---|---|
-| `QuickJoin` | `MQuickJoin` | A shareable link for WhatsApp or a QR on a flyer — same four fields, no landing page in the way, carries who shared it |
-| `QuickJoinDone` | `MQuickJoinDone` | Confirmation, what happens next, and a QR to pass on |
+| `Main` | `MDashboard` | Dashboard — development ring, what is next, matched opportunities, recent activity |
+| `MyEvents` | `MMyEvents` | Upcoming, feedback due, attended, missed |
+| `MyCertificates` | `MMyCertificates` | The credential wall, plus what is on the way |
+| `CertificateView` | `MCertificateView` | One certificate, its skills and its verification record |
+| `MySkills` | `MMySkills` | The four levels, and the activities that produced each |
+| `MyOpportunities` | `MMyOpportunities` | Registered interest, applications, recorded outcomes |
+| `MyActivity` | `MMyActivity` | The full record, grouped by month, exportable for a CV |
+| `Profile` | `MProfile` | The membership record and digital card |
+| `Settings` | `MSettings` | Account, notifications, theme, privacy, data |
+| `Pending` / `Welcome` | `MPending` / `MWelcome` | Under review, and the evening they are approved |
+| `MemberComponents` | — | Every piece the member screens are built from |
 
-### 2 · Membership — desktop only so far
+**The rule running through the area:** the member never maintains their own record. Skills are
+derived, certificates arrive, activity accumulates. The only things they ever fill in are settings
+and a profile they chose to make public.
 
-`Pending` (member waiting) · `ReviewQueue` (executive) · `ReviewMember` (approve one) ·
-`Welcome` (approved, with the membership card) · `Profile` (the record itself).
-**The mobile pass for this stage is next.**
+### Executive area — started
 
-### Type directions
+`ReviewQueue` and `ReviewMember` with their mobile pair. The rest of the section — overview, members,
+events, attendance, certificate issuing, opportunity review, content, analytics — is next.
 
-`TypeA` (in use) · `TypeB` · `TypeC` — the same content set three ways, so the comparison is honest
-rather than a specimen sheet of alphabets. Each carries its own case **and** what it costs. Swapping
-the whole product to B or C is one scripted find-and-replace across the artboards plus `tokens.css`.
+### Not yet reworked
 
-### Later stages — mobile v1
+`EventDetail` and `Attendance`, two early phone screens belonging to sections not yet reached.
 
-`Main`, `EventDetail`, `Certificate`, `Attendance`. Early phone screens for stages not yet worked
-through. They will be redone properly, desktop and mobile, when we reach them.
-
-`canvas.json` holds page assignments, frame positions, artboard titles and the stage notes.
-
-## How they are built
-
-Every colour is a CSS custom property lifted verbatim from
-[`../tokens.css`](../tokens.css) — `--surface`, `--primary`, `--accent` and the rest — declared
-on the `.screen` wrapper and overridden under `.screen[data-theme="dark"]`. Nothing hard-codes a
-hex value except the certificate document, which deliberately keeps literal light-theme colours in
-both modes (design plan section 5: a certificate is a document, not a UI surface).
-
-Each artboard exposes one control, a Light/Dark switch, which sets `data-theme` on that wrapper.
-
-Two places deliberately hold literal colours instead of tokens, and both are the same call: a
-surface that must read identically in either theme. The certificate document is one; the event
-cover band is the other — it is pinned to the deep brand green `#00713A` rather than `--primary`,
-because in dark mode `--primary` lightens to `#3FBF7A` and the white text over it would drop to
-2.35:1.
-
-Type is **IBM Plex** — Serif for `h1`/`h2` and holder names, Sans for everything else, Mono for
-verification codes and matric numbers (design plan section 4). Icons are inline stroke SVG in the
-Lucide style at 1.75px.
+`canvas.json` holds page assignments, frame positions, artboard titles and the area notes.
 
 ## The hero illustration
 
