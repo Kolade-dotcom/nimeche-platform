@@ -37,14 +37,39 @@ Nine screens, both viewports, plus two onboarding states and the component sheet
 derived, certificates arrive, activity accumulates. The only things they ever fill in are settings
 and a profile they chose to make public.
 
-### Executive area — started
+### Executive area — done
 
-`ReviewQueue` and `ReviewMember` with their mobile pair. The rest of the section — overview, members,
-events, attendance, certificate issuing, opportunity review, content, analytics — is next.
+Twelve screens on desktop, ten at 390px below.
+
+| Desktop | Mobile | Screen |
+|---|---|---|
+| `AdminOverview` | `MAdminOverview` | What is waiting on you, next event, attendance trend |
+| `AdminMembers` | `MAdminMembers` | The directory, with bulk actions |
+| `ReviewQueue` | `MReviewQueue` | New members, matched against the department roll |
+| `ReviewMember` | `MReviewMember` | Approve or decline one applicant |
+| `AdminEvents` | `MAdminEvents` | Upcoming, draft, needs attendance, past |
+| `AdminEventEdit` | — | Create an event on one screen, no wizard |
+| `AdminEventDetail` | `MAdminEventDetail` | Registrations, attendance, completion, certificates |
+| `AdminAttendance` | `MAdminAttendance` | Capture at the door, offline |
+| `AdminCertificates` | `MAdminCertificates` | Bulk issuance, verification log, revocation |
+| `AdminOpportunities` | `MAdminOpportunities` | Partner submissions and the live hub |
+| `AdminAnalytics` | `MAdminAnalytics` | Attendance trend, drop-off funnel, programmes, who the members are |
+| `AdminSettings` | — | Roles and the audit log |
+
+**Designed for someone doing association work at 11pm between deadlines**, whose alternative is a
+WhatsApp group. So every screen leads with what is waiting on them, and the expensive jobs —
+approving members, issuing certificates — are one action for the whole batch, not one per person.
+
+**Charts** use the validated palettes in `tokens.css`, re-checked with the dataviz validator: brand
+green and violet for the two-category split (ΔE 22.8 under deutan), and a single-hue green ordinal
+ramp for the funnel. Magnitude comparisons are one hue, not a rainbow; the two-department split is a
+labelled bar rather than a pie; no chart has two y-axes. Each carries a Table toggle, and the line
+chart shows one tooltip so the hover layer is visible in a static mock.
 
 ### Not yet reworked
 
-`EventDetail` and `Attendance`, two early phone screens belonging to sections not yet reached.
+`EventDetail` — the public event page, still at mobile v1. It belongs to the public site section and
+gets done properly, both viewports, when that section is revisited.
 
 `canvas.json` holds page assignments, frame positions, artboard titles and the area notes.
 

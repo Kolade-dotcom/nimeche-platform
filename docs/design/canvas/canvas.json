@@ -173,7 +173,7 @@
     },
     {
       "file": "CertificateView.dc.html",
-      "title": "Certificate",
+      "title": "One certificate",
       "x": 4740,
       "y": 0,
       "w": 1440,
@@ -254,7 +254,7 @@
     },
     {
       "file": "MCertificateView.dc.html",
-      "title": "Certificate",
+      "title": "One certificate",
       "x": 1500,
       "y": 1680,
       "w": 390,
@@ -352,9 +352,27 @@
       "page": "page-2"
     },
     {
-      "file": "ReviewQueue.dc.html",
-      "title": "Member review queue",
+      "file": "AdminOverview.dc.html",
+      "title": "Overview",
       "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 1300,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminMembers.dc.html",
+      "title": "Members",
+      "x": 1580,
+      "y": 0,
+      "w": 1440,
+      "h": 1220,
+      "page": "page-3"
+    },
+    {
+      "file": "ReviewQueue.dc.html",
+      "title": "Review queue",
+      "x": 3160,
       "y": 0,
       "w": 1440,
       "h": 900,
@@ -362,18 +380,108 @@
     },
     {
       "file": "ReviewMember.dc.html",
-      "title": "Approve one member",
-      "x": 1580,
+      "title": "Approve one",
+      "x": 4740,
       "y": 0,
       "w": 1440,
       "h": 900,
       "page": "page-3"
     },
     {
+      "file": "AdminEvents.dc.html",
+      "title": "Events",
+      "x": 6320,
+      "y": 0,
+      "w": 1440,
+      "h": 1300,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminEventEdit.dc.html",
+      "title": "New event",
+      "x": 7900,
+      "y": 0,
+      "w": 1440,
+      "h": 1240,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminEventDetail.dc.html",
+      "title": "One event",
+      "x": 9480,
+      "y": 0,
+      "w": 1440,
+      "h": 1220,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminAttendance.dc.html",
+      "title": "Attendance",
+      "x": 11060,
+      "y": 0,
+      "w": 1440,
+      "h": 1120,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminCertificates.dc.html",
+      "title": "Certificates",
+      "x": 12640,
+      "y": 0,
+      "w": 1440,
+      "h": 1220,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminOpportunities.dc.html",
+      "title": "Opportunities",
+      "x": 14220,
+      "y": 0,
+      "w": 1440,
+      "h": 1240,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminAnalytics.dc.html",
+      "title": "Analytics",
+      "x": 15800,
+      "y": 0,
+      "w": 1440,
+      "h": 1420,
+      "page": "page-3"
+    },
+    {
+      "file": "AdminSettings.dc.html",
+      "title": "Roles & audit",
+      "x": 17380,
+      "y": 0,
+      "w": 1440,
+      "h": 1260,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminOverview.dc.html",
+      "title": "Overview",
+      "x": 0,
+      "y": 1700,
+      "w": 390,
+      "h": 1500,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminMembers.dc.html",
+      "title": "Members",
+      "x": 500,
+      "y": 1700,
+      "w": 390,
+      "h": 1500,
+      "page": "page-3"
+    },
+    {
       "file": "MReviewQueue.dc.html",
       "title": "Review queue",
-      "x": 0,
-      "y": 1180,
+      "x": 1000,
+      "y": 1700,
       "w": 390,
       "h": 1560,
       "page": "page-3"
@@ -381,28 +489,73 @@
     {
       "file": "MReviewMember.dc.html",
       "title": "Approve one",
-      "x": 500,
-      "y": 1180,
+      "x": 1500,
+      "y": 1700,
       "w": 390,
       "h": 1500,
       "page": "page-3"
     },
     {
+      "file": "MAdminEvents.dc.html",
+      "title": "Events",
+      "x": 2000,
+      "y": 1700,
+      "w": 390,
+      "h": 1620,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminEventDetail.dc.html",
+      "title": "One event",
+      "x": 2500,
+      "y": 1700,
+      "w": 390,
+      "h": 1560,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminAttendance.dc.html",
+      "title": "Attendance",
+      "x": 3000,
+      "y": 1700,
+      "w": 390,
+      "h": 1180,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminCertificates.dc.html",
+      "title": "Certificates",
+      "x": 3500,
+      "y": 1700,
+      "w": 390,
+      "h": 1520,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminOpportunities.dc.html",
+      "title": "Opportunities",
+      "x": 4000,
+      "y": 1700,
+      "w": 390,
+      "h": 1500,
+      "page": "page-3"
+    },
+    {
+      "file": "MAdminAnalytics.dc.html",
+      "title": "Analytics",
+      "x": 4500,
+      "y": 1700,
+      "w": 390,
+      "h": 1740,
+      "page": "page-3"
+    },
+    {
       "file": "EventDetail.dc.html",
-      "title": "Event detail (mobile v1)",
+      "title": "Public event page (mobile v1)",
       "x": 0,
       "y": 0,
       "w": 390,
       "h": 1150,
-      "page": "page-4"
-    },
-    {
-      "file": "Attendance.dc.html",
-      "title": "Attendance capture (mobile v1)",
-      "x": 500,
-      "y": 0,
-      "w": 390,
-      "h": 940,
       "page": "page-4"
     }
   ],
@@ -413,39 +566,39 @@
       "y": -230,
       "w": 1200,
       "page": "page-1",
-      "text": "PUBLIC SITE AND JOINING\nEverything a visitor sees before they are a member, desktop on top and mobile below.\nThe two screens ending in 'wrong address' and 'link expired' are part of the set, not edge cases \u2014\nthey are the two things that will actually happen."
+      "text": "PUBLIC SITE AND JOINING\nEverything a visitor sees before they are a member. Desktop on top, mobile below.\nThe 'wrong address' and 'link expired' screens are part of the set, not edge cases."
     },
     {
       "id": "n-p2",
       "x": 0,
-      "y": -260,
+      "y": -230,
       "w": 1400,
       "page": "page-2",
-      "text": "MEMBER AREA \u2014 THE WHOLE SECTION\nNine screens on desktop, the same nine at 390px on the row below, then the two onboarding states,\nthen the component sheet everything is built from.\n\nThis is the area a member lives in. The rule running through all of it: the member never maintains their own record.\nSkills are derived, certificates arrive, activity accumulates. The only things they ever fill in are settings and a profile they chose to make public."
-    },
-    {
-      "id": "n-p2b",
-      "x": 0,
-      "y": -90,
-      "w": 1400,
-      "page": "page-2",
-      "text": "Order left to right: Dashboard \u00b7 My events \u00b7 Certificates \u00b7 One certificate \u00b7 Skills \u00b7 My opportunities \u00b7 Activity \u00b7 Profile \u00b7 Settings"
+      "text": "MEMBER AREA\nNine screens on desktop, the same nine at 390px below, then the two onboarding states, then the component sheet.\nThe rule running through all of it: the member never maintains their own record."
     },
     {
       "id": "n-p3",
       "x": 0,
-      "y": -230,
-      "w": 1200,
+      "y": -300,
+      "w": 1500,
       "page": "page-3",
-      "text": "EXECUTIVE AREA \u2014 ONLY THE MEMBER REVIEW SO FAR\nThis is the next section to work through in full: overview, members, events, attendance,\ncertificate issuing, opportunity review, content and analytics.\nWhat is here is the member-approval part, built earlier."
+      "text": "EXECUTIVE AREA \u2014 THE WHOLE SECTION\nTwelve screens on desktop, ten at 390px below.\nOverview \u00b7 Members \u00b7 Review queue \u00b7 Approve one \u00b7 Events \u00b7 New event \u00b7 One event \u00b7 Attendance \u00b7 Certificates \u00b7 Opportunities \u00b7 Analytics \u00b7 Roles and audit\n\nThis area is designed for someone doing association work at 11pm between deadlines, and for whom the alternative is a WhatsApp group.\nSo every screen leads with what is waiting on them, and the expensive jobs \u2014 approving members, issuing certificates \u2014 are one action for the whole batch."
+    },
+    {
+      "id": "n-p3b",
+      "x": 0,
+      "y": -110,
+      "w": 1500,
+      "page": "page-3",
+      "text": "Attendance is the screen everything else depends on. It works with no network, says so plainly, and keeps a running count \u2014 because if it fails at the hall door, the certificates, the skills and every number in Analytics have nothing to be built from."
     },
     {
       "id": "n-p4",
       "x": 0,
-      "y": -230,
-      "w": 1200,
+      "y": -190,
+      "w": 1000,
       "page": "page-4",
-      "text": "NOT YET REWORKED\nTwo early phone screens belonging to sections we have not reached: the public event detail page,\nand the executive attendance capture screen. Both get done properly, desktop and mobile,\nwhen their section comes up."
+      "text": "NOT YET REWORKED\nThe public event page, still at mobile v1. It belongs to the public site section and gets done properly, both viewports, when that section is revisited."
     }
   ],
   "pages": [
@@ -459,7 +612,7 @@
     },
     {
       "id": "page-3",
-      "name": "Executive area (started)"
+      "name": "Executive area"
     },
     {
       "id": "page-4",
@@ -468,6 +621,6 @@
   ],
   "launch": {
     "view": "canvas",
-    "page": "page-2"
+    "page": "page-3"
   }
 }
