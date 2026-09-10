@@ -2,147 +2,327 @@
   "artboards": [
     {
       "file": "Landing.dc.html",
-      "title": "Landing page",
+      "title": "Landing",
       "x": 0,
       "y": 0,
       "w": 1440,
-      "h": 2620,
+      "h": 3040,
       "page": "page-1"
     },
     {
-      "file": "Join.dc.html",
-      "title": "Sign up",
+      "file": "About.dc.html",
+      "title": "About",
       "x": 1580,
       "y": 0,
       "w": 1440,
-      "h": 940,
+      "h": 1900,
       "page": "page-1"
     },
     {
-      "file": "JoinError.dc.html",
-      "title": "Sign up \u2014 wrong address",
+      "file": "PublicEvents.dc.html",
+      "title": "Events",
       "x": 3160,
       "y": 0,
       "w": 1440,
-      "h": 940,
+      "h": 1980,
       "page": "page-1"
     },
     {
-      "file": "CheckEmail.dc.html",
-      "title": "Check your email",
+      "file": "PublicEventDetail.dc.html",
+      "title": "One event",
       "x": 4740,
       "y": 0,
       "w": 1440,
-      "h": 820,
+      "h": 1900,
       "page": "page-1"
     },
     {
-      "file": "Login.dc.html",
-      "title": "Sign in",
+      "file": "Gallery.dc.html",
+      "title": "Gallery",
       "x": 6320,
       "y": 0,
       "w": 1440,
-      "h": 820,
+      "h": 2160,
       "page": "page-1"
     },
     {
-      "file": "LinkExpired.dc.html",
-      "title": "Link expired",
+      "file": "Album.dc.html",
+      "title": "One album",
       "x": 7900,
       "y": 0,
       "w": 1440,
-      "h": 820,
+      "h": 2040,
       "page": "page-1"
     },
     {
-      "file": "QuickJoin.dc.html",
-      "title": "Quick join link",
+      "file": "Projects.dc.html",
+      "title": "Projects",
       "x": 9480,
       "y": 0,
       "w": 1440,
-      "h": 920,
+      "h": 1900,
       "page": "page-1"
     },
     {
-      "file": "QuickJoinDone.dc.html",
-      "title": "Quick join \u2014 done",
+      "file": "ProjectDetail.dc.html",
+      "title": "One project",
       "x": 11060,
       "y": 0,
       "w": 1440,
-      "h": 760,
+      "h": 2020,
+      "page": "page-1"
+    },
+    {
+      "file": "PublicOpportunities.dc.html",
+      "title": "Opportunities",
+      "x": 12640,
+      "y": 0,
+      "w": 1440,
+      "h": 1720,
+      "page": "page-1"
+    },
+    {
+      "file": "News.dc.html",
+      "title": "News",
+      "x": 14220,
+      "y": 0,
+      "w": 1440,
+      "h": 1760,
+      "page": "page-1"
+    },
+    {
+      "file": "Verify.dc.html",
+      "title": "Verify a certificate",
+      "x": 15800,
+      "y": 0,
+      "w": 1440,
+      "h": 1240,
       "page": "page-1"
     },
     {
       "file": "MLanding.dc.html",
       "title": "Landing",
       "x": 0,
-      "y": 2900,
+      "y": 3340,
+      "w": 390,
+      "h": 3100,
+      "page": "page-1"
+    },
+    {
+      "file": "MAbout.dc.html",
+      "title": "About",
+      "x": 500,
+      "y": 3340,
       "w": 390,
       "h": 2540,
       "page": "page-1"
     },
     {
+      "file": "MPublicEvents.dc.html",
+      "title": "Events",
+      "x": 1000,
+      "y": 3340,
+      "w": 390,
+      "h": 2020,
+      "page": "page-1"
+    },
+    {
+      "file": "MPublicEventDetail.dc.html",
+      "title": "One event",
+      "x": 1500,
+      "y": 3340,
+      "w": 390,
+      "h": 2140,
+      "page": "page-1"
+    },
+    {
+      "file": "MGallery.dc.html",
+      "title": "Gallery",
+      "x": 2000,
+      "y": 3340,
+      "w": 390,
+      "h": 1980,
+      "page": "page-1"
+    },
+    {
+      "file": "MAlbum.dc.html",
+      "title": "One album",
+      "x": 2500,
+      "y": 3340,
+      "w": 390,
+      "h": 1900,
+      "page": "page-1"
+    },
+    {
+      "file": "MProjects.dc.html",
+      "title": "Projects",
+      "x": 3000,
+      "y": 3340,
+      "w": 390,
+      "h": 2020,
+      "page": "page-1"
+    },
+    {
+      "file": "MProjectDetail.dc.html",
+      "title": "One project",
+      "x": 3500,
+      "y": 3340,
+      "w": 390,
+      "h": 2200,
+      "page": "page-1"
+    },
+    {
+      "file": "MPublicOpportunities.dc.html",
+      "title": "Opportunities",
+      "x": 4000,
+      "y": 3340,
+      "w": 390,
+      "h": 1980,
+      "page": "page-1"
+    },
+    {
+      "file": "MNews.dc.html",
+      "title": "News",
+      "x": 4500,
+      "y": 3340,
+      "w": 390,
+      "h": 2180,
+      "page": "page-1"
+    },
+    {
+      "file": "MVerify.dc.html",
+      "title": "Verify",
+      "x": 5000,
+      "y": 3340,
+      "w": 390,
+      "h": 1240,
+      "page": "page-1"
+    },
+    {
+      "file": "Join.dc.html",
+      "title": "Sign up",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 940,
+      "page": "page-2"
+    },
+    {
+      "file": "JoinError.dc.html",
+      "title": "Wrong address",
+      "x": 1580,
+      "y": 0,
+      "w": 1440,
+      "h": 940,
+      "page": "page-2"
+    },
+    {
+      "file": "CheckEmail.dc.html",
+      "title": "Check your email",
+      "x": 3160,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-2"
+    },
+    {
+      "file": "Login.dc.html",
+      "title": "Sign in",
+      "x": 4740,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-2"
+    },
+    {
+      "file": "LinkExpired.dc.html",
+      "title": "Link expired",
+      "x": 6320,
+      "y": 0,
+      "w": 1440,
+      "h": 820,
+      "page": "page-2"
+    },
+    {
+      "file": "QuickJoin.dc.html",
+      "title": "Quick join link",
+      "x": 7900,
+      "y": 0,
+      "w": 1440,
+      "h": 920,
+      "page": "page-2"
+    },
+    {
+      "file": "QuickJoinDone.dc.html",
+      "title": "Quick join done",
+      "x": 9480,
+      "y": 0,
+      "w": 1440,
+      "h": 760,
+      "page": "page-2"
+    },
+    {
       "file": "MJoin.dc.html",
       "title": "Sign up",
-      "x": 500,
-      "y": 2900,
+      "x": 0,
+      "y": 1240,
       "w": 390,
       "h": 940,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MJoinError.dc.html",
       "title": "Wrong address",
-      "x": 1000,
-      "y": 2900,
+      "x": 500,
+      "y": 1240,
       "w": 390,
       "h": 970,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MCheckEmail.dc.html",
       "title": "Check your email",
-      "x": 1500,
-      "y": 2900,
+      "x": 1000,
+      "y": 1240,
       "w": 390,
       "h": 800,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MLogin.dc.html",
       "title": "Sign in",
-      "x": 2000,
-      "y": 2900,
+      "x": 1500,
+      "y": 1240,
       "w": 390,
       "h": 780,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MLinkExpired.dc.html",
       "title": "Link expired",
-      "x": 2500,
-      "y": 2900,
+      "x": 2000,
+      "y": 1240,
       "w": 390,
       "h": 720,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MQuickJoin.dc.html",
       "title": "Quick join",
-      "x": 3000,
-      "y": 2900,
+      "x": 2500,
+      "y": 1240,
       "w": 390,
       "h": 940,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "MQuickJoinDone.dc.html",
       "title": "Done",
-      "x": 3500,
-      "y": 2900,
+      "x": 3000,
+      "y": 1240,
       "w": 390,
       "h": 840,
-      "page": "page-1"
+      "page": "page-2"
     },
     {
       "file": "Main.dc.html",
@@ -151,7 +331,7 @@
       "y": 0,
       "w": 1440,
       "h": 1240,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MyEvents.dc.html",
@@ -160,7 +340,7 @@
       "y": 0,
       "w": 1440,
       "h": 1180,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MyCertificates.dc.html",
@@ -169,7 +349,7 @@
       "y": 0,
       "w": 1440,
       "h": 1080,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "CertificateView.dc.html",
@@ -178,7 +358,7 @@
       "y": 0,
       "w": 1440,
       "h": 1060,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MySkills.dc.html",
@@ -187,7 +367,7 @@
       "y": 0,
       "w": 1440,
       "h": 1160,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MyOpportunities.dc.html",
@@ -196,7 +376,7 @@
       "y": 0,
       "w": 1440,
       "h": 1100,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MyActivity.dc.html",
@@ -205,7 +385,7 @@
       "y": 0,
       "w": 1440,
       "h": 1120,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "Profile.dc.html",
@@ -214,7 +394,7 @@
       "y": 0,
       "w": 1440,
       "h": 1140,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "Settings.dc.html",
@@ -223,133 +403,133 @@
       "y": 0,
       "w": 1440,
       "h": 1400,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MDashboard.dc.html",
       "title": "Dashboard",
       "x": 0,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1980,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MMyEvents.dc.html",
       "title": "My events",
       "x": 500,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1560,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MMyCertificates.dc.html",
       "title": "Certificates",
       "x": 1000,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1420,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MCertificateView.dc.html",
       "title": "One certificate",
       "x": 1500,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1500,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MMySkills.dc.html",
       "title": "Skills",
       "x": 2000,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1620,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MMyOpportunities.dc.html",
       "title": "My opportunities",
       "x": 2500,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1420,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MMyActivity.dc.html",
       "title": "Activity",
       "x": 3000,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1420,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MProfile.dc.html",
       "title": "Profile",
       "x": 3500,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1720,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MSettings.dc.html",
       "title": "Settings",
       "x": 4000,
-      "y": 1680,
+      "y": 1700,
       "w": 390,
       "h": 1780,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "Pending.dc.html",
       "title": "Under review",
       "x": 0,
-      "y": 3940,
+      "y": 3980,
       "w": 1440,
       "h": 900,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "Welcome.dc.html",
       "title": "Approved",
       "x": 1580,
-      "y": 3940,
+      "y": 3980,
       "w": 1440,
       "h": 1020,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MPending.dc.html",
       "title": "Under review",
       "x": 3160,
-      "y": 3940,
+      "y": 3980,
       "w": 390,
       "h": 1180,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MWelcome.dc.html",
       "title": "Approved",
       "x": 3660,
-      "y": 3940,
+      "y": 3980,
       "w": 390,
       "h": 1620,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "MemberComponents.dc.html",
       "title": "Components",
       "x": 0,
-      "y": 5840,
+      "y": 5900,
       "w": 1440,
       "h": 2540,
-      "page": "page-2"
+      "page": "page-3"
     },
     {
       "file": "AdminOverview.dc.html",
@@ -358,7 +538,7 @@
       "y": 0,
       "w": 1440,
       "h": 1300,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminMembers.dc.html",
@@ -367,7 +547,7 @@
       "y": 0,
       "w": 1440,
       "h": 1220,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "ReviewQueue.dc.html",
@@ -376,7 +556,7 @@
       "y": 0,
       "w": 1440,
       "h": 900,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "ReviewMember.dc.html",
@@ -385,7 +565,7 @@
       "y": 0,
       "w": 1440,
       "h": 900,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminEvents.dc.html",
@@ -394,7 +574,7 @@
       "y": 0,
       "w": 1440,
       "h": 1300,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminEventEdit.dc.html",
@@ -403,7 +583,7 @@
       "y": 0,
       "w": 1440,
       "h": 1240,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminEventDetail.dc.html",
@@ -412,7 +592,7 @@
       "y": 0,
       "w": 1440,
       "h": 1220,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminAttendance.dc.html",
@@ -421,7 +601,7 @@
       "y": 0,
       "w": 1440,
       "h": 1120,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminCertificates.dc.html",
@@ -430,7 +610,7 @@
       "y": 0,
       "w": 1440,
       "h": 1220,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminOpportunities.dc.html",
@@ -439,7 +619,7 @@
       "y": 0,
       "w": 1440,
       "h": 1240,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminAnalytics.dc.html",
@@ -448,7 +628,7 @@
       "y": 0,
       "w": 1440,
       "h": 1420,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "AdminSettings.dc.html",
@@ -457,105 +637,96 @@
       "y": 0,
       "w": 1440,
       "h": 1260,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminOverview.dc.html",
       "title": "Overview",
       "x": 0,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1500,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminMembers.dc.html",
       "title": "Members",
       "x": 500,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1500,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MReviewQueue.dc.html",
       "title": "Review queue",
       "x": 1000,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1560,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MReviewMember.dc.html",
       "title": "Approve one",
       "x": 1500,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1500,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminEvents.dc.html",
       "title": "Events",
       "x": 2000,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1620,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminEventDetail.dc.html",
       "title": "One event",
       "x": 2500,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1560,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminAttendance.dc.html",
       "title": "Attendance",
       "x": 3000,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1180,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminCertificates.dc.html",
       "title": "Certificates",
       "x": 3500,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1520,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminOpportunities.dc.html",
       "title": "Opportunities",
       "x": 4000,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1500,
-      "page": "page-3"
+      "page": "page-4"
     },
     {
       "file": "MAdminAnalytics.dc.html",
       "title": "Analytics",
       "x": 4500,
-      "y": 1700,
+      "y": 1720,
       "w": 390,
       "h": 1740,
-      "page": "page-3"
-    },
-    {
-      "file": "EventDetail.dc.html",
-      "title": "Public event page (mobile v1)",
-      "x": 0,
-      "y": 0,
-      "w": 390,
-      "h": 1150,
       "page": "page-4"
     }
   ],
@@ -563,64 +734,64 @@
     {
       "id": "n-p1",
       "x": 0,
-      "y": -230,
-      "w": 1200,
+      "y": -320,
+      "w": 1600,
       "page": "page-1",
-      "text": "PUBLIC SITE AND JOINING\nEverything a visitor sees before they are a member. Desktop on top, mobile below.\nThe 'wrong address' and 'link expired' screens are part of the set, not edge cases."
+      "text": "PUBLIC SITE \u2014 THE WHOLE SECTION\nEleven screens on desktop, eleven at 390px below.\nLanding \u00b7 About \u00b7 Events \u00b7 One event \u00b7 Gallery \u00b7 One album \u00b7 Projects \u00b7 One project \u00b7 Opportunities \u00b7 News \u00b7 Verify\n\nPhotographs and video run through all of it. Every album is attached to the event, project or competition it came from,\nso a picture always leads back to the programme, the date and who took part \u2014 the archive is the proof, not decoration."
+    },
+    {
+      "id": "n-p1b",
+      "x": 0,
+      "y": -130,
+      "w": 1600,
+      "page": "page-1",
+      "text": "Media tiles are deliberate placeholders, not grey boxes: a grid of them reads as 'photographs go here'. Swap in real files when there are some.\nVerify is the one screen a stranger judges the whole branch by \u2014 an employer with a code and no account \u2014 so it is plain, document-like, and answers the only question they have in the first line."
     },
     {
       "id": "n-p2",
       "x": 0,
       "y": -230,
-      "w": 1400,
+      "w": 1200,
       "page": "page-2",
-      "text": "MEMBER AREA\nNine screens on desktop, the same nine at 390px below, then the two onboarding states, then the component sheet.\nThe rule running through all of it: the member never maintains their own record."
+      "text": "JOINING\nSign up, the wrong-address and expired-link states, sign in, and the shareable quick-join link.\nFour fields, no password anywhere in this section."
     },
     {
       "id": "n-p3",
       "x": 0,
-      "y": -300,
-      "w": 1500,
+      "y": -230,
+      "w": 1400,
       "page": "page-3",
-      "text": "EXECUTIVE AREA \u2014 THE WHOLE SECTION\nTwelve screens on desktop, ten at 390px below.\nOverview \u00b7 Members \u00b7 Review queue \u00b7 Approve one \u00b7 Events \u00b7 New event \u00b7 One event \u00b7 Attendance \u00b7 Certificates \u00b7 Opportunities \u00b7 Analytics \u00b7 Roles and audit\n\nThis area is designed for someone doing association work at 11pm between deadlines, and for whom the alternative is a WhatsApp group.\nSo every screen leads with what is waiting on them, and the expensive jobs \u2014 approving members, issuing certificates \u2014 are one action for the whole batch."
-    },
-    {
-      "id": "n-p3b",
-      "x": 0,
-      "y": -110,
-      "w": 1500,
-      "page": "page-3",
-      "text": "Attendance is the screen everything else depends on. It works with no network, says so plainly, and keeps a running count \u2014 because if it fails at the hall door, the certificates, the skills and every number in Analytics have nothing to be built from."
+      "text": "MEMBER AREA\nNine screens both viewports, the two onboarding states, and the component sheet.\nThe rule running through it: the member never maintains their own record."
     },
     {
       "id": "n-p4",
       "x": 0,
-      "y": -190,
-      "w": 1000,
+      "y": -260,
+      "w": 1500,
       "page": "page-4",
-      "text": "NOT YET REWORKED\nThe public event page, still at mobile v1. It belongs to the public site section and gets done properly, both viewports, when that section is revisited."
+      "text": "EXECUTIVE AREA\nTwelve screens on desktop, ten at 390px.\nEvery screen leads with what is waiting on the executive, and the expensive jobs are one action for a whole batch.\nAttendance works with no network, because if it fails at the hall door everything downstream has nothing to be built from."
     }
   ],
   "pages": [
     {
       "id": "page-1",
-      "name": "Public site & joining"
+      "name": "Public site"
     },
     {
       "id": "page-2",
-      "name": "Member area"
+      "name": "Joining"
     },
     {
       "id": "page-3",
-      "name": "Executive area"
+      "name": "Member area"
     },
     {
       "id": "page-4",
-      "name": "Not yet reworked"
+      "name": "Executive area"
     }
   ],
   "launch": {
     "view": "canvas",
-    "page": "page-3"
+    "page": "page-1"
   }
 }

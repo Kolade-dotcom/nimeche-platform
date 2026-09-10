@@ -430,7 +430,50 @@ webinar completion rates, certificates issued, popular programmes, opportunity r
 project and mentorship participation, growth trends. Every chart ships with a CSV export — an
 executive will want the numbers in a report, and if export is missing they will screenshot.
 
-### 6.9 Notifications
+### 6.9 Media: photographs and video
+
+The gallery is a real subsystem, not an upload field. Design plan section 7.1 sets the rule it is
+built around: **every album belongs to an event, a project or a competition** — `Album` carries
+`source_type` + `source_id` exactly as `ActivityCompletion` does, and there is no path to create a
+free-floating one.
+
+```
+Album        id, source_type(event|project|competition), source_id, title,
+             photographer_credit, cover_media_id, visibility(public|members), created_by
+MediaItem    id, album_id, kind(photo|video), storage_key | external_url,
+             width, height, duration_seconds, caption, alt_text, taken_at, sort_index
+MediaTakedown id, media_item_id, requested_by, reason(nullable), status, actioned_by, actioned_at
+```
+
+**Photographs** go to object storage. Derivatives are generated on upload — thumbnail, grid,
+lightbox, and an OG crop — and served as WebP/AVIF with `srcset`. Originals are kept, because a
+photograph is not recoverable from its thumbnail and this archive is meant to outlast the executive
+that made it.
+
+**Video is embedded, not hosted.** A one-hour webinar recording is tens of gigabytes of egress a
+term at branch scale, and video transcoding is the single line item that could take this project
+from $15 a month to unaffordable. Put recordings on **YouTube (unlisted) or Vimeo** and store the
+URL; the platform owns the metadata, the association owns the channel. Revisit only if the branch
+one day has both the budget and someone to run it — which is a different project.
+
+**Uploading is a bulk job, because that is how photographs arrive.** An executive comes back from a
+plant visit with 40 photos on a phone. The admin flow takes a multi-select, uploads with progress
+and per-file retry, and asks for one album-level credit rather than per-file metadata. Captions and
+alt text are added afterwards, at leisure, and **alt text is required before an album is
+published** — the one gate worth enforcing, since a gallery is exactly where missing alt text hurts.
+
+**Takedown is a first-class flow.** A member reporting a photograph creates a `MediaTakedown`, and
+the item is **hidden immediately, before any executive sees the request** — the delay is the harm.
+An executive then confirms deletion or restores it with a note. Design plan section 7.1 explains
+why this is designed rather than filed under policy: these are photographs of students, published
+under the branch's name, and NDPA obligations apply to them like any other personal data.
+
+**Storage budget.** At branch scale — say 60 albums a session, 25 photos each, 3MB originals — that
+is roughly 5GB a year of originals plus derivatives. Comfortably inside a free or near-free object
+store tier for the first few years, and the weekly independent export (section 9.3) should include
+media, not just the database, or the archive is not actually backed up.
+
+### 6.10 Notifications
 
 Transactional email in Phase 1: verification, membership approved, registration confirmed, event
 reminder (24h and 1h), certificate issued, feedback request. An in-app notification centre and

@@ -422,6 +422,38 @@ else it becomes noise.
 - **Icons: Lucide**, 1.75px stroke, 20px default / 16px in dense tables / 24px in nav. Icons never carry meaning alone — always a label or an `aria-label`.
 - **Commission a small domain set:** certificate, gear/project, opportunity, mentorship, skill level. These five recur across the whole product and generic icons blur them together.
 - **Photography:** real members and real events, always. Stock engineering photography undermines a platform whose entire value proposition is authentic record. 16:9 event covers, 4:3 project galleries, 1:1 avatars. Every image needs alt text. Every event needs a **generated fallback cover** — the event title on a green field with the orange rule — so an admin in a hurry never produces a broken-looking card.
+
+### 7.1 The media library
+
+Photographs and video are not decoration on this site; they are the evidence that the branch does
+what it says. The gallery is designed around one rule:
+
+> **Every album is attached to the thing it came from.** There is no free-floating media. An album
+> belongs to an event, a project or a competition, and always links back to it — so a photograph
+> leads to the programme, the date and who took part.
+
+That is what separates this from a folder of pictures, and it means the archive gets built as a side
+effect of running events properly rather than as a separate job somebody has to remember.
+
+| Surface | What media does there |
+|---|---|
+| Landing | A five-tile mosaic from the newest albums, above the verification strip |
+| Event page, before it runs | Cover image, and a "from the last one" strip if the event has run before |
+| Event page, after | The album, and the recording if it was a webinar |
+| Project page | A build strip, because the interesting part of a project is the making |
+| News | A lead image or video per post |
+| Gallery | Filters by kind and session, a featured mosaic, then albums newest first |
+| Album | Lightbox with caption, date, photographer credit, and the parent event |
+
+**Video** is an ordinary tile with a play affordance and a duration, never a separate section.
+Webinar recordings are the highest-value media the branch holds and the most expensive to serve —
+the dev plan covers how they are hosted.
+
+**Consent is a designed feature, not a policy page.** These are photographs of students published
+under the branch's name. The gallery carries a plain **"if you are in a photograph and would rather
+not be"** panel with a one-tap report, worded so that asking costs nothing and implies nothing.
+Members can also turn off being tagged, from settings. Under the NDPA this is an obligation;
+making it visible and easy is what makes it real rather than nominal.
 - **Illustration:** none in v1 beyond single-colour empty-state line drawings in `--border-strong`.
 
 ---
@@ -505,6 +537,8 @@ issuing body. No marketing chrome. Credibility comes from restraint.
 /about                About, structure, leadership, constitution
 /events               Calendar + list, filterable; /events/:slug detail with registration CTA
 /opportunities        Public preview of the Hub (full detail and registration gated on membership)
+/gallery              Photographs and video from every event, project and competition
+/gallery/:album       One album — grid, lightbox, and a link back to what it came from
 /projects             Project showcase; /projects/:slug case studies
 /news                 Announcements, member spotlights, competition results; /news/:slug
 /resources            Webinar recordings, guides, past materials
