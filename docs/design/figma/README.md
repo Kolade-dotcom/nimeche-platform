@@ -52,9 +52,11 @@ Mirror the canvas — four pages, desktop row then mobile row:
 ## Worth knowing before you start
 
 - **The crest is a placeholder.** Replace it everywhere from one component, once the real vector arrives.
-- **Media tiles are placeholders** — gradient compositions standing in for photographs and video.
+- **Photographs are real but random.** Every image tile in `screens/` points at `picsum.photos`, which serves real Unsplash photographs deterministically from a seed, with no API key. They import into Figma as actual images. They are **not curated** — they are stock scenery, not engineering. Swap them for the branch's own event photographs, or for hand-picked Unsplash URLs, once you have some.
+- **The canvas keeps drawn placeholders instead**, because the artifact viewer's content policy blocks every external image host. That difference is deliberate, not a mistake.
 - **Screens import in light mode.** The dark values are in `tokens.json`; wire them as the second variable mode rather than importing every screen twice.
 - **Type is Sora (headings) and Inter (body).** Both on Google Fonts — install them locally or enable them in Figma before importing, or text reflows into a fallback.
+- **All copy on the public pages is lorem ipsum** and every person, company and matric number is an obvious placeholder. Real words come later; nothing on these screens should be read as approved wording or a real partnership.
 - **Contrast is already verified** (design plan section 3.4). If you change a colour in Figma, it stops being verified — check it again rather than assuming.
 
 ## Keeping two sources honest

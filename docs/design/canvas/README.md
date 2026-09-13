@@ -112,7 +112,8 @@ custom properties, so it themes with the rest of the page rather than needing a 
 
 - **The crest is drawn from the raster logo**, not the official vector artwork. Replace it once the secretariat supplies the vector (design plan section 2.2). It appears in `Main`, `Home`, `SignUp`, `EventDetail` and `Certificate`.
 - **Media tiles are placeholders** — abstract gradient compositions standing in for photographs and video. Real files replace them; the layouts are built for 16:9, 4:3 and 1:1.
-- **All content is sample data** — member names, matric numbers, programmes, dates, organisations. Plausible, not real, and sized to a branch of a few hundred rather than a national body.
+- **Every name is an obvious placeholder** — Jane Doe, John Roe, Mary Major — and so is every company, so a mockup can never be mistaken for a real person or an arrangement that does not exist. Matric numbers and email addresses follow from them.
+- **Public-page copy is lorem ipsum.** Headlines and prose on the landing, about, events, gallery, projects, opportunities and news pages are placeholder text; buttons, labels, navigation and card titles stay real so the design is still reviewable. Application screens keep their real copy, because lorem there would make them impossible to judge.
 - **The student email pattern** is `firstname.lastname@tech-u.edu.ng` — confirmed.
 - **The verification domain** is `nimeche-aatu.vercel.app/verify` — the working address, and fine for building and reviewing. It goes on certificates an employer will check years from now, so a branch-owned domain should replace it before the first real certificate is issued.
 - **`[branch domain]`** stands in on the certificate and verification copy until the branch has its own domain (design plan section 17.9).
