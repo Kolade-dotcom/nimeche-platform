@@ -1,28 +1,55 @@
-# Brand assets
+# Brand assets and photographs
 
-## Wanted: the real crest
+This session cannot reach the internet except for GitHub, so **nothing here can be fetched
+automatically**. Files have to arrive by being committed to this repository. Once they are here, a
+single command puts them into all 81 screens.
 
-Every screen currently draws a **placeholder crest** — an inline SVG approximation of the NiMechE
-emblem, built from the raster screenshot supplied in conversation. It is close enough to judge
-layout by and wrong for anything else.
+## 1. The crest — still needed
 
-Drop the real file in here as **`crest.png`** (or `crest.svg`, preferred) and the swap is one
-command — the crest is generated from a single function, so every artboard picks it up at once.
+Every screen currently draws a **placeholder crest**: an SVG approximation built from a screenshot.
+It is close enough to judge layout by and wrong for anything else.
 
-**What to put here**
+Commit the real artwork here:
 
-| File | What it is | Used for |
+| File | What | Why |
 |---|---|---|
-| `crest.svg` | The full-colour crest, vector, transparent background | Everywhere. Vector is strongly preferred — it stays sharp at every size and is a fraction of the weight of a retina PNG on a page that shows it in the header of every screen. |
-| `crest.png` | Same, at 512px or larger, transparent background | Fallback if no vector exists. |
-| `crest-knockout.svg` | White/single-colour version | Dark mode, and the green header bands. The full-colour crest has a white inner field, so it cannot sit directly on a dark ground (design plan section 2.3). |
-| `mark.svg` | The gear ring alone, or a simplified device, square | Favicon, app icon, avatars. The full crest is illegible at 32px — the annulus text disappears. |
+| `crest.svg` | Full-colour crest, vector, **transparent background** | Used in the header of every screen and on every certificate. Vector stays sharp at every size and weighs a fraction of a retina PNG. |
+| `crest.png` | Same at 1024px or larger, transparent | Only if no vector exists. |
+| `crest-knockout.svg` | White or single-colour version | For dark mode and the green header bands. The full-colour crest has a white inner field, so it cannot sit on a dark ground. |
+| `mark.svg` | The gear ring alone, square | Favicon and avatars. The full crest is illegible at 32px — the annulus text disappears. |
 
-**Notes on preparing them**
+**Before exporting:** remove the white square background. The version supplied so far has one, and it
+shows as a light box in dark mode and on every green panel.
 
-- **Remove the white background.** The supplied raster has a white square behind the crest, which shows as a light box in dark mode and on the green panels.
-- Trim to the artwork's own bounds, with no padding — the layouts add their own spacing.
-- If only a JPEG exists, a vector redraw is worth commissioning once; it is used at a dozen sizes across the product and on every certificate.
+## 2. Photographs — `photos/`
 
-Until these land, the placeholder stays and section 2.2 of the design plan keeps the branding
-sign-off flagged as blocking.
+Drop real images in here — event photographs, plant visits, competitions, project builds — named by
+what they show:
+
+```
+photos/plant-visit-01.jpg
+photos/webinar-cad-01.jpg
+photos/competition-gokart-01.jpg
+photos/project-solar-dryer-01.jpg
+```
+
+JPEG, roughly 1600px on the long edge, under about 400KB each. A dozen is plenty to make every
+screen look real.
+
+Once they are committed, they get embedded directly into the canvas, which is the only way images
+can appear there (see below).
+
+## Why the canvas has no photographs today
+
+The design canvas runs inside a sandboxed viewer whose content policy **blocks every external image
+host**. An Unsplash or Picsum URL in the canvas renders as a broken image, not a photograph. The
+only images that work are ones embedded in the page itself — which means having the files.
+
+So the two surfaces differ on purpose:
+
+| | Photographs |
+|---|---|
+| **Canvas** (`docs/design/canvas/`) | Drawn placeholders, until real files land here and get embedded |
+| **Figma export** (`docs/design/figma/screens/`) | Real photographs by URL — those load in a normal browser, so imported Figma frames carry actual images |
+
+Nothing about that is permanent. Commit the files and the canvas gets the same treatment.
