@@ -36,7 +36,8 @@ the platform is; the dev plan says how it gets built.
 |---|---|
 | **[`docs/design/DESIGN_PLAN.md`](docs/design/DESIGN_PLAN.md)** | Goals and the friction budget, brand and colour (light + dark), typography, theming, component library, information architecture, key screens, accessibility, data visualisation, certificate design, plain-language rules, design deliverables |
 | **[`docs/design/tokens.css`](docs/design/tokens.css)** | The implementable token layer — every colour, type, space, shape and motion value for both themes |
-| **[`docs/dev/DEV_PLAN.md`](docs/dev/DEV_PLAN.md)** | The frictionless mandate, architecture, stack and the alternatives rejected, data model, subsystems, passwordless auth, API conventions, security and NDPA compliance, CI/testing, delivery phases and pilot, running cost, continuity, risk |
+| **[`docs/design/screens/`](docs/design/screens/)** | Fifteen self-contained responsive screens as HTML, one file each, covering the public site, signing in, the member dashboard and the executive dashboard. Open `index.html` for a contact sheet, or paste a file into html.to.design to import it as a Figma frame |
+| **[`docs/dev/DEV_PLAN.md`](docs/dev/DEV_PLAN.md)** | The frictionless mandate, architecture, stack and the alternatives rejected, data model, subsystems, email-and-password auth, API conventions, security and NDPA compliance, CI/testing, delivery phases and pilot, running cost, continuity, risk |
 
 Where the two overlap — performance budgets, phasing, the token layer — the design plan states the
 requirement and the dev plan states the enforcement. Full mapping in design plan section 18 and dev plan section 14.
@@ -45,7 +46,7 @@ requirement and the dev plan states the enforcement. Full mapping in design plan
 
 Both plans drafted, pending review.
 
-**Blocking item:** obtain the official NiMechE logo as vector artwork, plus a dark-mode knockout
+**Blocking item:** obtain the official NiMechE logo as vector artwork. Every screen currently draws a deliberate placeholder mark where the crest belongs, so swapping it in is one find-and-replace once the file is in this repository. Get it with a dark-mode knockout
 lockup and a square icon mark, so the two brand colour anchors can be confirmed (design plan section 2.2).
 Everything visual derives from those anchors.
 

@@ -108,18 +108,19 @@ chart shows one tooltip so the hover layer is visible in a static mock.
 
 `canvas.json` holds page assignments, frame positions, artboard titles and the area notes.
 
-## The eleven that go to Figma
+## The fifteen that go to Figma
 
 Eighty-one artboards is the right number for deciding what the platform is and the wrong number to
-rebuild by hand. Eleven of them carry every pattern the rest reuse:
+rebuild by hand. Fifteen screens carry every pattern the rest reuse, and they are built separately
+as self-contained **responsive** HTML in [`../screens/`](../screens/) — one file per screen, each
+working from 1440px down to 390px instead of splitting into two artboards.
 
-`Landing` · `PublicEvents` · `PublicEventDetail` · `Gallery` · `Join` · `Main` · `MyCertificates` ·
-`MySkills` · `AdminOverview` · `AdminMembers` · `AdminAttendance`
+Five public, two for signing in, four member, four executive. `../screens/README.md` lists them and
+`../screens/index.html` is a contact sheet.
 
-with their mobile counterparts — twenty-two artboards. Build `Join` first (it defines every form
-control), then `Landing`, `Main` and `AdminMembers`; after those four the rest is composition. The
-other seventy stay here as reference for the empty states, errors and after-review screens a
-component library cannot answer. Design plan section 16.1 has the reasoning per screen.
+**The other sixty-six artboards stay here as reference** for the empty states, errors and
+after-review screens a component library cannot answer. Design plan section 16.1 has the reasoning
+per screen.
 
 ## The hero illustration
 

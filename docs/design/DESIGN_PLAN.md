@@ -855,36 +855,44 @@ line up.
 
 11. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notification centre, digital membership card, payment and renewal flows.
 
-### 16.1 The eleven screens that go to Figma first
+### 16.1 The fifteen screens that go to Figma
 
-The canvas holds 81 artboards. That is the right number for deciding what the platform *is*, and the
-wrong number to rebuild by hand as Figma components. These eleven carry every pattern the other
-seventy reuse, so building them as components makes the rest assembly rather than design.
+The canvas holds 81 artboards, which is the right number for deciding what the platform *is* and
+the wrong number to rebuild by hand. **Fifteen screens carry every pattern the other sixty-six
+reuse**, and they live as self-contained responsive HTML in
+[`docs/design/screens/`](screens/) — one file per screen, each responding from 1440px down to
+390px rather than splitting into a desktop file and a mobile file.
 
 | # | Screen | Area | Why this one |
 |---|---|---|---|
-| 1 | `Landing` | Public | The home page. Carries the nav, hero, feature row, step row, event cards, the gallery mosaic, the CTA band and the footer — eight patterns in one screen. |
-| 2 | `PublicEvents` | Public | The event card in its grid, plus filter chips. Every list on the public site is this layout with a different card. |
-| 3 | `PublicEventDetail` | Public | The page WhatsApp links land on, so the one that has to convert. Contained hero, registration panel, certificate panel, media strip. |
-| 4 | `Gallery` | Public | Where photographs and video from events, projects, competitions and webinars live. Mosaic plus album grid plus the report-a-photo notice. |
-| 5 | `Join` | Joining | Every form control in the system: text field, password field with a show toggle, segmented choice, primary action, consent copy. |
-| 6 | `Main` | Member | The member dashboard. Sidebar, top bar, greeting, activity ring, cards, list rows, empty states. |
-| 7 | `MyCertificates` | Member | The credential card and the verification code, which is the one artefact that leaves the platform. |
-| 8 | `MySkills` | Member | The derived-skill chip, the level meter and the "how this was earned" disclosure. Nothing else looks like it. |
-| 9 | `AdminOverview` | Executive | The admin shell, KPI tiles and the chart styles from section 13. |
-| 10 | `AdminMembers` | Executive | The data table: sort, filter, bulk select, row actions, pagination. Every other admin list is this table. |
-| 11 | `AdminAttendance` | Executive | The offline-first capture screen — the highest-stakes screen in the product and the least like anything off the shelf. |
+| 1 | Home | Public | Nav, hero, stat row, feature cards, step row, event cards, gallery mosaic, CTA band, footer — nine patterns in one page |
+| 2 | Events | Public | The event card in its grid, plus filter chips. Every public list is this layout with a different card |
+| 3 | Event detail | Public | The page WhatsApp links land on, so the one that has to convert |
+| 4 | Gallery | Public | Where photographs and video from events, projects, competitions and webinars live |
+| 5 | Certificate check | Public | The one screen a stranger judges the whole branch by |
+| 6 | Sign in | Auth | Student email and password, and the route out when the password is gone |
+| 7 | Create account | Auth | Every form control in the system: text field, password with a show toggle, segmented choice, consent |
+| 8 | Member dashboard | Member | App shell, development ring, action banner, summary cards, activity feed |
+| 9 | My events | Member | The registered / due / attended / missed states a list has to express |
+| 10 | My certificates | Member | The credential card and the verification code — the one artefact that leaves the platform |
+| 11 | My skills | Member | The derived-skill card, level meter and evidence disclosure. Nothing else looks like it |
+| 12 | Executive overview | Executive | Admin shell, waiting-on-you queue, KPI tiles, the chart styles from section 13 |
+| 13 | Members | Executive | The review queue and the data table. Every other admin list is this table |
+| 14 | Check-in | Executive | The offline-first capture screen — highest stakes, least like anything off the shelf |
+| 15 | Certificates | Executive | Bulk issuance over a cohort, the verification log, and withdrawal |
 
-**Each is two artboards, desktop and mobile**, so twenty-two in Figma. The mobile counterparts are
-`MLanding`, `MPublicEvents`, `MPublicEventDetail`, `MGallery`, `MJoin`, `MDashboard`, `MMyCertificates`,
-`MMySkills`, `MAdminOverview`, `MAdminMembers`, `MAdminAttendance`.
+**Build order:** 7 first, because it defines every form control. Then 1, then 8, then 13. Those
+four produce the component set; the remaining eleven are mostly composition.
 
-**Build them in this order:** 5 first (it defines every form control), then 1, then 6, then 10. Those
-four produce the component set; the remaining seven are mostly composition.
+**The other sixty-six artboards stay in the canvas as reference**, not as a backlog. They answer
+"what does the empty state say", "what does the error look like", "what happens after review" —
+questions a component library cannot answer and a developer will ask.
 
-**The other seventy artboards stay in the canvas as reference**, not as a backlog. They answer "what
-does the empty state say", "what does the error look like", "what happens after review" — questions a
-component library cannot answer and a developer will ask. Keep the canvas link beside the Figma file.
+**Content rules these screens follow.** Real English, never lorem: placeholder prose in a foreign-
+looking language makes a layout impossible to judge, because nobody can tell whether a heading is
+the right length. Numbers and dates are plausible but invented. The signed-in person is the
+president, named as such; everyone else is a deliberately generic name, so no mockup can be
+mistaken for a real member's record.
 
 **Design QA gates before each release:**
 

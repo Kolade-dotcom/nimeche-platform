@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My events - NiMechE-SF, Tech-U</title>
+<!--
+  NiMechE-SF (Tech-U) member platform - screen 9 of 15: My events
+  Self-contained and responsive. Open it in a browser, or paste the whole file
+  into the html.to.design plugin to import it as a Figma frame.
+
+  To drop in the real logo: replace every <svg class="mark"> with the NiMechE
+  crest SVG, keeping the width/height attributes that are already on it.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+
+:root{
+  --bg:#F7F9F7; --surface:#FFFFFF; --sunken:#EFF3F0;
+  --text:#12261A; --muted:#56655C; --border:#E3E9E5; --border-strong:#75857B;
+  --primary:#00713A; --primary-text:#00713A; --primary-subtle:#E8F7EE; --on-primary:#FFFFFF;
+  --accent:#EE7623; --accent-text:#A24A08; --accent-subtle:#FFF3EA;
+  --danger:#B3231F; --danger-text:#B3231F; --danger-subtle:#FDECEC;
+  --band:#00713A;                 /* fixed in both themes: white text always sits on this */
+  --e1:0 1px 2px rgba(18,38,26,.06), 0 1px 3px rgba(18,38,26,.08);
+  --e2:0 6px 18px rgba(18,38,26,.09);
+  --r:12px; --r-sm:8px; --r-lg:16px;
+  --font-h:'Sora','Segoe UI',system-ui,sans-serif;
+  --font-b:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#080D0A; --surface:#0F1712; --sunken:#050A07;
+    --text:#E9F0EB; --muted:#A0B0A6; --border:#22302A; --border-strong:#5A6C60;
+    --primary:#3FBF7A; --primary-text:#3FBF7A; --primary-subtle:#0C2318; --on-primary:#06110A;
+    --accent:#F79B5E; --accent-text:#F79B5E; --accent-subtle:#2A1608;
+    --danger:#FF8A80; --danger-text:#FF8A80; --danger-subtle:#2C1211;
+    --e1:0 1px 2px rgba(0,0,0,.45); --e2:0 6px 18px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#080D0A; --surface:#0F1712; --sunken:#050A07;
+  --text:#E9F0EB; --muted:#A0B0A6; --border:#22302A; --border-strong:#5A6C60;
+  --primary:#3FBF7A; --primary-text:#3FBF7A; --primary-subtle:#0C2318; --on-primary:#06110A;
+  --accent:#F79B5E; --accent-text:#F79B5E; --accent-subtle:#2A1608;
+  --danger:#FF8A80; --danger-text:#FF8A80; --danger-subtle:#2C1211;
+  --e1:0 1px 2px rgba(0,0,0,.45); --e2:0 6px 18px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--font-h);margin:0;line-height:1.18;font-weight:700}
+h1{font-size:38px} h2{font-size:28px} h3{font-size:20px} h4{font-size:16px}
+@media (max-width:700px){ h1{font-size:28px} h2{font-size:22px} h3{font-size:18px} }
+p{margin:0}
+a{color:var(--primary-text);text-decoration:none}
+img{max-width:100%;display:block}
+ul{margin:0;padding:0;list-style:none}
+.tab{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px;width:100%}
+@media (max-width:700px){ .wrap{padding:0 16px} }
+.sec{padding:64px 0}
+.sec-sm{padding:40px 0}
+@media (max-width:700px){ .sec{padding:40px 0} .sec-sm{padding:28px 0} }
+.stack{display:flex;flex-direction:column}
+.gap8{gap:8px}.gap12{gap:12px}.gap16{gap:16px}.gap20{gap:20px}.gap24{gap:24px}.gap32{gap:32px}
+.row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.row-nw{display:flex;align-items:flex-start;gap:14px;flex-wrap:nowrap}
+.row-tight{display:flex;align-items:center;gap:8px}
+.between{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.grow{flex:1 1 auto;min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.ov{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.lede{font-size:17px;color:var(--muted);line-height:1.65}
+@media (max-width:700px){ .lede{font-size:16px} }
+
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.split{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:40px;align-items:start}
+@media (max-width:980px){ .split{grid-template-columns:1fr;gap:28px} }
+
+/* ---------- brand ---------- */
+/* REPLACE-ME: swap the <svg class="mark"> for the real NiMechE crest. Same box, same sizes. */
+.mark{flex:0 0 auto;color:currentColor}
+.brand{display:flex;align-items:center;gap:11px;color:inherit}
+.brand .bt{display:flex;flex-direction:column;gap:1px;line-height:1}
+.brand .bn{font-family:var(--font-h);font-size:16px;font-weight:700}
+.brand .bs{font-size:10px;font-weight:600;letter-spacing:.12em;opacity:.78}
+
+/* ---------- controls ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;
+  padding:0 20px;border-radius:10px;font-size:15px;font-weight:600;font-family:var(--font-b);
+  border:1px solid transparent;cursor:pointer;white-space:nowrap;text-decoration:none}
+.btn-primary{background:var(--primary);color:var(--on-primary);border-color:var(--primary)}
+.btn-ghost{background:var(--surface);color:var(--text);border-color:var(--border-strong)}
+.btn-quiet{background:transparent;color:var(--text);border-color:transparent;padding:0 12px}
+.btn-danger{background:transparent;color:var(--danger-text);border-color:var(--border-strong)}
+.btn-sm{min-height:36px;padding:0 14px;font-size:13px;border-radius:8px}
+.btn-block{width:100%}
+
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;
+  font-size:12px;font-weight:600;background:var(--sunken);color:var(--muted);white-space:nowrap;
+  align-self:flex-start;flex:0 0 auto}
+.chip-green{background:var(--primary-subtle);color:var(--primary-text)}
+.chip-accent{background:var(--accent-subtle);color:var(--accent-text)}
+.chip-danger{background:var(--danger-subtle);color:var(--danger-text)}
+.chip-line{background:transparent;box-shadow:inset 0 0 0 1px var(--border-strong);color:var(--text)}
+.chip-on{background:var(--primary);color:var(--on-primary)}
+
+.field{display:flex;flex-direction:column;gap:7px}
+.label{font-size:14px;font-weight:600}
+.input{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 15px;
+  border:1px solid var(--border-strong);border-radius:var(--r-sm);background:var(--surface);
+  font-size:16px;color:var(--text)}
+.input .ph{color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+.seg{display:flex;gap:10px;flex-wrap:wrap}
+.seg > *{flex:1 1 90px;min-height:48px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border-strong);border-radius:var(--r-sm);font-size:15px;font-weight:500;
+  background:var(--surface);cursor:pointer}
+.seg > .on{background:var(--primary);color:var(--on-primary);border-color:var(--primary);font-weight:600}
+.check{width:20px;height:20px;border-radius:5px;background:var(--primary);flex:0 0 auto;
+  display:flex;align-items:center;justify-content:center}
+.box{width:20px;height:20px;border-radius:5px;border:1.5px solid var(--border-strong);flex:0 0 auto}
+
+/* ---------- surfaces ---------- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--e1)}
+.card-pad{padding:22px}
+.card-lift{box-shadow:var(--e2)}
+.well{background:var(--sunken);border-radius:var(--r);padding:18px 20px}
+.hr{height:1px;background:var(--border);border:0;margin:0;flex:0 0 auto}
+
+/* ---------- media ---------- */
+.media{position:relative;width:100%;border-radius:var(--r);overflow:hidden;background:var(--sunken);
+  box-shadow:inset 0 0 0 1px var(--border);display:flex;align-items:center;justify-content:center}
+.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.media .gl{color:var(--border-strong);opacity:.9}
+.r169{aspect-ratio:16/9}.r43{aspect-ratio:4/3}.r11{aspect-ratio:1/1}.r329{aspect-ratio:32/9}
+@media (max-width:700px){ .r329{aspect-ratio:16/9} }
+.media .tag{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.6);color:#fff;
+  border-radius:999px;padding:4px 11px;font-size:11px;font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;z-index:2}
+.media .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:30px 14px 12px;color:#fff;
+  font-size:13px;font-weight:500;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+.media .play{position:absolute;inset:0;margin:auto;width:46px;height:46px;border-radius:999px;
+  background:rgba(0,0,0,.62);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2}
+.media .dur{position:absolute;right:10px;bottom:10px;z-index:2;background:rgba(0,0,0,.66);color:#fff;
+  border-radius:5px;padding:2px 7px;font-size:11px;font-weight:600}
+
+/* mosaic: tiles fill their cell, they never declare their own ratio here */
+.mosaic{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:190px;gap:14px}
+.mosaic > *{height:100%;min-height:0}
+.mosaic .media{height:100%}
+.mosaic .big{grid-column:span 2;grid-row:span 2}
+@media (max-width:860px){ .mosaic{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:150px} }
+@media (max-width:520px){ .mosaic{grid-auto-rows:130px} .mosaic .big{grid-column:span 2;grid-row:span 1} }
+
+/* ---------- public nav + footer ---------- */
+.topnav{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--border)}
+.topnav .in{display:flex;align-items:center;gap:26px;min-height:70px}
+.navlinks{display:flex;gap:24px;margin-left:auto;align-items:center}
+.navlinks a{font-size:15px;font-weight:500;color:var(--muted)}
+.navlinks a.on{color:var(--text);font-weight:600}
+.navend{display:flex;gap:10px;align-items:center;margin-left:8px}
+.burger{display:none;margin-left:auto;width:44px;height:44px;border-radius:10px;
+  border:1px solid var(--border);align-items:center;justify-content:center;background:var(--surface)}
+@media (max-width:940px){ .navlinks{display:none} .navend .btn-ghost{display:none} .burger{display:flex} }
+
+.foot{background:var(--surface);border-top:1px solid var(--border);padding:40px 0 48px;margin-top:8px}
+.footgrid{display:grid;grid-template-columns:1.6fr repeat(3,1fr);gap:32px}
+@media (max-width:820px){ .footgrid{grid-template-columns:1fr 1fr} }
+@media (max-width:520px){ .footgrid{grid-template-columns:1fr} }
+.footgrid h4{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  font-family:var(--font-b);font-weight:600;margin-bottom:12px}
+.footgrid li{margin-bottom:8px;font-size:14px;color:var(--muted)}
+
+/* ---------- band ---------- */
+.band{background:var(--band);color:#fff;border-radius:var(--r-lg);padding:32px 34px}
+.band h2,.band h3{color:#fff}
+.band .sub{color:rgba(255,255,255,.88)}
+@media (max-width:700px){ .band{padding:24px 20px} }
+
+/* ---------- app shell (member + executive) ---------- */
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{background:var(--surface);border-right:1px solid var(--border);padding:20px 14px;
+  display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;overflow:auto}
+.side .sb{padding:6px 10px 18px}
+.navitem{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:9px;
+  font-size:14.5px;font-weight:500;color:var(--muted)}
+.navitem.on{background:var(--primary-subtle);color:var(--primary-text);font-weight:600}
+.side .grp{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);padding:16px 12px 6px}
+.content{min-width:0;padding-bottom:40px}
+.topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--border);
+  padding:0 28px;min-height:68px;display:flex;align-items:center;gap:16px}
+@media (max-width:700px){ .topbar{padding:0 16px;min-height:60px} }
+.page{padding:28px}
+@media (max-width:700px){ .page{padding:18px 16px 84px} }
+.avatar{flex:0 0 auto;align-self:flex-start;width:38px;height:38px;border-radius:999px;background:var(--primary-subtle);
+  color:var(--primary-text);display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;flex:0 0 auto;font-family:var(--font-h)}
+.avatar-lg{width:56px;height:56px;font-size:18px}
+.menu-btn{display:none;border:0;background:transparent;padding:0;cursor:pointer;
+  color:var(--text);align-items:center}
+.bottomnav{display:none}
+@media (max-width:940px){
+  .app{grid-template-columns:1fr}
+  .side{display:none}
+  .menu-btn{display:flex}
+  .bottomnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);
+    border-top:1px solid var(--border);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+  .bottomnav a{flex:1 1 0;display:flex;flex-direction:column;align-items:center;gap:3px;
+    font-size:10.5px;font-weight:600;color:var(--muted)}
+  .bottomnav a.on{color:var(--primary-text)}
+}
+
+/* ---------- kpi + charts ---------- */
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px}
+.kpi .n{font-family:var(--font-h);font-size:30px;font-weight:700;line-height:1.1}
+.kpi .l{font-size:13px;color:var(--muted);margin-top:4px}
+.bar{height:8px;border-radius:999px;background:var(--sunken);overflow:hidden;flex:0 0 auto}
+.bar > i{display:block;height:100%;background:var(--primary);border-radius:999px}
+
+/* ---------- table that becomes cards ---------- */
+.tblwrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);padding:12px 16px;background:var(--sunken);white-space:nowrap}
+.tbl td{padding:14px 16px;border-top:1px solid var(--border);vertical-align:middle}
+@media (max-width:820px){
+  .tbl thead{display:none}
+  .tbl tr{display:block;border-top:1px solid var(--border);padding:14px 16px}
+  .tbl tr:first-child{border-top:0}
+  .tbl td{display:flex;gap:14px;border:0;padding:4px 0;align-items:center}
+  .tbl td::before{content:attr(data-l);flex:0 0 96px;font-size:11px;font-weight:600;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .tbl td.nolabel::before{content:none}
+}
+
+/* ---------- misc ---------- */
+.ring{flex:0 0 auto}
+.listrow{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--border)}
+.listrow:first-child{border-top:0}
+.datebox{flex:0 0 auto;width:52px;border-radius:9px;background:var(--primary);color:var(--on-primary);
+  padding:7px 0;text-align:center}
+.datebox .d{font-family:var(--font-h);font-size:18px;font-weight:700;line-height:1}
+.datebox .m{font-size:10px;font-weight:600;letter-spacing:.08em;margin-top:2px;opacity:.92}
+.cert{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.cert .top{border-left:5px solid var(--accent);padding:18px 20px}
+.code{font-family:ui-monospace,'SFMono-Regular','Roboto Mono',Menlo,monospace;font-size:13px;
+  letter-spacing:.06em;background:var(--sunken);border-radius:6px;padding:4px 9px;display:inline-block}
+.scroll-x{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="app"><aside class="side"><div class="sb"><span class="brand"><svg class="mark" width="32" height="32" viewBox="0 0 34 34" role="img" aria-label="NiMechE-SF logo (placeholder)"><rect x="1.7" y="1.7" width="30.6" height="30.6" rx="7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-dasharray="4.5 3.2" opacity=".5"></rect><circle cx="17" cy="17" r="8.2" fill="none" stroke="currentColor" stroke-width="1.7" opacity=".42"></circle><circle cx="17" cy="17" r="3.1" fill="currentColor" opacity=".32"></circle></svg><span class="bt"><span class="bn">NiMechE-SF</span><span class="bs">TECH-U</span></span></span></div><a class="navitem" href="member-dashboard.html" ><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 9.6V20h13V9.6"/></svg><span>Dashboard</span></a><a class="navitem on" href="member-events.html" ><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>My events</span></a><a class="navitem" href="member-certificates.html" ><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.2"/><path d="M8.5 13.4 7 21l5-2.4L17 21l-1.5-7.6"/></svg><span>My certificates</span></a><a class="navitem" href="member-skills.html" ><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg><span>My skills</span></a><a class="navitem" href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.8" y="7" width="18.4" height="13" rx="2.4"/><path d="M8.6 7V5.2A1.6 1.6 0 0 1 10.2 3.6h3.6A1.6 1.6 0 0 1 15.4 5.2V7"/></svg><span>Opportunities</span></a><a class="navitem" href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.2"/><path d="M9 4.2V3h6v1.2"/><path d="M8.6 11h6.8M8.6 15h4.8"/></svg><span>My activity</span></a><div class="grp">Account</div><a class="navitem" href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20c.9-3.8 4-5.8 7.5-5.8s6.6 2 7.5 5.8"/></svg><span>Profile</span></a><a class="navitem" href="#"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.6M12 18.6v2.6M21.2 12h-2.6M5.4 12H2.8M18.5 5.5l-1.8 1.8M7.3 16.7l-1.8 1.8M18.5 18.5l-1.8-1.8M7.3 7.3 5.5 5.5"/></svg><span>Settings</span></a></aside><div class="content"><div class="topbar"><button class="menu-btn" aria-label="Open menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><h3 class="grow" style="font-size:17px">My events</h3><button class="btn btn-quiet btn-sm" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6"/><path d="M10.3 20a2 2 0 0 0 3.4 0"/></svg></button><span class="avatar" title="Akolade Salako">AS</span></div><main class="page"><div class="between" style="margin-bottom:22px"><div class="stack gap8"><h1 style="font-size:30px">My events</h1><p class="muted">Everything you have registered for, attended or missed this session.</p></div><a class="btn btn-ghost btn-sm" href="02-events.html">Browse all events</a></div><div class="grid g4" style="gap:14px;margin-bottom:28px"><div class="kpi"><div class="n tab">11</div><div class="l">attended</div></div><div class="kpi"><div class="n tab">2</div><div class="l">coming up</div></div><div class="kpi"><div class="n tab">1</div><div class="l">note due</div></div><div class="kpi"><div class="n tab">2</div><div class="l">missed</div></div></div><div class="stack gap12" style="margin-bottom:32px"><h3>Coming up</h3><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox"><div class="d">19</div><div class="m">SEP</div></div><div class="grow stack gap4"><strong>Plant visit: Ibadan Steel Mill</strong><span class="small muted">Main gate, 7:30am &middot; Closed shoes and long trousers required</span></div><span class="chip chip-green">Going</span><a class="btn btn-ghost btn-sm" href="#">Details</a></div><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox"><div class="d">27</div><div class="m">SEP</div></div><div class="grow stack gap4"><strong>Design of pressure vessels</strong><span class="small muted">Online, 6:00pm &middot; Engr. John Doe</span></div><span class="chip">Not registered</span><a class="btn btn-ghost btn-sm" href="#">Register</a></div></div><div class="stack gap12" style="margin-bottom:32px"><h3>Waiting on you</h3><div class="card card-pad between" style="gap:18px;background:var(--accent-subtle);border-color:transparent"><div class="row-nw grow" style="gap:16px"><div class="datebox" style="background:var(--accent);color:#1D2721"><div class="d">14</div><div class="m">MAR</div></div><div class="stack gap4"><strong>Plant visit: Ibadan Steel Mill</strong><span class="small muted">Attended. Your one-page visit note is due Friday 20 September.</span></div></div><a class="btn btn-primary btn-sm" href="#">Write the note</a></div></div><div class="stack gap12"><h3>Earlier this session</h3><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox" style="background:var(--sunken);color:var(--text)"><div class="d">02</div><div class="m">SEP</div></div><div class="grow stack gap4"><strong>Introduction to CAD, session 4</strong><span class="small muted">Certificate issued 5 September</span></div><span class="chip chip-green">Attended</span><a class="btn btn-ghost btn-sm" href="#">Certificate</a></div><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox" style="background:var(--sunken);color:var(--text)"><div class="d">26</div><div class="m">AUG</div></div><div class="grow stack gap4"><strong>Introduction to CAD, session 3</strong><span class="small muted">CAD lab</span></div><span class="chip chip-green">Attended</span></div><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox" style="background:var(--sunken);color:var(--text)"><div class="d">21</div><div class="m">AUG</div></div><div class="grow stack gap4"><strong>Workshop safety briefing</strong><span class="small muted">Certificate issued 24 August</span></div><span class="chip chip-green">Attended</span><a class="btn btn-ghost btn-sm" href="#">Certificate</a></div><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox" style="background:var(--sunken);color:var(--text)"><div class="d">08</div><div class="m">AUG</div></div><div class="grow stack gap4"><strong>Careers evening with NSE Oyo</strong><span class="small muted">Senate auditorium</span></div><span class="chip chip-danger">Missed</span></div><div class="card card-pad row-nw" style="gap:16px;align-items:center"><div class="datebox" style="background:var(--sunken);color:var(--text)"><div class="d">24</div><div class="m">JUL</div></div><div class="grow stack gap4"><strong>Materials selection clinic</strong><span class="small muted">CAD lab</span></div><span class="chip chip-green">Attended</span></div></div></main></div></div><nav class="bottomnav"><a class="" href="member-dashboard.html"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.2 12 4l9 7.2"/><path d="M5.5 9.6V20h13V9.6"/></svg><span>Dashboard</span></a><a class="on" href="member-events.html"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>events</span></a><a class="" href="member-certificates.html"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="9" r="5.2"/><path d="M8.5 13.4 7 21l5-2.4L17 21l-1.5-7.6"/></svg><span>certificates</span></a><a class="" href="member-skills.html"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg><span>skills</span></a><a class="" href="#"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.8" y="7" width="18.4" height="13" rx="2.4"/><path d="M8.6 7V5.2A1.6 1.6 0 0 1 10.2 3.6h3.6A1.6 1.6 0 0 1 15.4 5.2V7"/></svg><span>Opportunities</span></a></nav>
+</body>
+</html>
