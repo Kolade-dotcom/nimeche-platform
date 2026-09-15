@@ -5,7 +5,9 @@
       "name": "Landing",
       "w": 1440,
       "h": 3040,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 1
     },
     {
       "file": "About.html",
@@ -19,21 +21,27 @@
       "name": "Events",
       "w": 1440,
       "h": 1980,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 2
     },
     {
       "file": "PublicEventDetail.html",
       "name": "One event",
       "w": 1440,
       "h": 1900,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 3
     },
     {
       "file": "Gallery.html",
       "name": "Gallery",
       "w": 1440,
       "h": 2160,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 4
     },
     {
       "file": "Album.html",
@@ -82,7 +90,9 @@
       "name": "Landing",
       "w": 390,
       "h": 3100,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 1
     },
     {
       "file": "MAbout.html",
@@ -96,21 +106,27 @@
       "name": "Events",
       "w": 390,
       "h": 2020,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 2
     },
     {
       "file": "MPublicEventDetail.html",
       "name": "One event",
       "w": 390,
       "h": 2140,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 3
     },
     {
       "file": "MGallery.html",
       "name": "Gallery",
       "w": 390,
       "h": 1980,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 4
     },
     {
       "file": "MAlbum.html",
@@ -161,7 +177,9 @@
       "name": "Sign up",
       "w": 1440,
       "h": 940,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 5
     },
     {
       "file": "JoinError.html",
@@ -210,7 +228,9 @@
       "name": "Sign up",
       "w": 390,
       "h": 940,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 5
     },
     {
       "file": "MJoinError.html",
@@ -261,7 +281,9 @@
       "name": "Dashboard",
       "w": 1440,
       "h": 1240,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 6
     },
     {
       "file": "MyEvents.html",
@@ -275,7 +297,9 @@
       "name": "Certificates",
       "w": 1440,
       "h": 1080,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 7
     },
     {
       "file": "CertificateView.html",
@@ -289,7 +313,9 @@
       "name": "Skills",
       "w": 1440,
       "h": 1160,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 8
     },
     {
       "file": "MyOpportunities.html",
@@ -324,7 +350,9 @@
       "name": "Dashboard",
       "w": 390,
       "h": 1980,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 6
     },
     {
       "file": "MMyEvents.html",
@@ -338,7 +366,9 @@
       "name": "Certificates",
       "w": 390,
       "h": 1420,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 7
     },
     {
       "file": "MCertificateView.html",
@@ -352,7 +382,9 @@
       "name": "Skills",
       "w": 390,
       "h": 1620,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 8
     },
     {
       "file": "MMyOpportunities.html",
@@ -424,14 +456,18 @@
       "name": "Overview",
       "w": 1440,
       "h": 1300,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 9
     },
     {
       "file": "AdminMembers.html",
       "name": "Members",
       "w": 1440,
       "h": 1220,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 10
     },
     {
       "file": "ReviewQueue.html",
@@ -473,7 +509,9 @@
       "name": "Attendance",
       "w": 1440,
       "h": 1120,
-      "viewport": "desktop"
+      "viewport": "desktop",
+      "figmaFirst": true,
+      "buildOrder": 11
     },
     {
       "file": "AdminCertificates.html",
@@ -508,14 +546,18 @@
       "name": "Overview",
       "w": 390,
       "h": 1500,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 9
     },
     {
       "file": "MAdminMembers.html",
       "name": "Members",
       "w": 390,
       "h": 1500,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 10
     },
     {
       "file": "MReviewQueue.html",
@@ -550,7 +592,9 @@
       "name": "Attendance",
       "w": 390,
       "h": 1180,
-      "viewport": "mobile"
+      "viewport": "mobile",
+      "figmaFirst": true,
+      "buildOrder": 11
     },
     {
       "file": "MAdminCertificates.html",

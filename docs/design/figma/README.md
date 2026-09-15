@@ -6,9 +6,37 @@ an HTML import gets you correct geometry and colour, not a well-built Figma file
 | What | Where |
 |---|---|
 | 81 standalone screens, one HTML file each | `screens/` |
+| **The 22 to import first** | flagged `figmaFirst` in `screens.json` |
 | Design tokens for Figma Variables | `tokens.json` |
 | Screen list by section, with sizes | `screens.json` |
 | The living source these were generated from | `../canvas/` |
+
+## Start with eleven screens, not eighty-one
+
+Eighty-one artboards is the right number for deciding what the platform is. It is the wrong number
+to rebuild by hand. **Eleven screens carry every pattern the other seventy reuse** — build those as
+components and the rest becomes assembly.
+
+| Order | Desktop | Mobile | Area |
+|---|---|---|---|
+| 1 | `Join` | `MJoin` | Joining — every form control in the system |
+| 2 | `Landing` | `MLanding` | Public — nav, hero, cards, mosaic, CTA band, footer |
+| 3 | `Main` | `MDashboard` | Member — sidebar, top bar, ring, cards, list rows |
+| 4 | `AdminMembers` | `MAdminMembers` | Executive — the data table every admin list reuses |
+| 5 | `PublicEvents` | `MPublicEvents` | Public — the event card in its grid |
+| 6 | `PublicEventDetail` | `MPublicEventDetail` | Public — the page WhatsApp links land on |
+| 7 | `Gallery` | `MGallery` | Public — mosaic, albums, report-a-photo |
+| 8 | `MyCertificates` | `MMyCertificates` | Member — the credential card and its code |
+| 9 | `MySkills` | `MMySkills` | Member — the derived-skill chip and level meter |
+| 10 | `AdminOverview` | `MAdminOverview` | Executive — admin shell, KPI tiles, charts |
+| 11 | `AdminAttendance` | `MAdminAttendance` | Executive — offline capture, the least off-the-shelf screen |
+
+The first four produce the component set. The remaining seven are mostly composition, which is why
+they come after rather than alongside.
+
+**The other seventy stay here as reference, not as a backlog.** They answer the questions a component
+library cannot — what the empty state says, what the error looks like, what happens after review.
+Keep them where a developer can open them.
 
 ## The fastest route
 
@@ -51,7 +79,8 @@ Mirror the canvas — four pages, desktop row then mobile row:
 
 ## Worth knowing before you start
 
-- **The crest is a placeholder.** Replace it everywhere from one component, once the real vector arrives.
+- **There is no logo — only a placeholder mark**, a dashed rounded square in `currentColor`, in all 99 places a crest belongs. Build it as one Figma component now and the real crest is a single swap later. It was drawn this way on purpose: an approximated crest gets treated as the real one within a week.
+- **Sign-in is the student email and a password.** `Join`, `Login` and their mobile twins show the current flow: a `@tech-u.edu.ng` address, one password field with a **Show** toggle, and no confirm box. `CheckEmail` and `LinkExpired` are now the forgot-password path, not the way in.
 - **Photographs are real but random.** Every image tile in `screens/` points at `picsum.photos`, which serves real Unsplash photographs deterministically from a seed, with no API key. They import into Figma as actual images. They are **not curated** — they are stock scenery, not engineering. Swap them for the branch's own event photographs, or for hand-picked Unsplash URLs, once you have some.
 - **The canvas keeps drawn placeholders instead**, because the artifact viewer's content policy blocks every external image host. That difference is deliberate, not a mistake.
 - **Screens import in light mode.** The dark values are in `tokens.json`; wire them as the second variable mode rather than importing every screen twice.

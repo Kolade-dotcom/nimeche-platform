@@ -33,13 +33,27 @@ came from and links back to it — the archive is the proof, not decoration. See
 The tiles are **deliberate placeholders**, not grey boxes: a grid of them should read as
 "photographs go here". Swap in real files when there are some.
 
+The event and project heroes sit **inside the page gutter with a 16px radius**, not bled to the
+browser edge. Full-bleed looked like a mistake at 1440px: a 1440-wide slab with a chip inset 9px
+into its corner, because that inset was designed for a 150px thumbnail. Insets do not scale with the
+tile, so the large media carries its own.
+
 `Verify` is the one screen a stranger judges the whole branch by — an employer holding a code and no
 account. It is plain, document-like, and answers their only question in the first line.
 
 ### Joining — done
 
 `Join` · `JoinError` · `CheckEmail` · `Login` · `LinkExpired` · `QuickJoin` · `QuickJoinDone`, each
-with its `M…` counterpart. Four fields, and no password anywhere in the section.
+with its `M…` counterpart.
+
+**Sign-in is the student email and a password.** The email must be a `@tech-u.edu.ng` address, which
+is what lets the form skip "which school?" entirely. Sign-up is five fields: name, email, password,
+department, level. The password field is one field, not three — no confirm box, no strength meter, a
+**Show** toggle instead, which is what actually helps on a phone.
+
+An emailed link survives in exactly one place: **forgetting the password**. `CheckEmail` is the
+"we sent you a link" state and `LinkExpired` is what happens 60 minutes later. Both used to be the
+main way in; now they are the recovery path.
 
 ### Member area — done
 
@@ -94,10 +108,23 @@ chart shows one tooltip so the hover layer is visible in a static mock.
 
 `canvas.json` holds page assignments, frame positions, artboard titles and the area notes.
 
+## The eleven that go to Figma
+
+Eighty-one artboards is the right number for deciding what the platform is and the wrong number to
+rebuild by hand. Eleven of them carry every pattern the rest reuse:
+
+`Landing` · `PublicEvents` · `PublicEventDetail` · `Gallery` · `Join` · `Main` · `MyCertificates` ·
+`MySkills` · `AdminOverview` · `AdminMembers` · `AdminAttendance`
+
+with their mobile counterparts — twenty-two artboards. Build `Join` first (it defines every form
+control), then `Landing`, `Main` and `AdminMembers`; after those four the rest is composition. The
+other seventy stay here as reference for the empty states, errors and after-review screens a
+component library cannot answer. Design plan section 16.1 has the reasoning per screen.
+
 ## The hero illustration
 
 `Landing` and `MLanding` share one inline SVG: a small stack of credentials with the front one
-detailed — crest, an orange gear-rule down the left edge, abstract rules where the name and
+detailed — the placeholder mark, an orange gear-rule down the left edge, abstract rules where the name and
 programme go, a verified badge, and one real string, the verification code.
 
 It replaced a mock member dashboard showing fake activity counts. That was a screenshot of the
@@ -110,8 +137,8 @@ custom properties, so it themes with the rest of the page rather than needing a 
 
 ## Known placeholders
 
-- **The crest is drawn from the raster logo**, not the official vector artwork. Replace it once the secretariat supplies the vector (design plan section 2.2). It appears in `Main`, `Home`, `SignUp`, `EventDetail` and `Certificate`.
-- **Media tiles are placeholders** — abstract gradient compositions standing in for photographs and video. Real files replace them; the layouts are built for 16:9, 4:3 and 1:1.
+- **There is no logo on any screen — only a placeholder mark.** A dashed rounded square drawn in `currentColor`, in all 99 places a crest belongs. A redrawn crest would have quietly become the logo; a shape that is obviously not one keeps the question open. It inherits its colour from its parent, so it works on white, on the green panels and in dark mode with no second variant. Replacing it is one find-and-replace once the vector artwork reaches this repository — see `docs/design/assets/README.md`, and design plan sections 2.2 and 2.3.
+- **Media tiles are placeholders** — a sunken panel, a hairline inset border and a thin image glyph, plus the tag chip, the duration and the caption the real photograph will carry. Layouts are built for 16:9, 4:3, 1:1 and 32:9. Inside the fixed-row mosaics on `Landing` and `Gallery` the tiles fill their grid cell instead of declaring their own ratio, which is what stops the large tile overflowing its section.
 - **Every name is an obvious placeholder** — Jane Doe, John Roe, Mary Major — and so is every company, so a mockup can never be mistaken for a real person or an arrangement that does not exist. Matric numbers and email addresses follow from them.
 - **Public-page copy is lorem ipsum.** Headlines and prose on the landing, about, events, gallery, projects, opportunities and news pages are placeholder text; buttons, labels, navigation and card titles stay real so the design is still reviewable. Application screens keep their real copy, because lorem there would make them impossible to judge.
 - **The student email pattern** is `firstname.lastname@tech-u.edu.ng` — confirmed.

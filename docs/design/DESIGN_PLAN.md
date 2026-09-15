@@ -63,8 +63,8 @@ exceeds its budget does not ship until it is redesigned or the budget is renegot
 
 | Journey | Who | Budget |
 |---|---|---|
-| Sign up → submitted for membership | Member | **≤4 fields, ≤2 minutes, no document upload** — name, Tech-U email, department, level. Institution is not asked; the email domain answers it. |
-| Register for an event, arriving from a WhatsApp link | Member | **≤2 taps** when signed in; ≤2 taps after a passwordless sign-in that returns to the event |
+| Sign up → submitted for membership | Member | **≤5 fields, ≤2 minutes, no document upload** — name, Tech-U email, password, department, level. Institution is not asked; the email domain answers it. The password is one field with a show-password toggle, never a confirm box and a strength meter. |
+| Register for an event, arriving from a WhatsApp link | Member | **≤2 taps** when signed in; ≤2 taps after a sign-in that returns to the event |
 | Receive a certificate after completing a programme | Member | **0 actions** — it arrives; there is no "claim" step |
 | Record a developed skill | Member | **0 actions** — derived from activity, never a form |
 | Find a relevant opportunity | Member | **≤3 taps** from landing to a full listing |
@@ -139,6 +139,14 @@ Request at the same time:
 **Never:** recolour the crest, place it on a busy photograph without a white scrim, stretch it, add
 effects, or use the orange gear ring alone as a decorative motif at large scale — at large sizes it
 reads as a warning graphic.
+
+**Until the vector crest arrives, every screen carries a placeholder mark.** The canvas and the
+Figma export use a neutral dashed-square mark drawn in `currentColor`, not an approximation of the
+crest. This is deliberate. A redrawn crest invites everyone to treat it as the real one and quietly
+becomes the logo; a placeholder that obviously is not a logo keeps the question open and makes the
+swap a single find-and-replace across 99 instances. The mark inherits its colour from its parent, so
+it reads correctly on white, on the green panels and in dark mode without a second variant. Replacing
+it is item 1 of section 17.
 
 **The branch lockup is the primary lockup here**, not an exception: the unmodified crest beside
 `NiMechE-SF · Tech-U`, set in Sora. Never a modified crest, never AATU's own logo merged into the
@@ -837,7 +845,7 @@ line up.
 **Phase 1 — MVP screens**
 
 5. Public: home, events list + detail, opportunities list + detail, about, news, verification page.
-6. Auth: register, sign in, membership profile completion.
+6. Auth: register (with password), sign in, forgot password, reset link sent, reset link expired, membership profile completion.
 7. Portal: dashboard, profile, certificates, event history, skills.
 8. Admin: members, events + **attendance capture** (designed first — see section 9.3), certificate issuance, opportunity review, basic analytics.
 9. Certificate template + OG image templates.
@@ -846,6 +854,37 @@ line up.
 **Phase 2 — Expansion**
 
 11. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notification centre, digital membership card, payment and renewal flows.
+
+### 16.1 The eleven screens that go to Figma first
+
+The canvas holds 81 artboards. That is the right number for deciding what the platform *is*, and the
+wrong number to rebuild by hand as Figma components. These eleven carry every pattern the other
+seventy reuse, so building them as components makes the rest assembly rather than design.
+
+| # | Screen | Area | Why this one |
+|---|---|---|---|
+| 1 | `Landing` | Public | The home page. Carries the nav, hero, feature row, step row, event cards, the gallery mosaic, the CTA band and the footer — eight patterns in one screen. |
+| 2 | `PublicEvents` | Public | The event card in its grid, plus filter chips. Every list on the public site is this layout with a different card. |
+| 3 | `PublicEventDetail` | Public | The page WhatsApp links land on, so the one that has to convert. Contained hero, registration panel, certificate panel, media strip. |
+| 4 | `Gallery` | Public | Where photographs and video from events, projects, competitions and webinars live. Mosaic plus album grid plus the report-a-photo notice. |
+| 5 | `Join` | Joining | Every form control in the system: text field, password field with a show toggle, segmented choice, primary action, consent copy. |
+| 6 | `Main` | Member | The member dashboard. Sidebar, top bar, greeting, activity ring, cards, list rows, empty states. |
+| 7 | `MyCertificates` | Member | The credential card and the verification code, which is the one artefact that leaves the platform. |
+| 8 | `MySkills` | Member | The derived-skill chip, the level meter and the "how this was earned" disclosure. Nothing else looks like it. |
+| 9 | `AdminOverview` | Executive | The admin shell, KPI tiles and the chart styles from section 13. |
+| 10 | `AdminMembers` | Executive | The data table: sort, filter, bulk select, row actions, pagination. Every other admin list is this table. |
+| 11 | `AdminAttendance` | Executive | The offline-first capture screen — the highest-stakes screen in the product and the least like anything off the shelf. |
+
+**Each is two artboards, desktop and mobile**, so twenty-two in Figma. The mobile counterparts are
+`MLanding`, `MPublicEvents`, `MPublicEventDetail`, `MGallery`, `MJoin`, `MDashboard`, `MMyCertificates`,
+`MMySkills`, `MAdminOverview`, `MAdminMembers`, `MAdminAttendance`.
+
+**Build them in this order:** 5 first (it defines every form control), then 1, then 6, then 10. Those
+four produce the component set; the remaining seven are mostly composition.
+
+**The other seventy artboards stay in the canvas as reference**, not as a backlog. They answer "what
+does the empty state say", "what does the error look like", "what happens after review" — questions a
+component library cannot answer and a developer will ask. Keep the canvas link beside the Figma file.
 
 **Design QA gates before each release:**
 
@@ -868,7 +907,7 @@ Each of these needs the executive team, and each **changes the design**. Purely 
 questions live in [dev plan section 13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5 below appear in both
 because they change the interface *and* the data model, which is why they should be answered early.
 
-1. **Vector logo and confirmed brand hexes** — the blocking item in section 2.2.
+1. **Vector logo and confirmed brand hexes** — the blocking item in section 2.2. Every screen currently shows a placeholder mark (section 2.3); swapping it is one edit, but it cannot happen until the file exists. The file has to reach the repository — a logo pasted into a chat cannot be saved to disk (`docs/design/assets/README.md`).
 2. **Branding sign-off from the national body** — may the branch use the crest in a `NiMechE-SF · AATU` lockup, on the platform and on certificates? This is the item that decides whether a certificate carries weight outside AATU (section 2.4), so chase it alongside the vector artwork.
 3. **What happens at graduation** — does a final-year member become an alumnus with a read-only profile, and does their certificate record stay reachable? For a student branch this is not an edge case: **the entire membership turns over in four years**, and a platform that loses graduates loses its own history.
 4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
@@ -903,4 +942,4 @@ Three requirements this plan places on the build, carried into dev plan section 
 - **`tokens.css` is the single source of visual truth.** No component hard-codes a colour, and no component references a ramp step directly — only semantic tokens.
 - **Attendance capture is P0 with offline support.** Certificates, skills, the development record and every analytics number depend on data actually being captured in a noisy hall on a bad connection.
 - **The two contrast rules in section 3.4 are non-negotiable**: never `#EE7623` as text on light, never `#008A45` as body text on white. Both are easy mistakes to make precisely because they are the logo colours.
-- **G0 and the friction budgets in section 1.1 are acceptance criteria, not preferences.** A flow that exceeds its budget is not done. The dev plan's section 1.1 carries the engineering consequences — passwordless sign-in, zero-action certificates, derived skills, no-account partner submission — and its section 9.5 gates them in CI.
+- **G0 and the friction budgets in section 1.1 are acceptance criteria, not preferences.** A flow that exceeds its budget is not done. The dev plan's section 1.1 carries the engineering consequences — a five-field sign-up, zero-action certificates, derived skills, no-account partner submission — and its section 9.5 gates them in CI.

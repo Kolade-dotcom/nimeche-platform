@@ -45,8 +45,8 @@ achievable.**
 
 | Budget (design plan section 1.1) | What the build must do |
 |---|---|
-| Sign up ≤4 fields, ≤2 min | **Passwordless-first auth** (section 5). Registration writes a minimal `Member` row; every other column is nullable and filled by progressive profiling. A schema that demands more than four fields at insert has already broken the budget. |
-| Event registration ≤2 taps from a WhatsApp link | **Deep links that survive sign-in** (section 8). The event page renders publicly; the sign-in round trip returns to the *event*, never to a dashboard. `?next=` is preserved through the entire auth flow, including the magic-link email. |
+| Sign up ≤5 fields, ≤2 min | **Email and password on the Tech-U address** (section 5). Registration writes a minimal `Member` row; every other column is nullable and filled by progressive profiling. A schema that demands more than five fields at insert has already broken the budget. The password field is one field, not three: no confirm box, no strength meter, a show-password toggle instead. |
+| Event registration ≤2 taps from a WhatsApp link | **Deep links that survive sign-in** (section 8). The event page renders publicly; the sign-in round trip returns to the *event*, never to a dashboard. `?next=` is preserved through the entire auth flow, including the password-reset email. |
 | Certificate: **0 actions** | Certificates are **pushed**, not claimed. The completion job issues, renders and emails the certificate, and it is already in the portal before the member looks (section 6.3). There is no claim endpoint to build, because building one would be building friction. |
 | Skills: **0 actions** | `MemberSkill` is derived by the skills engine (section 6.6). **There is no skills form and no endpoint that lets a member set their own level.** The absence of that write path is the feature. |
 | Attendance: member does nothing | The member is checked in by an executive or by showing their code. Nothing in the attendance flow requires the member to have data, battery or network (section 6.4). |
@@ -64,8 +64,8 @@ achievable.**
 4. **The happy path never requires an install.** The PWA is an enhancement for executives capturing attendance, never a prerequisite for a member doing anything.
 5. **Errors say what to do next, in plain words** (design plan section 15). An error message that names an internal state — `sync failed`, `invalid input`, `constraint violation` — is a defect, and error copy is written by whoever writes the endpoint, at the time they write it.
 
-**Where this costs engineering time, it is spent.** Passwordless auth with a returning deep link is
-more work than a password form. Push delivery of certificates is more work than a claim button.
+**Where this costs engineering time, it is spent.** A sign-in that returns you to the thing you clicked is
+more work than one that dumps you on a dashboard. Push delivery of certificates is more work than a claim button.
 Deriving skills is more work than a form. Those costs are the point: they are transferred from
 thousands of member interactions to one build.
 
@@ -130,7 +130,7 @@ Four commitments this plan must honour, carried over from the design plan's sect
 | **Framework** | **Next.js (App Router) + TypeScript** | Server-rendered public pages for the SEO and visibility goals in proposal section 11, a client-rendered portal behind auth, and API routes — all in one codebase and one language. Largest hiring/volunteer pool of any option. |
 | **Database** | **PostgreSQL** | Relational data with real integrity constraints. Member records are the asset; they belong in a database with foreign keys, not a document store. |
 | **Data access** | **Prisma** | Typed schema, generated client, migration history that is readable in review. |
-| **Auth, DB hosting, storage** | **Supabase** | Bundles managed Postgres, auth (email/password, magic link, Google), row-level security and object storage. One vendor to administer instead of four — decisive for a volunteer team. Plain Postgres underneath, so it is not a lock-in trap. |
+| **Auth, DB hosting, storage** | **Supabase** | Bundles managed Postgres, auth (email/password, with password reset and optional Google), row-level security and object storage. One vendor to administer instead of four — decisive for a volunteer team. Plain Postgres underneath, so it is not a lock-in trap. |
 | **Hosting** | **Vercel** (app) + Supabase (data) | Zero-ops deploys from Git, preview deploys per pull request, generous free tier. |
 | **Styling** | **Tailwind CSS wired to `tokens.css`** | Tailwind's theme reads the CSS custom properties, so utilities resolve to design tokens and the token file stays authoritative. |
 | **Email** | **Resend** or **Postmark** | Transactional deliverability matters — a certificate email in spam is a support ticket. |
@@ -249,17 +249,25 @@ AuditLog        id, actor_id, action, entity_type, entity_id, diff(jsonb), creat
 
 ## 5. Authentication and authorisation
 
-**Authentication is passwordless-first** — the single highest-leverage decision for G0. A password
-is a thing to forget, and a forgotten password on a student's phone at 11pm is a member lost.
+**Authentication is email and password, and the email is the Tech-U student address.** Every member
+already has `firstname.lastname@tech-u.edu.ng`, every member already knows it, and it is the one
+identifier that ties an account to a real student without asking anyone to type a matric number.
 
-- **Primary: magic link / email code.** Enter your email, tap the link, you are in. No password to create at sign-up and none to remember later. This removes the password field, the confirm-password field, the strength meter and the entire forgot-password flow from the member's world in one move — a quarter of the sign-up budget recovered before anything else is designed.
-- **Also: Google sign-in.** One tap for the large share of students already signed into Google on their phone.
-- **Optional: a password**, offered later in settings for members who want one. Offered, never required.
-- Sessions are **long-lived** HTTP-only cookies with silent refresh. A member who signed in last month should still be signed in — re-authentication on a phone is pure friction and buys us nothing at this risk level.
-- Sign-in always returns to where the person was going (`?next=`), preserved through the magic-link email. Landing on a dashboard after clicking an event link is a broken journey, not a neutral one.
-- Phone number is collected for contact and is **not** an auth factor in v1 — SMS costs money per message and adds a failure mode. Revisit if email deliverability to student addresses proves poor in the pilot; that is a real risk worth measuring rather than guessing.
+- **Sign in: student email + password.** Nothing else on the screen. The email field is typed once at sign-up and remembered by the browser thereafter.
+- **The email domain is the gate.** Registration accepts `@tech-u.edu.ng` only. This is what lets us skip the "which institution?" question entirely and what makes the roll match in section 6.1 possible. A non-Tech-U address gets a plain-words rejection that says where to get a student address, not a validation error.
+- **One password field at sign-up.** No confirm box, no strength meter, no composition rules beyond a minimum length of 8. A show-password toggle does the work a confirm box pretends to do, and does it better on a phone.
+- **Forgot password is a first-class flow, not an afterthought.** It is the one place an emailed link survives: request a reset, receive a link, set a new password. It is reachable from the sign-in screen in one tap, and the link expires in 60 minutes.
+- Sessions are **long-lived** HTTP-only cookies with silent refresh. A member who signed in last month should still be signed in. Re-authentication on a phone is pure friction and buys us nothing at this risk level.
+- Sign-in always returns to where the person was going (`?next=`), preserved through the whole round trip including the reset email. Landing on a dashboard after clicking an event link is a broken journey, not a neutral one.
+- Passwords are hashed by Supabase Auth (bcrypt). We never store, log or email one, and no executive screen can read one.
+- Phone number is collected for contact and is **not** an auth factor in v1. SMS costs money per message and adds a failure mode.
 
-**Executives get the same passwordless flow**, plus mandatory step-up (a fresh code) for destructive
+**Google sign-in is deferred to a decision, not assumed.** If Tech-U mail is Google Workspace-backed,
+adding "Continue with Google" is a configuration change in Supabase and worth doing, because most
+students are already signed into Google on their phone. If it is not Google-backed, the button would
+be a dead end. See section 13.
+
+**Executives sign in the same way**, plus mandatory step-up (a fresh emailed code) for destructive
 actions only: certificate revocation, role changes, bulk deletion. Step-up on the *actions* rather
 than the *session* keeps day-to-day admin work frictionless while protecting the few operations that
 warrant it.
@@ -511,7 +519,7 @@ front of the information. A link that opens to a sign-in screen dies in the grou
 - **Tailwind's theme maps to `tokens.css` custom properties**, so a utility class resolves to a semantic token and the theme swap is automatic.
 - **Theme init** is the inline pre-paint script from design plan section 5, plus persistence of `theme_preference` on the member record so it follows them across devices.
 - **Component library is built once, in Phase 1**, against the design plan's section 8 spec, with Storybook. Screens compose it; screens do not invent components.
-- **Deep links are a first-class requirement, not a routing detail.** Every public URL renders for a signed-out visitor; `?next=` survives the whole auth round trip including the magic-link email; and sign-in returns the person to what they clicked (section 1.1). This is tested in E2E, because it silently regresses.
+- **Deep links are a first-class requirement, not a routing detail.** Every public URL renders for a signed-out visitor; `?next=` survives the whole auth round trip including the password-reset email; and sign-in returns the person to what they clicked (section 1.1). This is tested in E2E, because it silently regresses.
 - **No install is ever required of a member.** The PWA exists for executives capturing attendance offline; nothing a member does depends on it.
 - **Performance budget: ≤150KB JS, ≤60KB CSS gzipped on public pages, LCP under 2.5s on a mid-range Android over 3G.** Enforced in CI (section 9.5), because a budget nobody measures is a wish.
 - **Fonts** subset to Latin, `font-display: swap`, preloaded. Sora is dropped first if the budget bites.
@@ -718,6 +726,7 @@ Some depend on the executive answering the design plan's section 17; those are m
 8. **Will the department share its student list?** *(design plan section 17.7)* — if yes, membership review becomes a matric-number lookup instead of a judgement call, and section 6.1 gets materially shorter.
 9. **Assessment engine scope** — a simple built-in quiz, or an integration with an existing tool.
 10. **Whether the mobile app in proposal section 16 is a PWA or native.** The PWA built for attendance (section 6.4) may already satisfy the need, at a fraction of the cost.
+11. **Is Tech-U mail Google Workspace-backed?** If it is, "Continue with Google" is a configuration change in Supabase and removes the password from most sign-ins without removing it from the system. If it is not, the button is a dead end and we ship email and password alone (section 5). One question to the ICT office answers it.
 
 ---
 
