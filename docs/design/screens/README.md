@@ -54,14 +54,20 @@ Two things before you start:
 
 ## The logo
 
-Every screen draws a **placeholder** where the crest belongs: a dashed rounded square in
-`currentColor`, so it reads correctly on white, on the green panels and in dark mode without a
-second variant.
+The real NiMechE crest ships beside these files as **`nimeche-logo.svg`**, and every screen points
+at it. Open any file in a browser and the crest is there.
 
-To drop in the real thing, search any file for `class="mark"` and replace that `<svg>` element with
-the NiMechE crest, keeping the `width` and `height` attributes already on it. It appears at 32px,
-34px and 38px in the chrome, and at 300px as a watermark on the two auth screens - so the artwork
-needs to survive both.
+Two treatments, because the crest has a white inner field and cannot sit bare on a coloured ground:
+
+- **Full colour** in the public nav, the footer and the app sidebar, at 40-44px. Below about 40px
+  the ring lettering turns to mush, which is why nothing uses it smaller. A square icon mark for
+  favicons and avatars still has to come from the secretariat (design plan section 2.2).
+- **White knockout** on the green auth panels, via `filter: brightness(0) invert(1)` on the same
+  file. No second asset to keep in sync.
+
+**If you paste a file into html.to.design** rather than opening it, the image will not travel with
+the paste. Build the crest once as a Figma component and drop it into the imported frames, which is
+what you want in the Figma file anyway - fifteen embedded copies of a logo is not a design system.
 
 ## The content
 

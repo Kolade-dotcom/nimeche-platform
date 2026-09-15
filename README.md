@@ -46,8 +46,7 @@ requirement and the dev plan states the enforcement. Full mapping in design plan
 
 Both plans drafted, pending review.
 
-**Blocking item:** obtain the official NiMechE logo as vector artwork. Every screen currently draws a deliberate placeholder mark where the crest belongs, so swapping it in is one find-and-replace once the file is in this repository. Get it with a dark-mode knockout
-lockup and a square icon mark, so the two brand colour anchors can be confirmed (design plan section 2.2).
+**The crest is in.** `docs/design/assets/nimeche-logo.svg`, supplied by the branch, and wired into all fifteen screens. The dark lockup is produced from the same file with a CSS knockout rather than a second asset. **Still outstanding:** a square icon mark for favicons, app icons and avatars, because the full crest stops being legible below about 40px (design plan section 2.2).
 Everything visual derives from those anchors.
 
 Open questions for the executive team are in design plan section 17 (they change the interface) and dev

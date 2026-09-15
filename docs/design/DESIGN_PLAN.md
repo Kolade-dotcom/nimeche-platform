@@ -140,13 +140,21 @@ Request at the same time:
 effects, or use the orange gear ring alone as a decorative motif at large scale — at large sizes it
 reads as a warning graphic.
 
-**Until the vector crest arrives, every screen carries a placeholder mark.** The canvas and the
-Figma export use a neutral dashed-square mark drawn in `currentColor`, not an approximation of the
-crest. This is deliberate. A redrawn crest invites everyone to treat it as the real one and quietly
-becomes the logo; a placeholder that obviously is not a logo keeps the question open and makes the
-swap a single find-and-replace across 99 instances. The mark inherits its colour from its parent, so
-it reads correctly on white, on the green panels and in dark mode without a second variant. Replacing
-it is item 1 of section 17.
+**The crest is in the repository** at [`assets/nimeche-logo.svg`](assets/nimeche-logo.svg), supplied
+by the branch. It is the full colour emblem: orange gear ring, green annulus carrying the institution
+and society names, white inner field with the anvil device. Two treatments carry it everywhere:
+
+- **Full colour** on white and on the light surfaces, at **40px and up**. Below that the annulus
+  lettering stops resolving and the crest reads as an orange smudge, so nothing in the interface uses
+  it smaller. The square icon mark for favicons, app icons and avatars is still outstanding
+  (section 2.2) and is the one remaining artwork ask.
+- **White knockout** on the green panels and in dark mode, produced from the same file with
+  `filter: brightness(0) invert(1)` rather than a second asset. This is the dark lockup section 2.2
+  asked for, obtained without waiting for one.
+
+The crest is **not** inlined into the artboards in `canvas/`. At 123KB across 99 placements it would
+add roughly 12MB to a canvas that is already 4MB, so those keep a neutral placeholder and the fifteen
+screens in `screens/` carry the real thing.
 
 **The branch lockup is the primary lockup here**, not an exception: the unmodified crest beside
 `NiMechE-SF · Tech-U`, set in Sora. Never a modified crest, never AATU's own logo merged into the
@@ -915,7 +923,7 @@ Each of these needs the executive team, and each **changes the design**. Purely 
 questions live in [dev plan section 13](../dev/DEV_PLAN.md); items 2, 3, 4 and 5 below appear in both
 because they change the interface *and* the data model, which is why they should be answered early.
 
-1. **Vector logo and confirmed brand hexes** — the blocking item in section 2.2. Every screen currently shows a placeholder mark (section 2.3); swapping it is one edit, but it cannot happen until the file exists. The file has to reach the repository — a logo pasted into a chat cannot be saved to disk (`docs/design/assets/README.md`).
+1. **A square icon mark**, and confirmation of the two brand hexes against the vector artwork. The crest itself has arrived (section 2.3) and is in use. What is still missing is a simplified mark for favicons, app icons and avatars, because the full crest is illegible below 40px — section 2.2 lists what to ask the secretariat for.
 2. **Branding sign-off from the national body** — may the branch use the crest in a `NiMechE-SF · AATU` lockup, on the platform and on certificates? This is the item that decides whether a certificate carries weight outside AATU (section 2.4), so chase it alongside the vector artwork.
 3. **What happens at graduation** — does a final-year member become an alumnus with a read-only profile, and does their certificate record stay reachable? For a student branch this is not an edge case: **the entire membership turns over in four years**, and a platform that loses graduates loses its own history.
 4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
