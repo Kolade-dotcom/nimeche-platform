@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* The design tokens are the source of truth for colour, type, space and shape.
+   The file lives in docs/design/ and is imported here rather than copied, so
+   there is exactly one definition of every value and the design plan's many
+   references to it stay accurate. See design plan sections 3-6. */
+@import "../../docs/design/tokens.css";
+
+/* tokens.css themes on [data-theme] plus prefers-color-scheme, so next-themes
+   is configured with attribute="data-theme" (see providers.tsx). Colour should
+   come from the tokens, which already handle both modes - reach for a dark:
+   utility only for something the tokens genuinely do not cover. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* --------------------------------------------------------------------------
+   shadcn/ui speaks its own vocabulary. Rather than give the project a second
+   palette, each of its names is pointed at the semantic token that already
+   means the same thing. A shadcn <Button> is then branded by construction,
+   and changing a colour stays a one-line edit in tokens.css.
+
+   Names that tokens.css already defines - primary, accent, border, chart-* -
+   are deliberately NOT redefined here; they are mapped straight through in
+   the @theme block below. Redefining them would be circular.
+   -------------------------------------------------------------------------- */
+:root {
+  --radius: var(--r-md);
+
+  --card: var(--surface);
+  --card-foreground: var(--text);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--text);
+
+  --primary-foreground: var(--on-primary);
+
+  --secondary: var(--surface-sunken);
+  --secondary-foreground: var(--text);
+
+  --muted: var(--surface-sunken);
+  --muted-foreground: var(--text-muted);
+
+  --accent-foreground: var(--accent-text);
+
+  --destructive: var(--danger);
+  --destructive-foreground: #ffffff;
+
+  --input: var(--border-strong);
+  --ring: var(--focus-ring);
+
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--text);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--on-primary);
+  --sidebar-accent: var(--primary-subtle);
+  --sidebar-accent-foreground: var(--primary-text);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--focus-ring);
+}
+
+/* --------------------------------------------------------------------------
+   Expose everything as Tailwind utilities. bg-surface, text-muted-foreground,
+   rounded-lg, font-heading and shadow-e2 all resolve to a token.
+   -------------------------------------------------------------------------- */
+@theme inline {
+  /* shadcn vocabulary */
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent-subtle);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* the project's own vocabulary, for anything shadcn has no word for */
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-border-strong: var(--border-strong);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-text: var(--primary-text);
+  --color-primary-subtle: var(--primary-subtle);
+  --color-on-primary: var(--on-primary);
+  --color-brand-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-on-accent: var(--on-accent);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+
+  /* charts: the validated palettes, never a library default (design plan 13) */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+
+  /* next/font hands us the loaded families; fall back to the token stacks. */
+  --font-heading: var(--font-sora), var(--font-heading);
+  --font-sans: var(--font-inter), var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-lg: var(--r-lg);
+  --radius-xl: var(--r-xl);
+
+  --shadow-e1: var(--e1);
+  --shadow-e2: var(--e2);
+  --shadow-e3: var(--e3);
+
+  --ease-brand: var(--ease);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: var(--lh-tight);
+  }
+  /* The focus ring is never removed. Accessibility commitment, design plan 11. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}

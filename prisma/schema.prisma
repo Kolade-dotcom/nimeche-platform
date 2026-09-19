@@ -1,0 +1,50 @@
+// Schema stub. The full data model is specified in docs/dev/DEV_PLAN.md
+// section 4 - Member, Event, Registration, AttendanceRecord, Credential,
+// Skill, MemberSkill, Opportunity, MediaAsset, AuditLog and the rest.
+// It is modelled here table by table as each subsystem is built.
+//
+// Three rules from that section the schema has to keep:
+//   - AttendanceRecord.clientEventId is unique. It is the idempotency key
+//     that makes offline check-in replay safe.
+//   - Credential is immutable once issued and survives membership lapse, so
+//     nothing may cascade a delete onto it.
+//   - MemberSkill.level is derived. There is no write path for a member.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Department {
+  MECHANICAL
+  MECHATRONICS
+}
+
+enum MemberStatus {
+  PENDING
+  ACTIVE
+  LAPSED
+  ALUMNUS
+}
+
+/// A person with an account. Membership is not the same as an account: anyone
+/// can register, and `status` moves to ACTIVE only once an executive has
+/// verified them against the department roll (dev plan section 6.1).
+model Member {
+  id         String       @id @default(cuid())
+  email      String       @unique
+  fullName   String
+  department Department?
+  level      Int?
+  matricNo   String?      @unique
+  status     MemberStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([status])
+}
