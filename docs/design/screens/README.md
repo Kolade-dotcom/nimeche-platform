@@ -1,11 +1,11 @@
-# Fifteen screens
+# Sixteen screens
 
 Self-contained, responsive HTML. One file per screen. Open `index.html` for a contact sheet of all
-fifteen, or open any file on its own.
+sixteen, or open any file on its own.
 
 These supersede the 81-artboard export that used to live in `../figma/screens/`. That export was
 mechanical, desktop-only, split desktop and mobile into separate files, and was too many screens to
-rebuild by hand. These fifteen cover the same four areas of the product and are the ones to turn
+rebuild by hand. These sixteen cover the same four areas of the product and are the ones to turn
 into Figma components.
 
 | # | File | Area | What it carries |
@@ -21,6 +21,7 @@ into Figma components.
 | 9 | `09-member-events.html` | Member | Registered, waiting on you, attended and missed |
 | 10 | `10-member-certificates.html` | Member | The credential card, verification code, who has checked it |
 | 11 | `11-member-skills.html` | Member | Derived skill levels with the evidence behind each |
+| 16 | `16-member-profile.html` | Member | The membership record, the digital card, and the data-rights controls |
 | 12 | `12-exec-overview.html` | Executive | Waiting-on-you queue, KPI tiles, attendance chart, next event, membership split |
 | 13 | `13-exec-members.html` | Executive | Review queue and the directory table with bulk actions |
 | 14 | `14-exec-attendance.html` | Executive | Offline capture at the gate |
@@ -49,7 +50,7 @@ Two things before you start:
    text reflows into a fallback and the spacing you see will not be the spacing you designed.
 2. **Import light mode first.** Every screen defines a complete dark palette too, under
    `prefers-color-scheme` and `[data-theme="dark"]`. Wire those as a second variable mode rather
-   than importing fifteen screens twice. To preview dark, add `data-theme="dark"` to the `<html>`
+   than importing sixteen screens twice. To preview dark, add `data-theme="dark"` to the `<html>`
    tag.
 
 ## The logo
@@ -82,8 +83,29 @@ Two treatments, because the crest has a white inner field and cannot sit bare on
   file. No second asset to keep in sync.
 
 **Pasting into html.to.design** now carries the logo with it, since the image is fetched from a URL
-rather than a file beside the page. Build it as a Figma component anyway - fifteen copies of a logo
+rather than a file beside the page. Build it as a Figma component anyway - sixteen copies of a logo
 is not a design system.
+
+## Matric numbers
+
+The format is **`125/23/1/0142`**:
+
+| Part | Means |
+|---|---|
+| `125` | Programme code |
+| `23` | Year of entry |
+| `1` | `1` male, `2` female |
+| `0142` | The student's number on the school list for that year |
+
+Every entry year in these screens agrees with the person's level, and the fourth part agrees with
+the placeholder name, so the numbers read as real records rather than filler.
+
+**One thing to confirm:** the code `125` came from a Mechanical Engineering example. If Mechatronics
+has its own programme code, the Mechatronics rows in `13-exec-members.html` need it.
+
+A member never types this. It comes off the department roll when an executive approves them, which
+is what dev plan section 6.1 depends on, and it is why the review queue can say "matched on the
+department roll" rather than asking anyone to check by hand.
 
 ## The content
 

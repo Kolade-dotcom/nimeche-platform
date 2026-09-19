@@ -153,7 +153,7 @@ src/
 prisma/
   schema.prisma         Data model (built out table by table)
 docs/
-  design/               Design plan, tokens, 15 built screens, the 81-artboard canvas
+  design/               Design plan, tokens, 16 built screens, the 81-artboard canvas
   dev/                  Development plan
 e2e/                    Playwright specs
 ```
@@ -206,14 +206,14 @@ tokens. They are ordinary source files — edit them freely.
 
 The interface is designed before it is built. Three places to look:
 
-- **[`docs/design/screens/`](docs/design/screens/)** — 15 responsive screens, one self-contained
+- **[`docs/design/screens/`](docs/design/screens/)** — 16 responsive screens, one self-contained
   HTML file each, covering all four areas. Open `index.html` for a contact sheet of the lot. These
   are what gets built against, and what gets imported into Figma.
 - **[`docs/design/DESIGN_PLAN.md`](docs/design/DESIGN_PLAN.md)** — goals and friction budgets,
   brand, colour in both themes, typography, components, information architecture, accessibility
   commitments, certificate design, plain-language rules.
 - **[`docs/design/canvas/`](docs/design/canvas/)** — 81 reference artboards covering the empty
-  states, errors and after-review screens the 15 do not show.
+  states, errors and after-review screens the 16 do not show.
 
 ## Planning documents
 
@@ -230,7 +230,7 @@ the dev plan states the enforcement.
 ## Status
 
 **Planning and design are done. The application scaffold is in place** — Next.js, the token
-pipeline, shadcn, Prisma, Supabase clients, tests — and the subsystems get built against the 15
+pipeline, shadcn, Prisma, Supabase clients, tests — and the subsystems get built against the 16
 designed screens.
 
 Outstanding:

@@ -108,17 +108,17 @@ chart shows one tooltip so the hover layer is visible in a static mock.
 
 `canvas.json` holds page assignments, frame positions, artboard titles and the area notes.
 
-## The fifteen that go to Figma
+## The sixteen that go to Figma
 
 Eighty-one artboards is the right number for deciding what the platform is and the wrong number to
-rebuild by hand. Fifteen screens carry every pattern the rest reuse, and they are built separately
+rebuild by hand. Sixteen screens carry every pattern the rest reuse, and they are built separately
 as self-contained **responsive** HTML in [`../screens/`](../screens/) — one file per screen, each
 working from 1440px down to 390px instead of splitting into two artboards.
 
-Five public, two for signing in, four member, four executive. `../screens/README.md` lists them and
+Five public, two for signing in, five member, four executive. `../screens/README.md` lists them and
 `../screens/index.html` is a contact sheet.
 
-**The other sixty-six artboards stay here as reference** for the empty states, errors and
+**The other sixty-five artboards stay here as reference** for the empty states, errors and
 after-review screens a component library cannot answer. Design plan section 16.1 has the reasoning
 per screen.
 
@@ -138,7 +138,7 @@ custom properties, so it themes with the rest of the page rather than needing a 
 
 ## Known placeholders
 
-- **The canvas keeps a placeholder mark where the crest belongs.** The real crest arrived as `docs/design/assets/nimeche-logo.svg` and is wired into the fifteen screens in `../screens/`. It is not inlined here: the crest is 123KB and appears in 99 places across these 81 artboards, which would add ~12MB to a published canvas that is already 4MB. The canvas is reference material now, so the placeholder stays and the screens carry the real thing.
+- **The canvas keeps a placeholder mark where the crest belongs.** The real crest arrived as `docs/design/assets/nimeche-logo.svg` and is wired into the sixteen screens in `../screens/`. It is not inlined here: the crest is 123KB and appears in 99 places across these 81 artboards, which would add ~12MB to a published canvas that is already 4MB. The canvas is reference material now, so the placeholder stays and the screens carry the real thing.
 - **Media tiles are placeholders** — a sunken panel, a hairline inset border and a thin image glyph, plus the tag chip, the duration and the caption the real photograph will carry. Layouts are built for 16:9, 4:3, 1:1 and 32:9. Inside the fixed-row mosaics on `Landing` and `Gallery` the tiles fill their grid cell instead of declaring their own ratio, which is what stops the large tile overflowing its section.
 - **Every name is an obvious placeholder** — Jane Doe, John Roe, Mary Major — and so is every company, so a mockup can never be mistaken for a real person or an arrangement that does not exist. Matric numbers and email addresses follow from them.
 - **Public-page copy is lorem ipsum.** Headlines and prose on the landing, about, events, gallery, projects, opportunities and news pages are placeholder text; buttons, labels, navigation and card titles stay real so the design is still reviewable. Application screens keep their real copy, because lorem there would make them impossible to judge.

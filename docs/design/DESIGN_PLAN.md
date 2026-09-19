@@ -153,7 +153,7 @@ and society names, white inner field with the anvil device. Two treatments carry
   asked for, obtained without waiting for one.
 
 The crest is **not** inlined into the artboards in `canvas/`. At 123KB across 99 placements it would
-add roughly 12MB to a canvas that is already 4MB, so those keep a neutral placeholder and the fifteen
+add roughly 12MB to a canvas that is already 4MB, so those keep a neutral placeholder and the sixteen
 screens in `screens/` carry the real thing.
 
 **The branch lockup is the primary lockup here**, not an exception: the unmodified crest beside
@@ -863,10 +863,10 @@ line up.
 
 11. Project detail, mentorship matching, public member profiles (`/u/:handle`), CV export, notification centre, digital membership card, payment and renewal flows.
 
-### 16.1 The fifteen screens that go to Figma
+### 16.1 The sixteen screens that go to Figma
 
 The canvas holds 81 artboards, which is the right number for deciding what the platform *is* and
-the wrong number to rebuild by hand. **Fifteen screens carry every pattern the other sixty-six
+the wrong number to rebuild by hand. **Sixteen screens carry every pattern the other sixty-five
 reuse**, and they live as self-contained responsive HTML in
 [`docs/design/screens/`](screens/) — one file per screen, each responding from 1440px down to
 390px rather than splitting into a desktop file and a mobile file.
@@ -884,6 +884,7 @@ reuse**, and they live as self-contained responsive HTML in
 | 9 | My events | Member | The registered / due / attended / missed states a list has to express |
 | 10 | My certificates | Member | The credential card and the verification code — the one artefact that leaves the platform |
 | 11 | My skills | Member | The derived-skill card, level meter and evidence disclosure. Nothing else looks like it |
+| 16 | My profile | Member | The membership record, the digital membership card, and the export-and-delete controls the NDPA requires |
 | 12 | Executive overview | Executive | Admin shell, waiting-on-you queue, KPI tiles, the chart styles from section 13 |
 | 13 | Members | Executive | The review queue and the data table. Every other admin list is this table |
 | 14 | Check-in | Executive | The offline-first capture screen — highest stakes, least like anything off the shelf |
@@ -892,7 +893,7 @@ reuse**, and they live as self-contained responsive HTML in
 **Build order:** 7 first, because it defines every form control. Then 1, then 8, then 13. Those
 four produce the component set; the remaining eleven are mostly composition.
 
-**The other sixty-six artboards stay in the canvas as reference**, not as a backlog. They answer
+**The other sixty-five artboards stay in the canvas as reference**, not as a backlog. They answer
 "what does the empty state say", "what does the error look like", "what happens after review" —
 questions a component library cannot answer and a developer will ask.
 

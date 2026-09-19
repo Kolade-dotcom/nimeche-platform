@@ -41,6 +41,14 @@ model Member {
   fullName   String
   department Department?
   level      Int?
+  /// Tech-U matric number, e.g. 125/23/1/0142 -
+  ///   125   programme code
+  ///   23    year of entry
+  ///   1     1 male, 2 female
+  ///   0142  the student's number on the school list for that year
+  /// Never typed by a member. It is read off the department roll when an
+  /// executive approves them (dev plan section 6.1), which is what lets the
+  /// review queue say "matched on the roll" instead of asking anyone to check.
   matricNo   String?      @unique
   status     MemberStatus @default(PENDING)
   createdAt  DateTime     @default(now())
