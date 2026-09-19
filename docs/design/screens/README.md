@@ -54,8 +54,24 @@ Two things before you start:
 
 ## The logo
 
-The real NiMechE crest ships beside these files as **`nimeche-logo.svg`**, and every screen points
-at it. Open any file in a browser and the crest is there.
+Every screen loads the real NiMechE crest from an **absolute URL on raw.githubusercontent.com,
+pinned to the commit that added it**:
+
+```
+https://raw.githubusercontent.com/Kolade-dotcom/nimeche-platform/2003378.../docs/design/screens/nimeche-logo.svg
+```
+
+That is deliberate. These files get downloaded and opened one at a time, and a relative `src` only
+resolves when the rest of the folder came with it - which it usually did not. Pinning to a commit
+SHA rather than a branch means the URL keeps working even if the file later moves or changes.
+
+Each `<img>` also carries an `onerror` that falls back to `nimeche-logo.svg` beside it, so the
+folder still renders with no network at all. Remote first, local second, and the crest shows up
+either way.
+
+**To change the crest**, replace `nimeche-logo.svg` here and in `../assets/`, commit, then update
+`LOGO_URL` to the new commit SHA and rebuild. Until the SHA is updated the screens keep serving the
+old artwork, which is the point of pinning - but it is also the thing to remember.
 
 Two treatments, because the crest has a white inner field and cannot sit bare on a coloured ground:
 
@@ -65,9 +81,9 @@ Two treatments, because the crest has a white inner field and cannot sit bare on
 - **White knockout** on the green auth panels, via `filter: brightness(0) invert(1)` on the same
   file. No second asset to keep in sync.
 
-**If you paste a file into html.to.design** rather than opening it, the image will not travel with
-the paste. Build the crest once as a Figma component and drop it into the imported frames, which is
-what you want in the Figma file anyway - fifteen embedded copies of a logo is not a design system.
+**Pasting into html.to.design** now carries the logo with it, since the image is fetched from a URL
+rather than a file beside the page. Build it as a Figma component anyway - fifteen copies of a logo
+is not a design system.
 
 ## The content
 
