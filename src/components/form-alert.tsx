@@ -7,6 +7,7 @@ export function FormAlert({ message }: { message?: string }) {
   return (
     <div
       role="alert"
+      data-slot="form-alert"
       className="bg-danger-subtle text-danger flex items-start gap-3 rounded-md px-4 py-3"
     >
       <AlertCircleIcon className="mt-0.5 size-4 shrink-0" />

@@ -46,6 +46,24 @@ test.describe("signing in", () => {
       "/events/plant-visit-ibadan-steel-mill"
     );
   });
+
+  test("accepts Auth.js's absolute callbackUrl too, as a path", async ({ page }) => {
+    await page.goto(
+      "/sign-in?callbackUrl=" + encodeURIComponent("http://localhost:3000/me")
+    );
+    await expect(page.locator('input[name="next"]')).toHaveValue("/me");
+  });
+
+  test("refuses a callbackUrl pointing at another site", async ({ page }) => {
+    await page.goto("/sign-in?next=" + encodeURIComponent("//evil.example.com"));
+    await expect(page.locator('input[name="next"]')).toHaveCount(0);
+  });
+
+  test("a protected route sends a signed-out visitor to sign in", async ({ page }) => {
+    await page.goto("/me");
+    await expect(page).toHaveURL(/\/sign-in\?callbackUrl=/);
+    await expect(page.locator('input[name="next"]')).toHaveValue("/me");
+  });
 });
 
 test.describe("joining", () => {

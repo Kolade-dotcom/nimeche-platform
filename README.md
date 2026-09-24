@@ -15,7 +15,8 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white">
   <img alt="Tailwind CSS 4" src="https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss&logoColor=white">
   <img alt="Prisma" src="https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white">
-  <img alt="Supabase" src="https://img.shields.io/badge/Supabase-Postgres-3FCF8E?logo=supabase&logoColor=white">
+  <img alt="Neon Postgres" src="https://img.shields.io/badge/Neon-Postgres-00E599?logo=postgresql&logoColor=white">
+  <img alt="Auth.js" src="https://img.shields.io/badge/Auth.js-v5-000000?logo=auth0&logoColor=white">
   <img alt="Status" src="https://img.shields.io/badge/status-in%20development-EE7623">
 </p>
 
@@ -68,18 +69,18 @@ possible, and dev plan §9.5 gates them in CI.
 
 ## Tech stack
 
-| Layer       | Choice                                                      | Why this one                                                                                                              |
-| ----------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Framework   | **Next.js 16** (App Router) + **React 19** + **TypeScript** | Server-rendered public pages for visibility, a client-rendered portal behind auth, one language across the whole codebase |
-| Styling     | **Tailwind CSS 4** driven by `docs/design/tokens.css`       | Utilities resolve to design tokens, so the token file stays authoritative                                                 |
-| Components  | **shadcn/ui** (Radix primitives)                            | Source you own and can edit, not a dependency you fight                                                                   |
-| Database    | **PostgreSQL** via **Supabase**                             | Member records are the asset; they belong somewhere with real foreign keys                                                |
-| Data access | **Prisma 6**                                                | Typed schema, generated client, migrations readable in review                                                             |
-| Auth        | **Supabase Auth** — Tech-U email + password                 | See below                                                                                                                 |
-| Validation  | **Zod 4**                                                   | One schema shared by the form and the server action                                                                       |
-| Charts      | **Recharts** with the validated token palettes              | Chart colour comes from `--chart-*`, never a library default                                                              |
-| Testing     | **Vitest** (unit), **Playwright** (E2E, desktop + mobile)   |                                                                                                                           |
-| Hosting     | **Vercel** (app) + **Supabase** (data)                      | Zero-ops deploys, preview per pull request, free tier                                                                     |
+| Layer       | Choice                                                      | Why this one                                                                                                                                    |
+| ----------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework   | **Next.js 16** (App Router) + **React 19** + **TypeScript** | Server-rendered public pages for visibility, a client-rendered portal behind auth, one language across the whole codebase                       |
+| Styling     | **Tailwind CSS 4** driven by `docs/design/tokens.css`       | Utilities resolve to design tokens, so the token file stays authoritative                                                                       |
+| Components  | **shadcn/ui** (Radix primitives)                            | Source you own and can edit, not a dependency you fight                                                                                         |
+| Database    | **PostgreSQL** on **Neon**                                  | Member records are the asset; they belong somewhere with real foreign keys. Neon scales to zero, so an idle branch costs nothing between events |
+| Data access | **Prisma 6**                                                | Typed schema, generated client, migrations readable in review                                                                                   |
+| Auth        | **Auth.js v5** (NextAuth) — Tech-U email + password         | In the repo, not behind a dashboard. Sessions in a signed cookie, members in our own schema, no per-user pricing. See below                     |
+| Validation  | **Zod 4**                                                   | One schema shared by the form and the server action                                                                                             |
+| Charts      | **Recharts** with the validated token palettes              | Chart colour comes from `--chart-*`, never a library default                                                                                    |
+| Testing     | **Vitest** (unit), **Playwright** (E2E, desktop + mobile)   |                                                                                                                                                 |
+| Hosting     | **Vercel** (app) + **Neon** (data)                          | Zero-ops deploys, preview per pull request, free tier on both                                                                                   |
 
 **Authentication is email and password, and the email is the Tech-U address.** Every member already
 has `firstname.lastname@tech-u.edu.ng`, already knows it, and it is the one identifier that ties an
@@ -89,8 +90,8 @@ forgetting the password.
 
 ## Getting started
 
-**You need:** [Node.js 22+](https://nodejs.org), npm 10+, and a free
-[Supabase](https://supabase.com) project. No local Postgres install required — Supabase hosts it.
+**You need:** [Node.js 22+](https://nodejs.org), npm 10+, and a free [Neon](https://neon.tech)
+project. No local Postgres install required — Neon hosts it.
 
 ```bash
 git clone https://github.com/Kolade-dotcom/nimeche-platform.git
@@ -98,8 +99,10 @@ cd nimeche-platform
 npm install
 ```
 
-Copy the environment template and fill it in from your Supabase dashboard
-(_Project settings → Database_ for the connection strings, _Project settings → API_ for the keys):
+Copy the environment template and fill it in. The two connection strings come from the Neon
+dashboard under _Connection Details_ — `DATABASE_URL` is the **pooled** one (its host contains
+`-pooler`), `DIRECT_URL` is the direct one that migrations need. Generate `AUTH_SECRET` with
+`npx auth secret`:
 
 ```bash
 cp .env.example .env.local   # read by the app
@@ -112,11 +115,11 @@ Push the schema to your database:
 npm run db:push
 ```
 
-Then run **`supabase/0001_member_profile.sql`** once in the Supabase SQL editor. It puts a trigger on
-`auth.users` so that creating an account creates the matching `Member` row, and switches on
-row-level security. It is not a Prisma migration because it touches Supabase's own schema, which
-Prisma does not manage — see the comments at the top of the file. Sign-up will appear to work
-without it and leave you with accounts that have no membership record behind them.
+Seed a couple of placeholder members so there is something to sign in as:
+
+```bash
+npm run db:seed
+```
 
 Start the dev server:
 
@@ -126,9 +129,13 @@ npm run dev
 
 Open <http://localhost:3000>.
 
-> **Never commit `.env` or `.env.local`.** Both are gitignored. The `SUPABASE_SERVICE_ROLE_KEY`
-> bypasses row-level security entirely — it is server-only and must never appear in a
-> `NEXT_PUBLIC_` variable or anywhere in client code.
+> **Never commit `.env` or `.env.local`.** Both are gitignored. Anything named `NEXT_PUBLIC_*` is
+> compiled into the browser bundle and is public by definition — a database URL or `AUTH_SECRET`
+> must never be one.
+>
+> **Email works without a key.** With no `RESEND_API_KEY`, confirmation and reset messages are
+> printed to the server console with the link in them, so the whole flow is testable before anyone
+> signs up for Resend.
 
 ## Scripts
 
@@ -166,14 +173,15 @@ src/
   lib/
     db.ts               Prisma client singleton
     env.ts              Environment variables, validated on first use
-    supabase/           Browser client, server client, session refresh
+    auth/               Password hashing, single-use email and reset tokens
+    email.ts            Transactional email — prints to the console with no API key
     validation/         Zod schemas shared by the form and the server action
     content/            Placeholder copy, replaced by database queries
-  proxy.ts              Runs before every request: session refresh and redirects
+  auth.ts               Auth.js instance — the credentials provider
+  auth.config.ts        The edge-safe half, shared with the proxy
+  proxy.ts              Runs before every request: session check and redirects
 prisma/
   schema.prisma         Data model (built out table by table)
-supabase/
-  0001_member_profile.sql   Auth trigger and row-level security, applied by hand
 docs/
   design/               Design plan, tokens, 16 built screens, the 81-artboard canvas
   dev/                  Development plan
@@ -253,24 +261,31 @@ the dev plan states the enforcement.
 
 **Planning and design are done, and the first screens are built.**
 
-| Built              | Route              |
-| ------------------ | ------------------ |
-| Homepage           | `/`                |
-| Sign in            | `/sign-in`         |
-| Create account     | `/join`            |
-| Forgot password    | `/forgot-password` |
-| Check your email   | `/check-email`     |
-| Expired link       | `/link-expired`    |
-| Set a new password | `/reset-password`  |
+| Built                | Route              |
+| -------------------- | ------------------ |
+| Homepage             | `/`                |
+| Sign in              | `/sign-in`         |
+| Create account       | `/join`            |
+| Forgot password      | `/forgot-password` |
+| Check your email     | `/check-email`     |
+| Expired link         | `/link-expired`    |
+| Set a new password   | `/reset-password`  |
+| Confirm your address | `/verify-email`    |
+| Sign out (POST only) | `/sign-out`        |
 
-Sessions are refreshed on every request by `src/proxy.ts`, which also sends a signed-out visitor to
-`/sign-in?next=…` when they ask for `/me` or `/admin`, and a signed-in member away from the auth
-screens. The `?next=` parameter survives the whole round trip, because the two-tap budget for an
-event link shared in WhatsApp only holds if the destination does.
+`src/proxy.ts` runs before every request: it sends a signed-out visitor asking for `/me` or
+`/admin` to sign-in carrying where they were going, and keeps a signed-in member off the auth
+screens. Auth.js writes that destination as an absolute `?callbackUrl=`; the sign-in page accepts
+either that or a plain `?next=` path and normalises both, refusing anything pointing off-site. The
+destination survives the round trip because the two-tap budget for an event link shared in WhatsApp
+only holds if it does.
+
+Sign-up, sign-in, duplicate rejection, wrong-password handling and the uniform password-reset
+response are covered by end-to-end tests that run against a real database (`npm run e2e:db`).
 
 Next up: the member dashboard, then the public events and gallery pages.
 
-Outstanding:Outstanding:
+Outstanding:
 
 - **A square icon mark** for favicons, app icons and avatars. The full crest stops being legible
   below about 40px, so it cannot serve as a favicon (design plan §2.2).

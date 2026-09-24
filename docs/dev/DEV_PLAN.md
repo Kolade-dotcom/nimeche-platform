@@ -130,8 +130,10 @@ Four commitments this plan must honour, carried over from the design plan's sect
 | **Framework** | **Next.js (App Router) + TypeScript** | Server-rendered public pages for the SEO and visibility goals in proposal section 11, a client-rendered portal behind auth, and API routes — all in one codebase and one language. Largest hiring/volunteer pool of any option. |
 | **Database** | **PostgreSQL** | Relational data with real integrity constraints. Member records are the asset; they belong in a database with foreign keys, not a document store. |
 | **Data access** | **Prisma** | Typed schema, generated client, migration history that is readable in review. |
-| **Auth, DB hosting, storage** | **Supabase** | Bundles managed Postgres, auth (email/password, with password reset and optional Google), row-level security and object storage. One vendor to administer instead of four — decisive for a volunteer team. Plain Postgres underneath, so it is not a lock-in trap. |
-| **Hosting** | **Vercel** (app) + Supabase (data) | Zero-ops deploys from Git, preview deploys per pull request, generous free tier. |
+| **Database hosting** | **Neon** | Serverless Postgres that scales to zero, so an idle branch platform costs nothing between events. Database branching gives every pull request its own copy of the data, which is the feature that makes a volunteer team brave enough to try a migration. Plain Postgres, so it is not a lock-in trap. |
+| **Auth** | **Auth.js v5** (NextAuth), credentials provider | Lives in the repository rather than behind someone else's dashboard, keeps sessions in a signed cookie and the member table in our own schema. No per-user pricing to watch as the branch grows, and no second vendor for a volunteer to administer. The cost is that password hashing and reset tokens are ours to get right — which is why both are covered by tests. |
+| **Object storage** | **Undecided** — Vercel Blob, Cloudflare R2 or UploadThing | Photographs and certificate PDFs need somewhere that is not the database. This used to come bundled with the database host; it no longer does, so it is now a decision of its own (section 13). Nothing built so far depends on it, and the media subsystem is the first thing that will. |
+| **Hosting** | **Vercel** (app) + Neon (data) | Zero-ops deploys from Git, preview deploys per pull request, generous free tier on both. |
 | **Styling** | **Tailwind CSS wired to `tokens.css`** | Tailwind's theme reads the CSS custom properties, so utilities resolve to design tokens and the token file stays authoritative. |
 | **Email** | **Resend** or **Postmark** | Transactional deliverability matters — a certificate email in spam is a support ticket. |
 | **PDF rendering** | **Headless Chromium** (`@sparticuz/chromium` on serverless, or a small container) | The certificate is rendered from the same HTML template shown on screen, so print and screen can never diverge (design plan section 14). |
@@ -259,11 +261,11 @@ identifier that ties an account to a real student without asking anyone to type 
 - **Forgot password is a first-class flow, not an afterthought.** It is the one place an emailed link survives: request a reset, receive a link, set a new password. It is reachable from the sign-in screen in one tap, and the link expires in 60 minutes.
 - Sessions are **long-lived** HTTP-only cookies with silent refresh. A member who signed in last month should still be signed in. Re-authentication on a phone is pure friction and buys us nothing at this risk level.
 - Sign-in always returns to where the person was going (`?next=`), preserved through the whole round trip including the reset email. Landing on a dashboard after clicking an event link is a broken journey, not a neutral one.
-- Passwords are hashed by Supabase Auth (bcrypt). We never store, log or email one, and no executive screen can read one.
+- Passwords are hashed with **bcrypt at cost 12**, in `src/lib/auth/password.ts`. We never store, log or email a password, and no executive screen can read one. A sign-in against an address with no account burns the same time as a real comparison, so the absence of a member is not detectable by timing it.
 - Phone number is collected for contact and is **not** an auth factor in v1. SMS costs money per message and adds a failure mode.
 
 **Google sign-in is deferred to a decision, not assumed.** If Tech-U mail is Google Workspace-backed,
-adding "Continue with Google" is a configuration change in Supabase and worth doing, because most
+adding "Continue with Google" is one more Auth.js provider and worth doing, because most
 students are already signed into Google on their phone. If it is not Google-backed, the button would
 be a dead end. See section 13.
 
@@ -532,7 +534,7 @@ front of the information. A link that opens to a sign-in screen dies in the grou
 
 ### 9.1 Security
 
-- Argon2id password hashing (Supabase default), rate limiting on auth endpoints, generic failure messages that do not reveal whether an account exists.
+- bcrypt password hashing at cost 12, rate limiting on auth endpoints, and generic failure messages that do not reveal whether an account exists — the same wording for a wrong password and an unknown address, and the same answer from password reset either way.
 - Every mutation authorised at the service layer (section 5), with RLS underneath.
 - File uploads: type and size validated server-side, stored outside the app origin, never executed.
 - Secrets in environment variables only; **no secrets in the repository**, enforced by secret scanning in CI.
@@ -598,7 +600,7 @@ the team is real and the open decisions in section 13 are answered.
 
 ### 10.1 Phase 0 — Foundations *(≈2–3 weeks)*
 
-Repo, CI, environments, Supabase project, Prisma schema for the core entities, auth, roles and
+Repo, CI, environments, Neon project, Prisma schema for the core entities, auth, roles and
 permission layer, design-token integration, component library skeleton with Storybook.
 
 **Exit:** a signed-in user can see an empty portal; CI gates run; a deploy pipeline works end to end.
@@ -661,7 +663,8 @@ executive may simply be cheaper than integrating a payment gateway.
 | Item | Monthly |
 |---|---|
 | Hosting (Vercel Hobby/Pro) | $0–20 |
-| Database + auth + storage (Supabase) | $0–25 |
+| Database (Neon) | $0–19 |
+| Object storage (undecided) | $0–5 |
 | Email (transactional, low volume) | $0–15 |
 | Domain | ~$1 amortised |
 | Error tracking (Sentry free) | $0 |
@@ -726,7 +729,9 @@ Some depend on the executive answering the design plan's section 17; those are m
 8. **Will the department share its student list?** *(design plan section 17.7)* — if yes, membership review becomes a matric-number lookup instead of a judgement call, and section 6.1 gets materially shorter.
 9. **Assessment engine scope** — a simple built-in quiz, or an integration with an existing tool.
 10. **Whether the mobile app in proposal section 16 is a PWA or native.** The PWA built for attendance (section 6.4) may already satisfy the need, at a fraction of the cost.
-11. **Is Tech-U mail Google Workspace-backed?** If it is, "Continue with Google" is a configuration change in Supabase and removes the password from most sign-ins without removing it from the system. If it is not, the button is a dead end and we ship email and password alone (section 5). One question to the ICT office answers it.
+11. **Is Tech-U mail Google Workspace-backed?** If it is, "Continue with Google" is one more Auth.js provider and removes the password from most sign-ins without removing it from the system. If it is not, the button is a dead end and we ship email and password alone (section 5). One question to the ICT office answers it.
+
+12. **Where do photographs and certificate PDFs live?** Object storage used to arrive bundled with the database host and no longer does. Vercel Blob is the least work given the app is already on Vercel; Cloudflare R2 is cheaper at volume and has no egress fee. At the storage budget in section 6.9 either is a rounding error, so decide on operational simplicity, not price. Nothing depends on it until the media subsystem starts.
 
 ---
 

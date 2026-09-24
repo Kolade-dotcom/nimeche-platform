@@ -8,7 +8,13 @@ export const metadata: Metadata = {
   title: "Set a new password",
 };
 
-export default function ResetPasswordPage() {
+export default async function ResetPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string }>;
+}) {
+  const { token } = await searchParams;
+
   return (
     <AuthShell
       title="Set a new password"
@@ -22,7 +28,7 @@ export default function ResetPasswordPage() {
         </p>
       </div>
 
-      <ResetPasswordForm />
+      <ResetPasswordForm token={token} />
     </AuthShell>
   );
 }

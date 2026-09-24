@@ -11,11 +11,13 @@ import { PASSWORD_MIN } from "@/lib/validation/auth";
 
 const initial: AuthState = {};
 
-export function ResetPasswordForm() {
+export function ResetPasswordForm({ token }: { token?: string }) {
   const [state, formAction] = useActionState(resetPasswordAction, initial);
 
   return (
     <form action={formAction} className="flex flex-col gap-6" noValidate>
+      <input type="hidden" name="token" value={token ?? ""} />
+
       <FormAlert message={state.formError} />
 
       <Field

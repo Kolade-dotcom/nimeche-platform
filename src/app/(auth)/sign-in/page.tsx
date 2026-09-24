@@ -10,12 +10,30 @@ export const metadata: Metadata = {
   description: "Sign in to NiMechE-SF with your Tech-U email and password.",
 };
 
+/**
+ * Auth.js sends people here with `?callbackUrl=`, an absolute URL. Our own
+ * action reads `next`, a path. Accept either and normalise to a path, so a
+ * link written by hand and a redirect written by the library both work, and
+ * neither can bounce a member to another site.
+ */
+function toPath(value?: string): string | undefined {
+  if (!value) return undefined;
+  if (value.startsWith("/") && !value.startsWith("//")) return value;
+  try {
+    const url = new URL(value);
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return undefined;
+  }
+}
+
 export default async function SignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ next?: string }>;
+  searchParams: Promise<{ next?: string; callbackUrl?: string }>;
 }) {
-  const { next } = await searchParams;
+  const params = await searchParams;
+  const next = toPath(params.next) ?? toPath(params.callbackUrl);
 
   return (
     <AuthShell

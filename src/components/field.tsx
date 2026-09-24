@@ -44,6 +44,7 @@ export function Field({
         <p
           id={`${id}-error`}
           role="alert"
+          data-slot="field-error"
           className="text-destructive text-[13px] font-medium"
         >
           {error}
