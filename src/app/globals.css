@@ -100,6 +100,7 @@
   --color-primary-text: var(--primary-text);
   --color-primary-subtle: var(--primary-subtle);
   --color-on-primary: var(--on-primary);
+  --color-band: var(--band);
   --color-brand-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-text: var(--accent-text);

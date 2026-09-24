@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 
-import { env } from "@/lib/env";
+import { getEnv } from "@/lib/env";
 
 /**
  * Supabase in a Server Component, Route Handler or Server Action. Still the
@@ -9,6 +9,7 @@ import { env } from "@/lib/env";
  * client, not an escalated one.
  */
 export async function createClient() {
+  const env = getEnv();
   const cookieStore = await cookies();
 
   return createServerClient(

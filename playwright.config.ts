@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import { defineConfig, devices } from "@playwright/test";
 
 /**
@@ -5,6 +6,18 @@ import { defineConfig, devices } from "@playwright/test";
  * signed out, and ?next= survives the whole sign-in round trip. It regresses
  * silently otherwise (dev plan section 8).
  */
+
+/**
+ * Some sandboxes ship a Chromium build that does not match the one this
+ * version of Playwright downloads. Use it when it is there rather than failing
+ * on a missing binary; on a normal machine this is undefined and Playwright
+ * uses its own.
+ */
+const PREINSTALLED = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome";
+const executablePath =
+  process.env.PLAYWRIGHT_CHROMIUM_PATH ??
+  (fs.existsSync(PREINSTALLED) ? PREINSTALLED : undefined);
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -16,9 +29,15 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    // The member's world is a phone. Do not let this project rot.
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"], launchOptions: { executablePath } },
+    },
+    {
+      // The member's world is a phone. Do not let this project rot.
+      name: "mobile",
+      use: { ...devices["Pixel 7"], launchOptions: { executablePath } },
+    },
   ],
   webServer: {
     command: "npm run build && npm run start",

@@ -82,6 +82,11 @@
   --focus-ring:      var(--green-700);
   --overlay:         rgba(18, 38, 26, .55);
 
+  /* Full-bleed green band. Pinned to one value in BOTH themes, because white
+   * text always sits on it: --primary lightens to #3FBF7A in dark, where white
+   * on it measures 2.35:1 and fails. Never substitute --primary here. */
+  --band:            var(--green-700);
+
   /* --- Chart palettes (computationally validated — see DESIGN_PLAN.md section 13) -- *
    * Fixed assignment order, never cycled. Brand green and brand orange are
    * deliberately NOT adjacent: they separate by only ΔE 4.1 under protanopia. */

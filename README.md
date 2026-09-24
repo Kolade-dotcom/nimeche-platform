@@ -106,10 +106,21 @@ cp .env.example .env.local   # read by the app
 cp .env.example .env         # read by the Prisma CLI
 ```
 
-Push the schema to your database, then start the dev server:
+Push the schema to your database:
 
 ```bash
 npm run db:push
+```
+
+Then run **`supabase/0001_member_profile.sql`** once in the Supabase SQL editor. It puts a trigger on
+`auth.users` so that creating an account creates the matching `Member` row, and switches on
+row-level security. It is not a Prisma migration because it touches Supabase's own schema, which
+Prisma does not manage — see the comments at the top of the file. Sign-up will appear to work
+without it and leave you with accounts that have no membership record behind them.
+
+Start the dev server:
+
+```bash
 npm run dev
 ```
 
@@ -140,18 +151,29 @@ Open <http://localhost:3000>.
 
 ```
 src/
-  app/                  Next.js App Router — routes, layouts, server actions
+  app/
+    (public)/           The public site — its own header and footer
+    (auth)/             Sign in, join, and the way back in after a forgotten password
+      actions.ts        Server actions for all four auth flows
+    auth/               Callback for emailed links, and sign-out
     globals.css         Imports the design tokens, maps them onto shadcn and Tailwind
   components/
     ui/                 shadcn components (yours to edit — not a dependency)
     brand-mark.tsx      The crest, with its full-colour and knockout treatments
-    theme-toggle.tsx    Light / dark / follow the system
+    auth-shell.tsx      The two-panel auth layout
+    password-field.tsx  One field, with a Show toggle. No confirm box
+    segmented-field.tsx Department and level, as buttons rather than a dropdown
   lib/
     db.ts               Prisma client singleton
-    env.ts              Environment variables, validated at boot
-    supabase/           Browser and server Supabase clients
+    env.ts              Environment variables, validated on first use
+    supabase/           Browser client, server client, session refresh
+    validation/         Zod schemas shared by the form and the server action
+    content/            Placeholder copy, replaced by database queries
+  proxy.ts              Runs before every request: session refresh and redirects
 prisma/
   schema.prisma         Data model (built out table by table)
+supabase/
+  0001_member_profile.sql   Auth trigger and row-level security, applied by hand
 docs/
   design/               Design plan, tokens, 16 built screens, the 81-artboard canvas
   dev/                  Development plan
@@ -229,11 +251,26 @@ the dev plan states the enforcement.
 
 ## Status
 
-**Planning and design are done. The application scaffold is in place** — Next.js, the token
-pipeline, shadcn, Prisma, Supabase clients, tests — and the subsystems get built against the 16
-designed screens.
+**Planning and design are done, and the first screens are built.**
 
-Outstanding:
+| Built              | Route              |
+| ------------------ | ------------------ |
+| Homepage           | `/`                |
+| Sign in            | `/sign-in`         |
+| Create account     | `/join`            |
+| Forgot password    | `/forgot-password` |
+| Check your email   | `/check-email`     |
+| Expired link       | `/link-expired`    |
+| Set a new password | `/reset-password`  |
+
+Sessions are refreshed on every request by `src/proxy.ts`, which also sends a signed-out visitor to
+`/sign-in?next=…` when they ask for `/me` or `/admin`, and a signed-in member away from the auth
+screens. The `?next=` parameter survives the whole round trip, because the two-tap budget for an
+event link shared in WhatsApp only holds if the destination does.
+
+Next up: the member dashboard, then the public events and gallery pages.
+
+Outstanding:Outstanding:
 
 - **A square icon mark** for favicons, app icons and avatars. The full crest stops being legible
   below about 40px, so it cannot serve as a favicon (design plan §2.2).
