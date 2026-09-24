@@ -1,7 +1,10 @@
-// Schema stub. The full data model is specified in docs/dev/DEV_PLAN.md
-// section 4 - Member, Event, Registration, AttendanceRecord, Credential,
-// Skill, MemberSkill, Opportunity, MediaAsset, AuditLog and the rest.
-// It is modelled here table by table as each subsystem is built.
+// The full data model is specified in docs/dev/DEV_PLAN.md section 4, and is
+// modelled here table by table as each subsystem is built.
+//
+// Built: Member, AuthToken, Event, Registration, AttendanceRecord,
+// Deliverable, Credential, CredentialSkill, CredentialEvent,
+// VerificationCheck, Skill, MemberSkill, ActivityEntry, Opportunity.
+// Still specified only: Role, MemberRole, Project, MediaAsset, AuditLog.
 //
 // Three rules from that section the schema has to keep:
 //   - AttendanceRecord.clientEventId is unique. It is the idempotency key
@@ -69,11 +72,41 @@ model Member {
   /// review queue say "matched on the roll" instead of asking anyone to check.
   matricNo String? @unique
 
-  status    MemberStatus @default(PENDING)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  status MemberStatus @default(PENDING)
 
-  tokens AuthToken[]
+  /// Branch membership number, e.g. SF-TECHU-0142. Issued by the branch, not
+  /// the school, and unlike matricNo it survives graduation - an alumnus keeps
+  /// it, and a certificate issued years ago still points at it.
+  memberNo String? @unique
+
+  /// When the branch admitted them, which is not when the account was created:
+  /// a member can register in October and be approved in November.
+  joinedAt DateTime?
+
+  /// Year they are expected to graduate. Shown on the profile, and what turns
+  /// a member into an ALUMNUS without anyone running a script by hand.
+  expectedGraduation Int?
+
+  /// Executive office held this session - "President", "Technical Secretary".
+  /// Null for an ordinary member. Offices are annual, so this is a label on
+  /// the person rather than a role the authorisation layer reads.
+  execTitle String?
+
+  /// Opt-in shareable page at /u/<publicSlug>. Off until the member turns it
+  /// on, so nothing about them is public by accident (design plan 1.4).
+  publicSlug    String? @unique
+  publicProfile Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  tokens        AuthToken[]
+  registrations Registration[]
+  attendance    AttendanceRecord[]
+  deliverables  Deliverable[]
+  credentials   Credential[]
+  skills        MemberSkill[]
+  activity      ActivityEntry[]
 
   @@index([status])
 }
@@ -95,4 +128,301 @@ model AuthToken {
   createdAt DateTime     @default(now())
 
   @@index([memberId, purpose])
+}
+
+// ---------------------------------------------------------------------------
+// Events, and the three things a member can do with one: register for it, be
+// checked in at it, and owe something afterwards.
+// ---------------------------------------------------------------------------
+
+enum EventMode {
+  IN_PERSON
+  ONLINE
+  HYBRID
+}
+
+enum EventKind {
+  PLANT_VISIT
+  TRAINING
+  LECTURE
+  CAREERS
+  COMPETITION
+  MEETING
+}
+
+model Event {
+  id      String    @id @default(cuid())
+  slug    String    @unique
+  title   String
+  kind    EventKind
+  summary String?
+
+  startsAt DateTime
+  endsAt   DateTime?
+
+  mode     EventMode @default(IN_PERSON)
+  /// Room, gate or meeting platform. One line, as it is read off a phone on
+  /// the way there - not an address block.
+  location String?
+  /// Who is running it, where that is a person: "Engr. John Doe".
+  host     String?
+  /// What to bring or wear. Shown on the member's own event list because it is
+  /// the thing people turn up without.
+  notes    String?
+
+  /// Counts toward the hours printed on a certificate, so it is stored per
+  /// event rather than worked out from start and end times - a four-hour
+  /// visit with two hours of travel is not four contact hours.
+  contactHours Int @default(0)
+
+  /// Places available, or null for unlimited. Registration does not enforce
+  /// it yet; the executive screens will.
+  capacity Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  registrations Registration[]
+  attendance    AttendanceRecord[]
+  deliverables  Deliverable[]
+  credentials   CredentialEvent[]
+
+  @@index([startsAt])
+}
+
+/// A member said they are coming. Separate from attendance on purpose: the gap
+/// between the two is the number the executive screens care about.
+model Registration {
+  id       String @id @default(cuid())
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  eventId  String
+  event    Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime  @default(now())
+  cancelledAt DateTime?
+
+  @@unique([memberId, eventId])
+  @@index([eventId])
+}
+
+/// A member was present. Written by the check-in screen, which runs offline at
+/// a plant gate with no signal and replays when it comes back.
+model AttendanceRecord {
+  id       String @id @default(cuid())
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  eventId  String
+  event    Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  checkedInAt DateTime @default(now())
+
+  /// The idempotency key. The offline client mints it before the request
+  /// leaves the device, so a replayed queue writes one row rather than five
+  /// (dev plan section 4). Unique across the table, not per member.
+  clientEventId String @unique
+
+  createdAt DateTime @default(now())
+
+  @@unique([memberId, eventId])
+  @@index([eventId])
+}
+
+enum DeliverableKind {
+  VISIT_NOTE
+  PROJECT_REPORT
+  ASSESSMENT
+}
+
+/// Something the member still owes after an event. This is what stands between
+/// attendance and a certificate, and it is why the dashboard can say "the last
+/// thing between you and that certificate" rather than going quiet.
+model Deliverable {
+  id       String          @id @default(cuid())
+  memberId String
+  member   Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  eventId  String
+  event    Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  kind     DeliverableKind
+
+  dueAt       DateTime
+  submittedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([memberId, eventId, kind])
+  @@index([memberId, submittedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Certificates, and the skills they evidence.
+// ---------------------------------------------------------------------------
+
+/// Issued, immutable, and deliberately not cascaded from Member: a certificate
+/// outlives membership, and an employer checking a code in 2034 must still get
+/// an answer (dev plan section 4). Deleting a member is therefore blocked
+/// while credentials exist - by Restrict, not by anyone remembering.
+model Credential {
+  id String @id @default(cuid())
+
+  /// The code an employer types, e.g. NM-7K4Q-2X9. Generated from an alphabet
+  /// with no 0/O or 1/I, because it gets read off a printout over the phone.
+  code String @unique
+
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Restrict)
+
+  title        String
+  /// "Four sessions, 12 contact hours" is printed from these two, not stored
+  /// as prose, so the verification page and the PDF cannot drift apart.
+  sessions     Int    @default(1)
+  contactHours Int    @default(0)
+
+  issuedAt  DateTime  @default(now())
+  /// Set only if a certificate is withdrawn. Verification then reports it as
+  /// revoked rather than pretending it was never issued.
+  revokedAt DateTime?
+
+  skills CredentialSkill[]
+  checks VerificationCheck[]
+  events CredentialEvent[]
+
+  @@index([memberId, issuedAt])
+}
+
+/// Which skills a certificate evidences. A join table rather than a string
+/// array so the skill list stays one vocabulary across the whole platform.
+model CredentialSkill {
+  credentialId String
+  credential   Credential @relation(fields: [credentialId], references: [id], onDelete: Cascade)
+  skillId      String
+  skill        Skill      @relation(fields: [skillId], references: [id], onDelete: Restrict)
+
+  @@id([credentialId, skillId])
+}
+
+/// Which events a certificate was earned from.
+///
+/// Without this, nothing connects "Introduction to CAD, session 4" to the
+/// certificate that came out of all four sessions, and matching on the title
+/// prints the same code against every session - which is worse than printing
+/// none, because it looks like four certificates.
+model CredentialEvent {
+  credentialId String
+  credential   Credential @relation(fields: [credentialId], references: [id], onDelete: Cascade)
+  eventId      String
+  event        Event      @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@id([credentialId, eventId])
+  @@index([eventId])
+}
+
+/// Somebody entered a code on the public verification page. Recorded so the
+/// member can see that their certificate is being checked - and nothing about
+/// who checked it, because the page never asks them to say (design plan 1.4).
+model VerificationCheck {
+  id           String     @id @default(cuid())
+  credentialId String
+  credential   Credential @relation(fields: [credentialId], references: [id], onDelete: Cascade)
+
+  checkedAt DateTime @default(now())
+  /// False when the code was found but the certificate had been revoked.
+  verified  Boolean  @default(true)
+
+  @@index([credentialId, checkedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Skills. Derived, never self-declared - which is the whole point of them.
+// ---------------------------------------------------------------------------
+
+enum SkillLevel {
+  INTRODUCED
+  PRACTISING
+  COMPETENT
+  VERIFIED
+}
+
+model Skill {
+  id   String @id @default(cuid())
+  slug String @unique
+  name String
+
+  members     MemberSkill[]
+  credentials CredentialSkill[]
+}
+
+/// A member's level in one skill.
+///
+/// `level` is derived from attendance, completions and submissions. There is
+/// no write path for a member and there must never be one: a list somebody
+/// typed about themselves is worth nothing to an employer, and this one is
+/// only worth something because nobody could.
+///
+/// VERIFIED is the single exception, and it still is not self-declared - it
+/// needs a named member of staff or industry host in `verifiedBy`.
+model MemberSkill {
+  id       String @id @default(cuid())
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  skillId  String
+  skill    Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  level SkillLevel @default(INTRODUCED)
+
+  /// The sentences the skills page prints under "How you got here". Held here
+  /// rather than regenerated on read so the member sees the same reasons the
+  /// derivation saw when it moved them up.
+  evidence String[]
+
+  /// Who signed it off, for VERIFIED only. Null at every other level.
+  verifiedBy String?
+  verifiedAt DateTime?
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([memberId, skillId])
+}
+
+// ---------------------------------------------------------------------------
+// Everything else the dashboard reads.
+// ---------------------------------------------------------------------------
+
+enum ActivityKind {
+  CHECKED_IN
+  CERTIFICATE_ISSUED
+  SKILL_LEVEL_UP
+  DELIVERABLE_SUBMITTED
+  MEMBERSHIP_APPROVED
+}
+
+/// The member's own history, in their words rather than the database's. Append
+/// only: it is a record of what happened, so nothing here is ever edited.
+model ActivityEntry {
+  id       String       @id @default(cuid())
+  memberId String
+  member   Member       @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  kind     ActivityKind
+  summary  String
+
+  occurredAt DateTime @default(now())
+
+  @@index([memberId, occurredAt])
+}
+
+/// A placement or internship the branch is passing on. Matched to a member by
+/// department and level - a filter, not a recommendation engine.
+model Opportunity {
+  id           String      @id @default(cuid())
+  title        String
+  organisation String
+  closesAt     DateTime
+  /// Null means it is open to both departments.
+  department   Department?
+  /// Lowest level that may apply. 400 means 400 and above.
+  minLevel     Int?
+
+  createdAt DateTime @default(now())
+
+  @@index([closesAt])
 }

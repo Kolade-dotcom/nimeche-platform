@@ -162,3 +162,43 @@
     outline-offset: 2px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   <Table stacked> on a phone.
+   Each row becomes a card and each cell grows a label from its data-label,
+   which needs ::before and attr() - neither of which a utility can express.
+   Kept here rather than in the component so the component stays declarative.
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  table[data-stacked="true"] thead {
+    /* Not sr-only: a visually hidden thead still reserves a row box in some
+       engines and pushes the first card down by a phantom line. */
+    display: none;
+  }
+  table[data-stacked="true"] tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 2px 14px;
+  }
+  table[data-stacked="true"] td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 0;
+  }
+  table[data-stacked="true"] td + td {
+    border-top: 1px solid var(--border);
+  }
+  table[data-stacked="true"] td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+}

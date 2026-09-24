@@ -162,16 +162,21 @@ src/
     (public)/           The public site — its own header and footer
     (auth)/             Sign in, join, and the way back in after a forgotten password
       actions.ts        Server actions for all four auth flows
+    (member)/           Everything behind /me — dashboard, events, certificates,
+                        skills and profile
     auth/               Callback for emailed links, and sign-out
     globals.css         Imports the design tokens, maps them onto shadcn and Tailwind
   components/
     ui/                 shadcn components (yours to edit — not a dependency)
+    member/             The member shell — sidebar, topbar, phone bar — and its pieces
     brand-mark.tsx      The crest, with its full-colour and knockout treatments
     auth-shell.tsx      The two-panel auth layout
     password-field.tsx  One field, with a Show toggle. No confirm box
     segmented-field.tsx Department and level, as buttons rather than a dropdown
   lib/
     db.ts               Prisma client singleton
+    format.ts           Dates, initials and the wording for a deadline
+    member/             The signed-in member, and every read the /me pages make
     env.ts              Environment variables, validated on first use
     auth/               Password hashing, single-use email and reset tokens
     email.ts            Transactional email — prints to the console with no API key
@@ -182,6 +187,7 @@ src/
   proxy.ts              Runs before every request: session check and redirects
 prisma/
   schema.prisma         Data model (built out table by table)
+  seed.ts               A full member record for development, dated relative to today
 docs/
   design/               Design plan, tokens, 16 built screens, the 81-artboard canvas
   dev/                  Development plan
@@ -259,7 +265,7 @@ the dev plan states the enforcement.
 
 ## Status
 
-**Planning and design are done, and the first screens are built.**
+**The public homepage, the whole authentication flow and the member dashboard are built.**
 
 | Built                | Route              |
 | -------------------- | ------------------ |
@@ -272,6 +278,11 @@ the dev plan states the enforcement.
 | Set a new password   | `/reset-password`  |
 | Confirm your address | `/verify-email`    |
 | Sign out (POST only) | `/sign-out`        |
+| Member dashboard     | `/me`              |
+| My events            | `/me/events`       |
+| My certificates      | `/me/certificates` |
+| My skills            | `/me/skills`       |
+| My profile           | `/me/profile`      |
 
 `src/proxy.ts` runs before every request: it sends a signed-out visitor asking for `/me` or
 `/admin` to sign-in carrying where they were going, and keeps a signed-in member off the auth
@@ -280,10 +291,16 @@ either that or a plain `?next=` path and normalises both, refusing anything poin
 destination survives the round trip because the two-tap budget for an event link shared in WhatsApp
 only holds if it does.
 
-Sign-up, sign-in, duplicate rejection, wrong-password handling and the uniform password-reset
-response are covered by end-to-end tests that run against a real database (`npm run e2e:db`).
+Everything under `/me` reads the database — events, attendance, certificates, derived skills and
+the member's own record. Nothing on those pages is hard-coded copy. `prisma/seed.ts` writes a
+complete record for one member, with every date relative to the day it runs, so a dashboard whose
+"coming up" section is empty means the page is broken rather than that the fixtures went stale.
 
-Next up: the member dashboard, then the public events and gallery pages.
+Sign-up, sign-in, duplicate rejection, wrong-password handling, the uniform password-reset
+response and all five member pages are covered by end-to-end tests that run against a real
+database (`npm run e2e:db`), on a desktop and a phone viewport.
+
+Next up: the executive dashboard, then the public events and gallery pages.
 
 Outstanding:
 

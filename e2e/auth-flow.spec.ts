@@ -51,9 +51,8 @@ test("a seeded member can sign in and reach the portal", async ({ page }) => {
   await page.getByLabel("Password").fill("nimeche-dev");
   await page.getByRole("button", { name: "Sign in" }).click();
 
-  // /me has no page yet, so a 404 here still proves the session was made and
-  // the proxy stopped redirecting to sign-in.
   await expect(page).toHaveURL(/\/me/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText("Akolade");
 });
 
 test("a wrong password is refused, without saying which half was wrong", async ({
