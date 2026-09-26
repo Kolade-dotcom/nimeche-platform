@@ -105,9 +105,11 @@ dashboard under _Connection Details_ — `DATABASE_URL` is the **pooled** one (i
 `npx auth secret`:
 
 ```bash
-cp .env.example .env.local   # read by the app
-cp .env.example .env         # read by the Prisma CLI
+cp .env.example .env.local
 ```
+
+One file is enough. The app, `prisma.config.ts` and `prisma/seed.ts` all read `.env.local` first
+and `.env` second, which is the order Next.js uses.
 
 Push the schema to your database:
 
@@ -136,6 +138,31 @@ Open <http://localhost:3000>.
 > **Email works without a key.** With no `RESEND_API_KEY`, confirmation and reset messages are
 > printed to the server console with the link in them, so the whole flow is testable before anyone
 > signs up for Resend.
+
+### The Neon CLI (optional)
+
+The repo is set up for Neon's CLI, which is worth installing if you administer the database rather
+than just connect to it:
+
+```bash
+npm i -g neon@latest
+neon auth                                              # opens a browser
+neon link --project-id <your-project-id> --branch production -y
+```
+
+Three things are already committed, so they need no setup:
+
+| File              | What it is                                                                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| `neon.ts`         | The Neon **project's** configuration — which Neon services are on, how branches expire. Not the schema  |
+| `.mcp.json`       | Points Claude Code at Neon's MCP server. It signs in through your browser; no key is stored in the repo |
+| `.claude/skills/` | Neon's own guidance for coding agents, pinned in `skills-lock.json`                                     |
+
+`neon.ts` is not a migration path. Tables, columns and indexes are Prisma's — `prisma/schema.prisma`
+applied with `npm run db:push`. `neon config apply` sets the Neon project up around that.
+
+One trap: `neon deploy` pulls the branch's connection strings into `.env`, and `.env.local` is read
+first. A stale `.env.local` will quietly win.
 
 ## Scripts
 
