@@ -111,6 +111,12 @@ cp .env.example .env.local
 One file is enough. The app, `prisma.config.ts` and `prisma/seed.ts` all read `.env.local` first
 and `.env` second, which is the order Next.js uses.
 
+A variable already set in the real environment beats both — neither Next.js nor dotenv overwrites
+one. That is what you want in production, and it catches people out locally: set `DATABASE_URL` in
+a hosted dev container or a CI job and the `.env.local` on disk is quietly ignored, whatever it
+says. `npx prisma db push` prints the host it is about to write to; read that line before assuming
+which database you are on.
+
 Push the schema to your database:
 
 ```bash
