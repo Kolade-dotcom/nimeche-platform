@@ -1,8 +1,8 @@
 import type { DefaultSession } from "next-auth";
 
 /**
- * The extra fields carried on the session, so `session.user.status` is typed
- * rather than `any` at every call site.
+ * The extra fields carried on the session, so `session.user.status` and
+ * `session.user.isAdmin` are typed rather than `any` at every call site.
  */
 declare module "next-auth" {
   interface User {
@@ -15,6 +15,7 @@ declare module "next-auth" {
       id: string;
       fullName: string;
       status: string;
+      isAdmin: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -24,5 +25,6 @@ declare module "next-auth/jwt" {
     memberId: string;
     fullName: string;
     status: string;
+    isAdmin: boolean;
   }
 }

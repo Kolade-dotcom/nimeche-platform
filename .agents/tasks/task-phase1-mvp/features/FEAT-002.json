@@ -1,0 +1,47 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Public routes and service layer. Builds all public-facing pages: events listing + detail, certificate verification, opportunities listing + submission, gallery landing + album, and the about page. Also builds the service query functions that feed them. These pages are independent of the admin console (FEAT-003) so they can be implemented in any order relative to each other, but they all depend on FEAT-001's schema changes being in place.",
+  "status": "pending",
+  "steps": [
+    "Read context.json and the existing public page at src/app/(public)/page.tsx, src/app/(public)/layout.tsx, and src/components/site-header.tsx to understand the public layout wrapper before creating new pages.",
+    "Read docs/design/screens/02-events.html, 03-event-detail.html, 04-gallery.html, 05-verify-certificate.html (first 150 lines of each to get structure) to understand expected layouts.",
+    "Create src/lib/events/queries.ts with these exported cached functions: getPublicEventList() — queries Event where status=PUBLISHED ordered by startsAt, returns upcoming (startsAt >= now) and past (startsAt < now) arrays each with id, slug, title, kind, startsAt, endsAt, location, mode, summary; getEventBySlug(slug: string) — single event with registrationCount, attendanceCount; getPublicEventsByKind(kind: EventKind) — filtered list.",
+    "Create src/app/(public)/events/page.tsx: server component, calls getPublicEventList(). Renders two sections: Upcoming Events (event cards with DateBox, title, kind badge, mode, location/meeting indicator, link to /events/[slug]) and Past Events (same card style, muted). Filter tabs at top: All | Plant Visit | Training | Lecture | Careers | Competition — use URL search param ?kind= and filter server-side. Empty state: 'No events published yet — check back soon.' Use existing DateBox component from src/components/date-box.tsx.",
+    "Create src/app/(public)/events/[slug]/page.tsx: server component. generateMetadata exports title from event. Calls getEventBySlug(params.slug); returns notFound() if null. Renders: event cover (or generated fallback — a div with bg-[var(--primary)] text-[var(--on-primary)] with title + orange bottom rule), title, date+time formatted with date-fns format(), mode badge, location/meeting URL, host line, description, capacity info. Registration CTA section: if event is upcoming, show Register button (links to server action). Structured data: add <script type='application/ld+json'> with Event schema (name, startDate, endDate, location, description, url). Import and use existing components where possible.",
+    "Create src/app/(public)/events/[slug]/actions.ts: 'use server'. registerForEvent(eventId: string): calls auth() from src/auth.ts to get session; if not signed in, returns { error: 'Sign in to register' }; upserts Registration record (memberId, eventId); returns { ok: true } or { error: string }. Also fires sendEventRegistrationEmail if registration is new.",
+    "Create src/lib/credentials/verify.ts: export async function verifyCredential(code: string). Queries Credential by code, includes member (select fullName), skills (via CredentialSkill -> Skill name), events (via CredentialEvent -> Event title+startsAt). Writes VerificationCheck row (verified: revokedAt === null). Returns { found: true, revoked: boolean, credential: { title, memberName, issuedAt, sessions, contactHours, skills, events, revokedAt } } or { found: false }.",
+    "Create src/app/(public)/verify/[code]/page.tsx: export const revalidate = 3600. Calls verifyCredential(params.code). Three states: (1) not found — plain message 'No certificate found with that code. Check for typos and try again.' (2) found but revoked — 'This certificate was revoked on [date].' with the member name and programme title still shown. (3) found and valid — full certificate detail: institution header (NiMechE-SF · Tech-U), member name large, programme title, issued date, sessions + contact hours, skills list as badges, events list. No site nav chrome (standalone document-like page per design plan). Add a 'Verify another' link back to /verify. Follow 05-verify-certificate.html layout.",
+    "Create src/lib/content/about.ts: static TypeScript object with branch description, mission statement, departments (Mechanical Engineering, Mechatronics Engineering), exec team placeholder (array of { name, title } — empty array by default, to be populated by exec). Export BRANCH_CONTENT constant.",
+    "Create src/app/(public)/about/page.tsx: static server component. Renders branch about content from BRANCH_CONTENT: hero section (who we are), departments section, what we do (plant visits / workshops / competitions), executive team grid (if any), join CTA. No DB query needed.",
+    "Extend src/lib/opportunities/queries.ts (or create if not yet present from FEAT-001): getPublishedOpportunities(filter?: { type?: string }) — queries Opportunity where status='published', closesAt >= now, ordered by closesAt asc; getOpportunityBySlug(slug: string); submitOpportunity(data: { title, organisation, type, deadline, description, externalUrl? }) — writes Opportunity with status='submitted', generates a slug from title; getOpportunitiesForReview() — status in ['submitted','under_review'].",
+    "Create src/lib/validation/opportunity.ts: Zod schema for opportunity submission — z.object({ title: z.string().min(3).max(120), organisation: z.string().min(2).max(100), type: z.enum(['internship','job','scholarship','competition','grant','conference','training','volunteering']), deadline: z.string() (ISO date string, must be future), description: z.string().min(10).max(1000), externalUrl: z.string().url().optional().or(z.literal('')) }). Export opportunitySubmitSchema.",
+    "Create src/app/(public)/opportunities/page.tsx: server component. Calls getPublishedOpportunities(). Renders opportunity cards: title, organisation, type badge (uses design system colours — type badge uses var(--primary-subtle)/var(--primary-text)), deadline with urgency (< 7 days: orange, var(--accent-text)), description excerpt (max 160 chars), external apply link or 'Register interest' button. Filter bar: All | Internship | Job | Scholarship | Competition | Grant (URL param ?type=). 'Submit an opportunity' CTA button linking to /opportunities/submit. Empty state.",
+    "Create src/app/(public)/opportunities/submit/page.tsx: server-rendered form shell. Form component uses react-hook-form + opportunitySubmitSchema. Fields: title, organisation, type (select from enum values), deadline (date input), description (textarea), externalUrl (optional). Submit calls submitOpportunityAction server action. On success: show 'Thank you — we will review your submission.' state (replace form with confirmation card). No account required — anyone may submit.",
+    "Create src/app/(public)/opportunities/actions.ts: 'use server'. submitOpportunityAction(formData): calls submitOpportunity() from queries.ts; returns { ok: true } or { error: string }.",
+    "Create src/lib/gallery/queries.ts: getPublishedAlbums() — queries Album where publishedAt IS NOT NULL, ordered by publishedAt desc, includes mediaItems count and first mediaItem url for cover; getAlbumBySlug(slug: string) — album with all MediaItems ordered by createdAt; getRecentMediaItems(take: number) — most recent media items across all published albums for the homepage mosaic.",
+    "Create src/app/(public)/gallery/page.tsx: server component. Calls getPublishedAlbums(). Renders: featured mosaic (5 most recent photos using MediaTile from src/components/media-tile.tsx), then albums grid (cover, title, event link if eventId, photo count badge). Empty state: 'No albums yet — photos will appear here after events.' Follow 04-gallery.html layout.",
+    "Create src/app/(public)/gallery/[slug]/page.tsx: server component. Calls getAlbumBySlug(params.slug); returns notFound() if null. Renders album header (title, linked event if any, photo count), then a responsive photo grid. Each photo opens a lightbox (use the Dialog component from src/components/ui/dialog.tsx — one Dialog with navigation prev/next, display alt text, keyboard accessible). Include back link to /gallery.",
+    "Add navigation links in src/components/site-header.tsx if not already present: Events, Opportunities, Gallery, About links in the main nav.",
+    "Run npm run typecheck and fix all errors. Run npm run build and fix all build errors."
+  ],
+  "acceptance_criteria": [
+    "/events page renders with upcoming and past event sections and kind filter",
+    "/events/[slug] page renders event detail with structured data JSON-LD and registration CTA",
+    "/verify/[code] renders three states: not found, revoked, valid — with revalidate=3600",
+    "/about page renders static branch content",
+    "/opportunities page renders published opportunities with type filter",
+    "/opportunities/submit renders a public ≤6-field form that submits without an account",
+    "/gallery page renders published albums",
+    "/gallery/[slug] renders media grid with accessible lightbox",
+    "npm run typecheck passes with zero errors",
+    "npm run build succeeds with zero errors"
+  ],
+  "verification": [
+    "npm run typecheck (must pass with zero errors)",
+    "npm run build (must succeed — static rendering of public pages is tested here)",
+    "npm run test (existing tests must still pass)"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

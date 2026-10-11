@@ -1,0 +1,7 @@
+{
+  "task_id": "task-phase1-mvp",
+  "task_description": "Build the NiMechE-SF platform Phase 1 MVP: schema completion (roles, audit, completions, gallery, projects), public routes (events, verify, opportunities, gallery, about), admin/executive console with offline attendance capture, skills derivation engine, certificate PDF generation, opportunities hub, media/gallery upload, and transactional email notifications.",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004", "FEAT-005"],
+  "blocked_reason": null
+}

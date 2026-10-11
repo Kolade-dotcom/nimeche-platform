@@ -36,13 +36,26 @@ export const authConfig = {
   },
   callbacks: {
     /**
-     * Runs in the middleware on every matched request. Returning false sends
-     * the visitor to `pages.signIn`; Auth.js appends the callbackUrl itself,
-     * which is how `?next=` survives the round trip.
+     * Runs in the middleware on every matched request.
+     *
+     * - Signed-out visitors are sent to `pages.signIn` for protected routes.
+     * - Signed-in members without the admin flag visiting /admin are
+     *   redirected to /me, not back to sign-in (they are authenticated, just
+     *   not authorised).
+     * - Signed-in members are kept off the auth screens.
      */
     authorized({ auth, request }) {
       const signedIn = Boolean(auth?.user);
       const { pathname } = request.nextUrl;
+
+      // Admin routes: must be signed in AND have the admin flag.
+      if (pathname.startsWith("/admin")) {
+        if (!signedIn) return false; // → sign-in
+        if (auth?.user?.isAdmin !== true) {
+          return Response.redirect(new URL("/me", request.nextUrl));
+        }
+        return true;
+      }
 
       if (PROTECTED.some((p) => pathname.startsWith(p))) return signedIn;
       if (signedIn && AUTH_ONLY.some((p) => pathname.startsWith(p))) {
@@ -66,6 +79,7 @@ export const authConfig = {
         session.user.id = token.memberId as string;
         session.user.status = token.status as string;
         session.user.fullName = token.fullName as string;
+        session.user.isAdmin = (token.isAdmin as boolean) ?? false;
       }
       return session;
     },

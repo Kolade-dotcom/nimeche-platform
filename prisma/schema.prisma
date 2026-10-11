@@ -4,7 +4,9 @@
 // Built: Member, AuthToken, Event, Registration, AttendanceRecord,
 // Deliverable, Credential, CredentialSkill, CredentialEvent,
 // VerificationCheck, Skill, MemberSkill, ActivityEntry, Opportunity.
-// Still specified only: Role, MemberRole, Project, MediaAsset, AuditLog.
+// Phase 1 additions: Role, MemberRole, AuditLog, CompletionRule,
+// ActivityCompletion, Album, MediaItem, Project, ProjectMember,
+// ProjectMilestone, ActivitySkill, EventStatus enum, Opportunity extensions.
 //
 // Three rules from that section the schema has to keep:
 //   - AttendanceRecord.clientEventId is unique. It is the idempotency key
@@ -41,6 +43,215 @@ enum MemberStatus {
 enum TokenPurpose {
   EMAIL_VERIFICATION
   PASSWORD_RESET
+}
+
+// ---------------------------------------------------------------------------
+// Roles
+// ---------------------------------------------------------------------------
+
+enum RoleKey {
+  MEMBER
+  EXECUTIVE
+  ADMIN
+  CONTENT_MANAGER
+  PROJECT_LEAD
+}
+
+/// A named role that can be granted to a member.
+model Role {
+  id    String  @id @default(cuid())
+  key   RoleKey @unique
+  label String
+
+  memberRoles MemberRole[]
+}
+
+/// A many-to-many join granting a Role to a Member.
+model MemberRole {
+  id       String @id @default(cuid())
+  memberId String
+  member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  roleId   String
+  role     Role   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  grantedBy String?
+  grantedAt DateTime @default(now())
+
+  @@unique([memberId, roleId])
+}
+
+// ---------------------------------------------------------------------------
+// Audit log
+// ---------------------------------------------------------------------------
+
+enum AuditAction {
+  MEMBER_APPROVED
+  MEMBER_REJECTED
+  ROLE_GRANTED
+  ROLE_REVOKED
+  EVENT_PUBLISHED
+  EVENT_CANCELLED
+  ATTENDANCE_EDITED
+  CREDENTIAL_ISSUED
+  CREDENTIAL_REVOKED
+  OPPORTUNITY_PUBLISHED
+  OPPORTUNITY_REJECTED
+  SETTINGS_UPDATED
+}
+
+/// Append-only record of every admin/exec action. The actor field is nullable
+/// because accounts can be deleted, and deleting an account must not silently
+/// erase history.
+model AuditLog {
+  id         String      @id @default(cuid())
+  actorId    String?
+  actor      Member?     @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     AuditAction
+  entityType String
+  entityId   String
+  diff       Json?
+  createdAt  DateTime    @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId])
+}
+
+// ---------------------------------------------------------------------------
+// Completion rules and activity completions
+// ---------------------------------------------------------------------------
+
+enum CompletionRuleKind {
+  ATTENDANCE_ONLY
+  ATTENDANCE_PLUS_DELIVERABLE
+  MANUAL_APPROVAL
+}
+
+/// A reusable rule that says what a member must do to "complete" an activity.
+model CompletionRule {
+  id                   String             @id @default(cuid())
+  name                 String
+  kind                 CompletionRuleKind @default(ATTENDANCE_ONLY)
+  minContactHours      Int                @default(0)
+  requiresDeliverable  Boolean            @default(false)
+  requiresAssessment   Boolean            @default(false)
+  minScore             Int                @default(0)
+  createdAt            DateTime           @default(now())
+
+  events      Event[]
+  completions ActivityCompletion[]
+}
+
+/// Records that a member has completed an activity (event or project).
+model ActivityCompletion {
+  id               String          @id @default(cuid())
+  memberId         String
+  member           Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  sourceType       String
+  sourceId         String
+  completedAt      DateTime        @default(now())
+  approvedBy       String?
+  approver         Member?         @relation("CompletionApprover", fields: [approvedBy], references: [id], onDelete: SetNull)
+  completionRuleId String?
+  completionRule   CompletionRule? @relation(fields: [completionRuleId], references: [id], onDelete: SetNull)
+
+  @@unique([memberId, sourceType, sourceId])
+}
+
+// ---------------------------------------------------------------------------
+// Gallery: albums and media items
+// ---------------------------------------------------------------------------
+
+/// A named collection of media, optionally tied to an event.
+model Album {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  description String?
+  coverUrl    String?
+  eventId     String?
+  event       Event?    @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  publishedAt DateTime?
+  createdById String
+  createdBy   Member    @relation("AlbumCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt   DateTime  @default(now())
+
+  items MediaItem[]
+}
+
+/// A single photo or video link inside an Album.
+model MediaItem {
+  id           String   @id @default(cuid())
+  albumId      String
+  album        Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  url          String
+  thumbnailUrl String?
+  altText      String
+  kind         String   @default("PHOTO")
+  width        Int?
+  height       Int?
+  uploadedById String
+  uploadedBy   Member   @relation("MediaItemUploader", fields: [uploadedById], references: [id], onDelete: Restrict)
+  createdAt    DateTime @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Projects
+// ---------------------------------------------------------------------------
+
+/// A branch project, independent of any event.
+model Project {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  description   String?
+  status        String    @default("PROPOSED")
+  startedOn     DateTime?
+  completedOn   DateTime?
+  leadMemberId  String?
+  leadMember    Member?   @relation("ProjectLead", fields: [leadMemberId], references: [id], onDelete: SetNull)
+  isPublic      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+
+  members    ProjectMember[]
+  milestones ProjectMilestone[]
+}
+
+/// A member's participation in a project.
+model ProjectMember {
+  projectId        String
+  project          Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  memberId         String
+  member           Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  role             String
+  joinedAt         DateTime @default(now())
+  contributionNote String?
+
+  @@id([projectId, memberId])
+}
+
+/// A milestone within a project.
+model ProjectMilestone {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  dueOn       DateTime?
+  completedOn DateTime?
+  status      String    @default("PENDING")
+}
+
+// ---------------------------------------------------------------------------
+// Activity skills — a cross-source skill tag
+// ---------------------------------------------------------------------------
+
+/// Links a skill to an activity source (event or project) by type/id pair.
+model ActivitySkill {
+  sourceType String
+  sourceId   String
+  skillId    String
+  skill      Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([sourceType, sourceId, skillId])
 }
 
 /// A person with an account. Membership is not the same as an account: anyone
@@ -108,6 +319,18 @@ model Member {
   skills        MemberSkill[]
   activity      ActivityEntry[]
 
+  // Phase 1 additions
+  memberRoles              MemberRole[]
+  auditLogs                AuditLog[]
+  completions              ActivityCompletion[]
+  completionsApproved      ActivityCompletion[]   @relation("CompletionApprover")
+  albumsCreated            Album[]                @relation("AlbumCreator")
+  mediaItemsUploaded       MediaItem[]            @relation("MediaItemUploader")
+  projectsLed              Project[]              @relation("ProjectLead")
+  projectMemberships       ProjectMember[]
+  opportunitiesSubmitted   Opportunity[]          @relation("OpportunitySubmitter")
+  opportunitiesReviewed    Opportunity[]          @relation("OpportunityReviewer")
+
   @@index([status])
 }
 
@@ -150,6 +373,13 @@ enum EventKind {
   MEETING
 }
 
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+}
+
 model Event {
   id      String    @id @default(cuid())
   slug    String    @unique
@@ -160,7 +390,9 @@ model Event {
   startsAt DateTime
   endsAt   DateTime?
 
-  mode     EventMode @default(IN_PERSON)
+  mode     EventMode   @default(IN_PERSON)
+  status   EventStatus @default(DRAFT)
+
   /// Room, gate or meeting platform. One line, as it is read off a phone on
   /// the way there - not an address block.
   location String?
@@ -179,6 +411,10 @@ model Event {
   /// it yet; the executive screens will.
   capacity Int?
 
+  /// Optional completion rule attached to this event.
+  completionRuleId String?
+  completionRule   CompletionRule? @relation(fields: [completionRuleId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -186,8 +422,10 @@ model Event {
   attendance    AttendanceRecord[]
   deliverables  Deliverable[]
   credentials   CredentialEvent[]
+  albums        Album[]
 
   @@index([startsAt])
+  @@index([status, startsAt])
 }
 
 /// A member said they are coming. Separate from attendance on purpose: the gap
@@ -348,8 +586,9 @@ model Skill {
   slug String @unique
   name String
 
-  members     MemberSkill[]
-  credentials CredentialSkill[]
+  members         MemberSkill[]
+  credentials     CredentialSkill[]
+  activitySkills  ActivitySkill[]
 }
 
 /// A member's level in one skill.
@@ -422,7 +661,23 @@ model Opportunity {
   /// Lowest level that may apply. 400 means 400 and above.
   minLevel     Int?
 
+  // Phase 1 additions
+  slug             String    @unique
+  type             String
+  description      String?
+  location         String?
+  isRemote         Boolean   @default(false)
+  externalUrl      String?
+  registrationMode String    @default("external")
+  status           String    @default("submitted")
+  submittedById    String?
+  submittedBy      Member?   @relation("OpportunitySubmitter", fields: [submittedById], references: [id], onDelete: SetNull)
+  reviewedById     String?
+  reviewedBy       Member?   @relation("OpportunityReviewer", fields: [reviewedById], references: [id], onDelete: SetNull)
+  publishedAt      DateTime?
+
   createdAt DateTime @default(now())
 
   @@index([closesAt])
+  @@index([status, closesAt])
 }

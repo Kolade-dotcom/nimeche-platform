@@ -62,4 +62,40 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    // Re-include the edge-safe callbacks from authConfig verbatim so the proxy
+    // and the Node handler stay in sync.
+    authorized: authConfig.callbacks!.authorized,
+    session: authConfig.callbacks!.session,
+
+    /**
+     * Extends the base jwt callback from authConfig to also check whether the
+     * signing-in member holds EXECUTIVE or ADMIN role. Done here (not in
+     * auth.config.ts) because the role check needs Prisma, which cannot run
+     * on the edge.
+     */
+    async jwt(params) {
+      // Run the base implementation first: copies memberId, status, fullName.
+      const token = (await authConfig.callbacks!.jwt!(params)) ?? params.token;
+
+      // Only query on sign-in (when `user` is present). On subsequent
+      // requests the token already carries isAdmin from the initial sign-in.
+      if (params.user && token.memberId) {
+        try {
+          const adminRole = await db.memberRole.findFirst({
+            where: {
+              memberId: token.memberId as string,
+              role: { key: { in: ["EXECUTIVE", "ADMIN"] } },
+            },
+          });
+          token.isAdmin = adminRole !== null;
+        } catch {
+          // Role query must not break sign-in if it fails.
+          token.isAdmin = false;
+        }
+      }
+
+      return token;
+    },
+  },
 });

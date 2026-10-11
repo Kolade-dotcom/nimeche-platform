@@ -1,0 +1,37 @@
+{
+  "id": "FEAT-005",
+  "type": "feat",
+  "description": "Integration verification, role tests, and final wiring. This FEAT runs last. It writes unit tests for the role/auth service, verifies all seams between FEATs work (proxy gates admin correctly, skills derivation wires through completions, PDF generation reaches the API route, public event registration round-trip works), and ensures the full build is clean. Also adds any missing integration glue found during testing. Independent features do not need this FEAT to start, but this FEAT depends on all previous FEATs being complete.",
+  "status": "pending",
+  "steps": [
+    "Read context.json and the findings fields of FEAT-001, FEAT-002, FEAT-003, FEAT-004 before starting. The findings will tell you what was actually built vs what was planned.",
+    "Create src/lib/auth/__tests__/roles.test.ts: mock src/lib/db (vi.mock('@/lib/db')). Test getMemberRoles: (1) member with no roles returns []; (2) member with EXECUTIVE role returns ['EXECUTIVE']; (3) member with both EXECUTIVE and ADMIN returns both. Test requireRole: mock requireMember to return a member; if getMemberRoles returns no matching role, verify redirect('/sign-in') is called (mock next/navigation redirect). Test grantRole: verify it calls db.memberRole.upsert and logAudit.",
+    "Verify the proxy/auth integration: read src/proxy.ts and src/auth.config.ts. Confirm that the authorized callback correctly handles: (1) unauthenticated user → /me → redirect to /sign-in with callbackUrl; (2) unauthenticated user → /admin → redirect to /sign-in; (3) authenticated non-admin → /admin → redirect to /me; (4) authenticated admin → /admin → allowed. If any case is not handled, fix it now.",
+    "Verify the event registration deep-link round trip: read src/app/(public)/events/[slug]/actions.ts. Confirm registerForEvent checks auth(), and that the sign-in redirect preserves ?next=/events/[slug]. If not, ensure the event page's sign-in link includes the next param: /sign-in?next=/events/[slug].",
+    "Verify the opportunity submission form has no auth gate: read src/app/(public)/opportunities/submit/page.tsx. Confirm the form and its server action work without a session. If the server action accidentally calls requireMember, remove that call.",
+    "Check the Opportunity model's slug field: the public opportunities page links to /opportunities/[slug] but a detail page was not explicitly listed in FEAT-002's plan. Check if src/app/(public)/opportunities/[slug]/page.tsx was created. If not, create it now: server component, calls getOpportunityBySlug(params.slug), renders full detail (title, org, type, deadline, description, apply link or Register Interest button for signed-in members).",
+    "Add OpportunityInterest tracking: check if OpportunityInterest model was included in FEAT-001's migration. If not, add it to schema: id String @id @default(cuid()), opportunityId String, opportunity Opportunity (FK), memberId String, member Member (FK), registeredAt DateTime @default(now()), status String @default('interested'), with @@unique([opportunityId, memberId]). Run npx prisma migrate dev --name opportunity-interest. Add registerOpportunityInterest(memberId, opportunityId) to src/lib/opportunities/queries.ts. Wire the 'Register interest' button on the opportunity detail page to call this as a server action (auth-gated).",
+    "Run the full verification suite from the workspace root c:\\Users\\jazai\\Downloads\\nimeche-platform: (1) npm run typecheck, (2) npm run build, (3) npm run test, (4) npm run lint. Fix every reported error. Do not skip errors. Record the final clean output in this FEAT's findings field.",
+    "Confirm the Phase 1 exit criterion from DEV_PLAN.md section 5.4: 'a real NiMechE event can run end-to-end on the platform — announced, registered, attended, completed, certified, verified.' Trace through each step: Event published (/admin/events/new → publish) → Member registers (/events/[slug] → register) → Attendance captured (/admin/events/[id]/attendance → check-in offline + sync) → Event completed (completeEvent → runCompletionEvaluation → ActivityCompletion created → deriveMemberSkills runs) → Certificate issued (/admin/certificates → issueCredentialsForEvent) → Certificate verified (/verify/[code]). For each step, confirm the relevant file exists and is wired. Note any gaps in findings.",
+    "Update this FEAT's status to 'completed' and write a summary of what was verified in the findings field."
+  ],
+  "acceptance_criteria": [
+    "src/lib/auth/__tests__/roles.test.ts passes all test cases",
+    "proxy correctly redirects authenticated non-admin from /admin to /me",
+    "opportunity submission works without authentication",
+    "/opportunities/[slug] detail page exists and renders",
+    "npm run typecheck passes with zero TypeScript errors",
+    "npm run build succeeds with zero errors",
+    "npm run test passes — all unit tests pass including new role tests",
+    "npm run lint passes with zero violations",
+    "End-to-end Phase 1 flow is traceable: event creation → registration → attendance → completion → certificate issuance → certificate verification"
+  ],
+  "verification": [
+    "npm run typecheck (zero errors)",
+    "npm run build (zero errors)",
+    "npm run test (all tests pass, including new role tests)",
+    "npm run lint (zero violations)"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

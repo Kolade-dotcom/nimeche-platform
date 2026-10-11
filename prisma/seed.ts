@@ -7,6 +7,7 @@ import {
   type EventKind,
   type EventMode,
   type MemberStatus,
+  type RoleKey,
   type SkillLevel,
 } from "@prisma/client";
 
@@ -167,6 +168,32 @@ const MEMBERS = [
   },
 ];
 
+/**
+ * The real admin account. Gmail address is intentional: this is the branch
+ * admin, not a student account, so the @tech-u.edu.ng domain rule (which
+ * applies only to the public join form) does not apply here.
+ * The seed writes directly via Prisma, bypassing the Zod domain check.
+ */
+const ADMIN_EMAIL = "akoladesalako5@gmail.com";
+const ADMIN_MEMBER = {
+  email: ADMIN_EMAIL,
+  fullName: "Akolade Salako",
+  department: "MECHANICAL" as Department,
+  level: 400,
+  status: "ACTIVE" as MemberStatus,
+  memberNo: "SF-TECHU-ADMIN",
+  joinedAt: at(-700),
+};
+
+/** All roles the platform recognises, seeded so grantRole can look them up. */
+const ROLES: { key: RoleKey; label: string }[] = [
+  { key: "MEMBER", label: "Member" },
+  { key: "EXECUTIVE", label: "Executive" },
+  { key: "ADMIN", label: "Admin" },
+  { key: "CONTENT_MANAGER", label: "Content manager" },
+  { key: "PROJECT_LEAD", label: "Project lead" },
+];
+
 /** The record the design screens show, attached to the active member. */
 const REGISTERED = ["plant-visit-ibadan-steel-mill"];
 
@@ -309,25 +336,34 @@ const ACTIVITY = [
 
 const OPPORTUNITIES = [
   {
+    slug: "siwes-placement-maintenance",
     title: "SIWES placement, maintenance",
+    type: "internship",
     organisation: "Ibadan Steel Mill",
     closesAt: at(16, 23, 59),
     department: "MECHANICAL" as Department,
     minLevel: 300,
+    status: "published",
   },
   {
+    slug: "design-intern-6-months",
     title: "Design intern, 6 months",
+    type: "internship",
     organisation: "Oyo Fabrication Works",
     closesAt: at(28, 23, 59),
     department: "MECHANICAL" as Department,
     minLevel: 400,
+    status: "published",
   },
   {
+    slug: "graduate-trainee-instrumentation",
     title: "Graduate trainee, instrumentation",
+    type: "training",
     organisation: "Lafarge Africa",
     closesAt: at(45, 23, 59),
     department: null,
     minLevel: 400,
+    status: "published",
   },
 ];
 
@@ -368,12 +404,39 @@ async function main() {
     });
   }
 
+  // Seed all role definitions so grantRole() can look them up by key.
+  for (const role of ROLES) {
+    await prisma.role.upsert({
+      where: { key: role.key },
+      update: { label: role.label },
+      create: role,
+    });
+  }
+
+  // Seed the real admin account. Gmail address bypasses the @tech-u.edu.ng
+  // domain check that lives in the public join form's Zod schema — the seed
+  // writes directly via Prisma so no validation runs here.
+  const adminMember = await prisma.member.upsert({
+    where: { email: ADMIN_MEMBER.email },
+    update: ADMIN_MEMBER,
+    create: { ...ADMIN_MEMBER, passwordHash, emailVerifiedAt: new Date() },
+  });
+
+  // Grant ADMIN role to the real admin account (upsert = idempotent).
+  const adminRole = await prisma.role.findUniqueOrThrow({ where: { key: "ADMIN" } });
+  await prisma.memberRole.upsert({
+    where: { memberId_roleId: { memberId: adminMember.id, roleId: adminRole.id } },
+    update: {},
+    create: { memberId: adminMember.id, roleId: adminRole.id },
+  });
+
   await seedMemberRecord("akolade.salako@tech-u.edu.ng");
 
   console.log(
-    `Seeded ${MEMBERS.length} members, ${EVENTS.length} events and ` +
-      `${CREDENTIALS.length} certificates. Sign in as any member with the ` +
-      `password: ${DEV_PASSWORD}`
+    `Seeded ${MEMBERS.length + 1} members (including admin), ${EVENTS.length} events and ` +
+      `${CREDENTIALS.length} certificates. Sign in as any dev member with the ` +
+      `password: ${DEV_PASSWORD}\n` +
+      `Admin account: ${ADMIN_EMAIL} (same dev password)`
   );
 }
 
