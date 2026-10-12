@@ -23,6 +23,12 @@ export type MemberDetail = MemberListItem & {
   emailVerifiedAt: Date | null;
   roles: RoleKey[];
   credentialCount: number;
+  skills: {
+    id: string;
+    name: string;
+    level: string;
+    verifiedBy: string | null;
+  }[];
   recentActivity: {
     id: string;
     kind: string;
@@ -92,6 +98,15 @@ export async function getMemberDetail(id: string): Promise<MemberDetail | null> 
       expectedGraduation: true,
       emailVerifiedAt: true,
       memberRoles: { include: { role: true } },
+      skills: {
+        select: {
+          skillId: true,
+          level: true,
+          verifiedBy: true,
+          skill: { select: { name: true } },
+        },
+        orderBy: { updatedAt: "desc" },
+      },
       activity: {
         orderBy: { occurredAt: "desc" },
         take: 5,
@@ -103,7 +118,7 @@ export async function getMemberDetail(id: string): Promise<MemberDetail | null> 
 
   if (!member) return null;
 
-  const { memberRoles, activity, _count, ...rest } = member;
+  const { memberRoles, activity, skills, _count, ...rest } = member;
 
   return {
     ...rest,
@@ -111,6 +126,12 @@ export async function getMemberDetail(id: string): Promise<MemberDetail | null> 
     status: rest.status as string,
     roles: memberRoles.map((mr) => mr.role.key),
     credentialCount: _count.credentials,
+    skills: skills.map((s) => ({
+      id: s.skillId,
+      name: s.skill.name,
+      level: s.level as string,
+      verifiedBy: s.verifiedBy,
+    })),
     recentActivity: activity.map((a) => ({
       id: a.id,
       kind: a.kind as string,

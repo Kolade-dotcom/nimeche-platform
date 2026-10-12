@@ -521,6 +521,11 @@ model Credential {
   /// revoked rather than pretending it was never issued.
   revokedAt DateTime?
 
+  /// Where the printed PDF lives (Vercel Blob in production, disk in dev).
+  /// Generated once on first download and reused — a certificate is a
+  /// document, and re-rendering it years later must not change a pixel.
+  pdfUrl String?
+
   skills CredentialSkill[]
   checks VerificationCheck[]
   events CredentialEvent[]

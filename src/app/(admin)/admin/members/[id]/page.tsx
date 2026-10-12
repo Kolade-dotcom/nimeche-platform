@@ -10,7 +10,15 @@ import {
   rejectMemberAction,
   updateRoleAction,
 } from "@/app/(admin)/admin/members/actions";
+import { verifyMemberSkill } from "@/lib/skills/actions";
 import { RoleKey } from "@prisma/client";
+
+const LEVEL_LABELS: Record<string, string> = {
+  INTRODUCED: "Introduced",
+  PRACTISING: "Practising",
+  COMPETENT: "Competent",
+  VERIFIED: "Verified",
+};
 
 export const dynamic = "force-dynamic";
 
@@ -162,6 +170,50 @@ export default async function MemberDetailPage({
           )}
         </div>
       </div>
+
+      {/* Skills — derivation computes these; the executive can only sign off */}
+      {member.skills.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Skills</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="divide-border divide-y text-sm">
+              {member.skills.map((skill) => (
+                <li
+                  key={skill.id}
+                  className="flex flex-wrap items-center justify-between gap-3 py-3"
+                >
+                  <div className="min-w-0">
+                    <span className="font-medium">{skill.name}</span>
+                    <span className="text-muted-foreground ml-2">
+                      {LEVEL_LABELS[skill.level] ?? skill.level}
+                      {skill.verifiedBy ? ` · signed off by ${skill.verifiedBy}` : ""}
+                    </span>
+                  </div>
+                  {skill.level !== "VERIFIED" && (
+                    <form
+                      action={async () => {
+                        "use server";
+                        await verifyMemberSkill(id, skill.id);
+                      }}
+                    >
+                      <Button type="submit" variant="outline" size="sm">
+                        Sign off as verified
+                      </Button>
+                    </form>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="text-muted-foreground mt-3 text-[13px]">
+              Levels up to Competent are worked out from what the member attended and
+              built — they cannot be set by hand. Verified means you have looked at the
+              work yourself, and your name goes on it.
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Recent activity */}
       {member.recentActivity.length > 0 && (

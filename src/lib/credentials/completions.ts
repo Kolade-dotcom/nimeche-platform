@@ -1,14 +1,15 @@
 import { db } from "@/lib/db";
+import { deriveMemberSkills } from "@/lib/skills/derivation";
 
 /**
  * After an event is marked COMPLETED, evaluate which attendees have satisfied
- * the completion rule and create ActivityCompletion rows for them.
- *
- * Returns the number of new completions created.
+ * the completion rule, create ActivityCompletion rows for them, and re-derive
+ * their skills. Returns completions created and members whose skills moved.
  */
-export async function runCompletionEvaluation(
-  eventId: string
-): Promise<{ completed: number }> {
+export async function runCompletionEvaluation(eventId: string): Promise<{
+  completed: number;
+  skillsChanged: number;
+}> {
   const event = await db.event.findUnique({
     where: { id: eventId },
     select: {
@@ -23,7 +24,7 @@ export async function runCompletionEvaluation(
     },
   });
 
-  if (!event) return { completed: 0 };
+  if (!event) return { completed: 0, skillsChanged: 0 };
 
   const kind = event.completionRule?.kind ?? "ATTENDANCE_ONLY";
 
@@ -72,5 +73,14 @@ export async function runCompletionEvaluation(
     }
   }
 
-  return { completed };
+  // Re-derive skills for everyone who just completed. Only members with a new
+  // completion can change, so scope it to them.
+  const completedMemberIds = [...new Set(event.attendance.map((a) => a.memberId))];
+  let skillsChanged = 0;
+  for (const memberId of completedMemberIds) {
+    const { changed } = await deriveMemberSkills(memberId);
+    skillsChanged += changed;
+  }
+
+  return { completed, skillsChanged };
 }

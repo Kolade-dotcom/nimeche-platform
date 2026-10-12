@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { DownloadIcon, PenLineIcon, Share2Icon, TriangleAlertIcon } from "lucide-react";
+import Link from "next/link";
+import { DownloadIcon, PenLineIcon, TriangleAlertIcon } from "lucide-react";
 
 import { Code, PageIntro, StatRow, StatTile, Well } from "@/components/member/pieces";
+import { ShareButton } from "@/components/member/share-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -73,12 +75,12 @@ export default async function MemberCertificatesPage() {
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <Code>{credential.code}</Code>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" disabled>
-                    <DownloadIcon /> PDF
+                  <Button variant="outline" size="sm" asChild>
+                    <Link href={`/api/certificates/${credential.id}/pdf`}>
+                      <DownloadIcon /> PDF
+                    </Link>
                   </Button>
-                  <Button variant="outline" size="sm" disabled>
-                    <Share2Icon /> Share
-                  </Button>
+                  <ShareButton verifyPath={`/verify/${encodeURIComponent(credential.code)}`} />
                 </div>
               </div>
             </div>
