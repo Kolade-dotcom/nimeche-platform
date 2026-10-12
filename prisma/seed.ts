@@ -6,6 +6,7 @@ import {
   type DeliverableKind,
   type EventKind,
   type EventMode,
+  type EventStatus,
   type MemberStatus,
   type RoleKey,
   type SkillLevel,
@@ -61,6 +62,7 @@ const EVENTS = [
     startsAt: at(5, 7, 30),
     endsAt: at(5, 15, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "Main gate, 7:30am",
     host: "Ibadan Steel Mill",
     notes: "Closed shoes and long trousers required",
@@ -75,6 +77,7 @@ const EVENTS = [
     startsAt: at(13, 18, 0),
     endsAt: at(13, 20, 0),
     mode: "ONLINE" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "Online, 6:00pm",
     host: "Engr. John Doe",
     contactHours: 2,
@@ -88,6 +91,7 @@ const EVENTS = [
     startsAt: at(-194, 7, 30),
     endsAt: at(-194, 15, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "Main gate",
     host: "Ibadan Steel Mill",
     contactHours: 6,
@@ -99,6 +103,7 @@ const EVENTS = [
     startsAt: at(-22, 16, 0),
     endsAt: at(-22, 19, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "CAD lab",
     contactHours: 3,
   },
@@ -109,6 +114,7 @@ const EVENTS = [
     startsAt: at(-29, 16, 0),
     endsAt: at(-29, 19, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "CAD lab",
     contactHours: 3,
   },
@@ -119,6 +125,7 @@ const EVENTS = [
     startsAt: at(-34, 10, 0),
     endsAt: at(-34, 14, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "Fabrication shop",
     contactHours: 4,
   },
@@ -129,6 +136,7 @@ const EVENTS = [
     startsAt: at(-47, 17, 0),
     endsAt: at(-47, 20, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "Senate auditorium",
     contactHours: 3,
   },
@@ -139,9 +147,25 @@ const EVENTS = [
     startsAt: at(-62, 14, 0),
     endsAt: at(-62, 17, 0),
     mode: "IN_PERSON" as EventMode,
+    status: "PUBLISHED" as EventStatus,
     location: "CAD lab",
     contactHours: 3,
   },
+];
+
+/**
+ * Which skills each event develops, as ActivitySkill rows. The derivation
+ * engine reads these when an event is completed: a member who attended gets
+ * the mapped skills counted towards their level. Without this seed the
+ * engine has nothing to derive from until an executive tags an event.
+ */
+const ACTIVITY_SKILLS: { eventSlug: string; skillSlugs: string[] }[] = [
+  { eventSlug: "plant-visit-ibadan-steel-mill", skillSlugs: ["plant-operations", "maintenance-practice"] },
+  { eventSlug: "plant-visit-march", skillSlugs: ["plant-operations", "maintenance-practice"] },
+  { eventSlug: "introduction-to-cad-session-4", skillSlugs: ["cad-modelling", "technical-drawing"] },
+  { eventSlug: "introduction-to-cad-session-3", skillSlugs: ["cad-modelling", "technical-drawing"] },
+  { eventSlug: "workshop-safety-briefing", skillSlugs: ["workshop-safety", "risk-assessment"] },
+  { eventSlug: "materials-selection-clinic", skillSlugs: ["materials-selection"] },
 ];
 
 const MEMBERS = [
@@ -383,6 +407,41 @@ async function main() {
       where: { slug: event.slug },
       update: event,
       create: event,
+    });
+  }
+
+  // Tag events with the skills they develop, so completion → derivation has
+  // real mappings to read. Idempotent by composite PK.
+  const events = await prisma.event.findMany({ select: { id: true, slug: true } });
+  const skills = await prisma.skill.findMany({ select: { id: true, slug: true } });
+  for (const { eventSlug, skillSlugs } of ACTIVITY_SKILLS) {
+    const event = events.find((e) => e.slug === eventSlug);
+    if (!event) throw new Error(`seed: no event ${eventSlug}`);
+    for (const skillSlug of skillSlugs) {
+      const skill = skills.find((s) => s.slug === skillSlug);
+      if (!skill) throw new Error(`seed: no skill ${skillSlug}`);
+      await prisma.activitySkill.upsert({
+        where: {
+          sourceType_sourceId_skillId: {
+            sourceType: "event",
+            sourceId: event.id,
+            skillId: skill.id,
+          },
+        },
+        update: {},
+        create: { sourceType: "event", sourceId: event.id, skillId: skill.id },
+      });
+    }
+  }
+
+  // One reusable attendance-only rule, available in the event form's dropdown.
+  // No natural key, so look before creating.
+  const existingRule = await prisma.completionRule.findFirst({
+    where: { name: "Attendance only" },
+  });
+  if (!existingRule) {
+    await prisma.completionRule.create({
+      data: { name: "Attendance only", kind: "ATTENDANCE_ONLY" },
     });
   }
 

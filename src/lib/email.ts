@@ -71,6 +71,51 @@ export function sendVerificationEmail(to: string, name: string, token: string) {
   });
 }
 
+export function sendMemberApprovalEmail(to: string, name: string) {
+  const link = siteUrl("/sign-in");
+  return deliver({
+    to,
+    subject: "Your NiMechE-SF membership has been approved",
+    text: [
+      `Hello ${name},`,
+      "",
+      "Great news — your NiMechE-SF membership has been approved by an executive.",
+      "You can now sign in to your member portal at:",
+      link,
+      "",
+      "Welcome to the branch.",
+      "",
+      "NiMechE-SF, Tech-U",
+    ].join("\n"),
+  });
+}
+
+export function sendCertificateIssuedEmail(
+  to: string,
+  name: string,
+  credentialTitle: string,
+  verificationCode: string,
+  verifyUrl: string
+) {
+  return deliver({
+    to,
+    subject: `Your NiMechE-SF certificate: ${credentialTitle}`,
+    text: [
+      `Hello ${name},`,
+      "",
+      `Your certificate for "${credentialTitle}" has been issued.`,
+      "",
+      "Verification code:",
+      verificationCode,
+      "",
+      "Anyone can verify this certificate at:",
+      verifyUrl,
+      "",
+      "NiMechE-SF, Tech-U",
+    ].join("\n"),
+  });
+}
+
 export function sendPasswordResetEmail(to: string, name: string, token: string) {
   const link = siteUrl(`/reset-password?token=${encodeURIComponent(token)}`);
   return deliver({
@@ -89,3 +134,33 @@ export function sendPasswordResetEmail(to: string, name: string, token: string) 
     ].join("\n"),
   });
 }
+
+export function sendEventRegistrationEmail(
+  to: string,
+  name: string,
+  eventTitle: string,
+  startsAt: Date
+) {
+  // Format the date simply without date-fns to avoid any import issues in edge contexts
+  const dateStr = startsAt.toDateString();
+  const timeStr = startsAt.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return deliver({
+    to,
+    subject: `You are registered for ${eventTitle}`,
+    text: [
+      `Hello ${name},`,
+      "",
+      `You are registered for: ${eventTitle}`,
+      `Date: ${dateStr} at ${timeStr}`,
+      "",
+      "Sign in to view full event details:",
+      siteUrl("/me/events"),
+      "",
+      "NiMechE-SF, Tech-U",
+    ].join("\n"),
+  });
+}
+
