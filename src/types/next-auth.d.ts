@@ -1,8 +1,7 @@
 import type { DefaultSession } from "next-auth";
 
 /**
- * The extra fields carried on the session, so `session.user.status` and
- * `session.user.isAdmin` are typed rather than `any` at every call site.
+ * Extra session fields and dashboard role flags are typed instead of `any`.
  */
 declare module "next-auth" {
   interface User {
@@ -15,7 +14,8 @@ declare module "next-auth" {
       id: string;
       fullName: string;
       status: string;
-      isAdmin: boolean;
+      isTechAdmin: boolean;
+      isExecutive: boolean;
     } & DefaultSession["user"];
   }
 }
@@ -25,6 +25,9 @@ declare module "next-auth/jwt" {
     memberId: string;
     fullName: string;
     status: string;
-    isAdmin: boolean;
+    isTechAdmin: boolean;
+    isExecutive: boolean;
+    /** Legacy dashboard claim retained only while existing JWTs expire. */
+    isAdmin?: boolean;
   }
 }

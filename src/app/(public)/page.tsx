@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { format } from "date-fns";
+import { auth } from "@/auth";
 import {
   ArrowRightIcon,
   AwardIcon,
@@ -7,13 +9,22 @@ import {
   SparklesIcon,
 } from "lucide-react";
 
-import { DateBox } from "@/components/date-box";
 import { HeroCertificate } from "@/components/hero-certificate";
-import { MediaTile } from "@/components/media-tile";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { GALLERY, STATS, UPCOMING } from "@/lib/content/home";
+import { getPublicEventList } from "@/lib/events/queries";
+import { getPublishedAlbums } from "@/lib/gallery/queries";
+import { EventKind } from "@prisma/client";
+
+const KIND_LABELS: Record<EventKind, string> = {
+  PLANT_VISIT: "Plant visit",
+  TRAINING: "Training",
+  LECTURE: "Lecture",
+  CAREERS: "Careers",
+  COMPETITION: "Competition",
+  MEETING: "Meeting",
+};
 
 const FEATURES = [
   {
@@ -52,7 +63,13 @@ const STEPS = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [session, { upcoming }, albums] = await Promise.all([
+    auth(),
+    getPublicEventList(),
+    getPublishedAlbums(),
+  ]);
+
   return (
     <>
       {/* ---------------------------------------------------------- hero */}
@@ -72,8 +89,8 @@ export default function HomePage() {
             </p>
             <div className="mt-1 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href="/join">
-                  Join NiMechE-SF <ArrowRightIcon />
+                <Link href={session?.user ? "/me" : "/join"}>
+                  {session?.user ? "Go to your dashboard" : "Join NiMechE-SF"} <ArrowRightIcon />
                 </Link>
               </Button>
               <Button variant="outline" asChild>
@@ -88,28 +105,6 @@ export default function HomePage() {
 
           <HeroCertificate />
         </div>
-      </section>
-
-      {/* --------------------------------------------------------- stats */}
-      <section className="mx-auto w-full max-w-[1180px] px-4 pb-10 sm:px-7">
-        <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {STATS.map((stat) => (
-            <div
-              key={stat.label}
-              className="border-border bg-surface rounded-lg border px-5 py-4"
-            >
-              <dt className="sr-only">{stat.label}</dt>
-              <dd>
-                <span className="font-heading block text-[30px] leading-tight font-bold tabular-nums">
-                  {stat.value}
-                </span>
-                <span className="text-muted-foreground mt-1 block text-[13px]">
-                  {stat.label}
-                </span>
-              </dd>
-            </div>
-          ))}
-        </dl>
       </section>
 
       {/* ------------------------------------------------------ features */}
@@ -168,23 +163,36 @@ export default function HomePage() {
           </Link>
         </div>
 
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {UPCOMING.map((event) => (
-            <li key={event.slug}>
-              <Link
-                href={`/events/${event.slug}`}
-                className="border-border bg-surface shadow-e1 hover:bg-muted flex h-full items-start gap-4 rounded-lg border p-5 transition-colors"
-              >
-                <DateBox day={event.day} month={event.month} />
-                <span className="flex min-w-0 flex-col gap-2">
-                  <Badge>{event.kind}</Badge>
-                  <span className="font-heading text-base font-bold">{event.title}</span>
-                  <span className="text-muted-foreground text-sm">{event.meta}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {upcoming.length === 0 ? (
+          <p className="text-muted-foreground">No events published yet. Check back soon.</p>
+        ) : (
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {upcoming.slice(0, 3).map((event) => (
+              <li key={event.id}>
+                <Link
+                  href={`/events/${event.slug}`}
+                  className="border-border bg-surface shadow-e1 hover:bg-muted flex h-full items-start gap-4 rounded-lg border p-5 transition-colors"
+                >
+                  <div className="bg-primary text-primary-foreground w-13 shrink-0 rounded-md py-2 text-center">
+                    <div className="font-heading text-lg leading-none font-bold">
+                      {format(event.startsAt, "dd")}
+                    </div>
+                    <div className="mt-0.5 text-[10px] font-semibold tracking-[0.08em]">
+                      {format(event.startsAt, "MMM").toUpperCase()}
+                    </div>
+                  </div>
+                  <span className="flex min-w-0 flex-col gap-2">
+                    <Badge>{KIND_LABELS[event.kind]}</Badge>
+                    <span className="font-heading text-base font-bold">{event.title}</span>
+                    <span className="text-muted-foreground text-sm">
+                      {event.mode === "ONLINE" ? "Online" : event.location ?? "Location to be announced"}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* ------------------------------------------------------- gallery */}
@@ -196,11 +204,8 @@ export default function HomePage() {
               Photographs and video from every event, project and competition we run.
             </p>
           </div>
-          <Link
-            href="/gallery"
-            className="flex items-center gap-1 text-[15px] font-semibold"
-          >
-            All 64 albums <ChevronRightIcon className="size-4" />
+          <Link href="/gallery" className="flex items-center gap-1 text-[15px] font-semibold">
+            Browse gallery <ChevronRightIcon className="size-4" />
           </Link>
         </div>
 
@@ -209,18 +214,23 @@ export default function HomePage() {
           aspect ratio of their own. A tile that does both overflows its
           section, which is exactly what went wrong in the design once.
         */}
-        <div className="grid auto-rows-[130px] grid-cols-2 gap-3.5 sm:auto-rows-[150px] lg:auto-rows-[190px] lg:grid-cols-4">
-          {GALLERY.map((tile) => (
-            <div
-              key={tile.id}
-              className={
-                tile.wide ? "col-span-2 row-span-1 h-full lg:row-span-2" : "h-full"
-              }
-            >
-              <MediaTile tag={tile.tag} caption={tile.caption} duration={tile.duration} />
-            </div>
-          ))}
-        </div>
+        {albums.length === 0 ? (
+          <p className="text-muted-foreground">No albums have been published yet.</p>
+        ) : (
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {albums.slice(0, 3).map((album) => (
+              <li key={album.id}>
+                <Link href={`/gallery/${album.slug}`} className="border-border bg-surface hover:bg-muted block rounded-lg border p-5 transition-colors">
+                  <span className="font-heading font-bold">{album.title}</span>
+                  <span className="text-muted-foreground mt-2 block text-sm">
+                    {album._count.items} {album._count.items === 1 ? "photo" : "photos"}
+                    {album.eventTitle ? ` · ${album.eventTitle}` : ""}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* ----------------------------------------------------- verify CTA */}

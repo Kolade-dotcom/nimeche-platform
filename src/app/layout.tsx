@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Sora } from "next/font/google";
 
 import { Providers } from "@/components/providers";
+import { ScrollMotion } from "@/components/scroll-motion";
 import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
@@ -38,6 +39,7 @@ export default function RootLayout({
       <body className={`${sora.variable} ${inter.variable}`}>
         <Providers>
           {children}
+          <ScrollMotion />
           <Toaster position="top-center" />
         </Providers>
       </body>

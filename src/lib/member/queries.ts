@@ -328,6 +328,7 @@ export const getOpportunities = cache(async function getOpportunities(
 ) {
   return db.opportunity.findMany({
     where: {
+      status: "published",
       closesAt: { gte: new Date() },
       AND: [
         { OR: [{ department: null }, { department: member.department ?? undefined }] },

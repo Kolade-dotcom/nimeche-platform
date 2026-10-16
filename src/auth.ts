@@ -70,7 +70,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
     /**
      * Extends the base jwt callback from authConfig to also check whether the
-     * signing-in member holds EXECUTIVE or ADMIN role. Done here (not in
+     * signing-in member holds EXECUTIVE or PRESIDENT role. Done here (not in
      * auth.config.ts) because the role check needs Prisma, which cannot run
      * on the edge.
      */
@@ -79,19 +79,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const token = (await authConfig.callbacks!.jwt!(params)) ?? params.token;
 
       // Only query on sign-in (when `user` is present). On subsequent
-      // requests the token already carries isAdmin from the initial sign-in.
+      // requests the token already carries its dashboard role flags.
       if (params.user && token.memberId) {
         try {
-          const adminRole = await db.memberRole.findFirst({
-            where: {
-              memberId: token.memberId as string,
-              role: { key: { in: ["EXECUTIVE", "ADMIN"] } },
-            },
-          });
-          token.isAdmin = adminRole !== null;
+          const [adminRole, executiveRole] = await Promise.all([
+            db.memberRole.findFirst({
+              where: { memberId: token.memberId as string, role: { key: "ADMIN" } },
+            }),
+            db.memberRole.findFirst({
+              where: {
+                memberId: token.memberId as string,
+                role: { key: { in: ["EXECUTIVE", "PRESIDENT"] } },
+              },
+            }),
+          ]);
+          token.isTechAdmin = adminRole !== null;
+          token.isExecutive = executiveRole !== null;
         } catch {
           // Role query must not break sign-in if it fails.
-          token.isAdmin = false;
+          token.isTechAdmin = false;
+          token.isExecutive = false;
         }
       }
 

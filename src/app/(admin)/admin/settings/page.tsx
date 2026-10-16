@@ -1,13 +1,10 @@
-import { RoleKey } from "@prisma/client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { requireRole } from "@/lib/auth/roles";
+import { requireTechAdmin } from "@/lib/auth/roles";
 
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {
-  // Settings page is ADMIN-only — more restrictive than most admin pages
-  await requireRole([RoleKey.ADMIN]);
+  await requireTechAdmin();
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "(not set)";
   const nodeEnv = process.env.NODE_ENV ?? "(not set)";

@@ -19,10 +19,15 @@ export function JoinForm() {
   const [state, formAction] = useActionState(joinAction, initial);
 
   return (
-    <form action={formAction} className="flex flex-col gap-6" noValidate>
+    <form action={formAction} className="join-form flex flex-col gap-6" noValidate>
       <FormAlert message={state.formError} />
 
-      <Field id="fullName" label="Full name" error={state.fieldErrors?.fullName}>
+      <Field
+        id="fullName"
+        label="Full name"
+        error={state.fieldErrors?.fullName}
+        className="join-field"
+      >
         <Input
           id="fullName"
           name="fullName"
@@ -39,17 +44,39 @@ export function JoinForm() {
         label="Tech-U email"
         hint="This is how you sign in. Personal addresses are not accepted."
         error={state.fieldErrors?.email}
+        className="join-field"
       >
         <Input
           id="email"
           name="email"
           type="email"
           inputMode="email"
-          autoComplete="username"
+          autoComplete="email"
           autoCapitalize="none"
+          autoCorrect="off"
           spellCheck={false}
+          maxLength={254}
           placeholder="firstname.lastname@tech-u.edu.ng"
           aria-invalid={Boolean(state.fieldErrors?.email) || undefined}
+          required
+        />
+      </Field>
+
+      <Field
+        id="matricNo"
+        label="Matric number"
+        hint="Use the number on your Tech-U student ID, for example 125/22/1/0178. An executive will verify it."
+        error={state.fieldErrors?.matricNo}
+        className="join-field"
+      >
+        <Input
+          id="matricNo"
+          name="matricNo"
+          inputMode="numeric"
+          autoComplete="off"
+          placeholder="125/22/1/0178"
+          maxLength={13}
+          aria-invalid={Boolean(state.fieldErrors?.matricNo) || undefined}
           required
         />
       </Field>
@@ -59,6 +86,7 @@ export function JoinForm() {
         label="Password"
         hint={`At least ${PASSWORD_MIN} characters. Tap Show to check it before you go on.`}
         error={state.fieldErrors?.password}
+        className="join-field"
       >
         <PasswordField
           id="password"
@@ -69,7 +97,7 @@ export function JoinForm() {
         />
       </Field>
 
-      <fieldset className="flex flex-col gap-2">
+      <fieldset className="join-field flex flex-col gap-2">
         <legend className="mb-2 text-sm font-semibold">Department</legend>
         <SegmentedField
           name="department"
@@ -83,7 +111,7 @@ export function JoinForm() {
         ) : null}
       </fieldset>
 
-      <fieldset className="flex flex-col gap-2">
+      <fieldset className="join-field flex flex-col gap-2">
         <legend className="mb-2 text-sm font-semibold">Level</legend>
         <SegmentedField
           name="level"
@@ -97,13 +125,13 @@ export function JoinForm() {
         ) : null}
       </fieldset>
 
-      <SubmitButton pendingLabel="Creating your account" className="w-full">
+      <SubmitButton pendingLabel="Creating your account" className="join-field w-full">
         Create account
       </SubmitButton>
 
       <p className="text-muted-foreground text-center text-[13px]/relaxed">
-        By joining you agree we may store your name, email, department and participation
-        record. You can export or delete it at any time.
+        By joining you agree we may store your name, email, matric number, department and
+        participation record. You can export or delete it at any time.
       </p>
     </form>
   );

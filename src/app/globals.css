@@ -164,6 +164,187 @@
 }
 
 /* --------------------------------------------------------------------------
+   Motion. One quiet language used everywhere, driven entirely by the token
+   durations (--dur-fast/base/slow) and easing (--ease) so it inherits the
+   reduced-motion override in tokens.css automatically. The goal is a site
+   that feels alive without ever getting in the way: content arrives rather
+   than pops, hover states answer the cursor, buttons acknowledge a press.
+
+   Page arrival: the direct children of <main> rise a few pixels and fade in,
+   each 40ms behind the last, so a page assembles instead of appearing.
+   -------------------------------------------------------------------------- */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+main > * {
+  animation: page-enter var(--dur-slow) var(--ease) both;
+}
+main > *:nth-child(2) {
+  animation-delay: 40ms;
+}
+main > *:nth-child(3) {
+  animation-delay: 80ms;
+}
+main > *:nth-child(4) {
+  animation-delay: 120ms;
+}
+main > *:nth-child(n + 5) {
+  animation-delay: 160ms;
+}
+
+/* Cards answer a cursor with a small lift. Only where hover actually exists. */
+@media (hover: hover) {
+  .card-interactive,
+  [data-slot="card"] {
+    transition:
+      box-shadow var(--dur-base) var(--ease),
+      border-color var(--dur-base) var(--ease),
+      transform var(--dur-base) var(--ease);
+  }
+  .card-interactive:hover,
+  [data-slot="card"]:hover {
+    box-shadow: var(--e2);
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+
+  [data-slot="button"]:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--e2);
+  }
+}
+
+/* Content lower on the page reveals as it enters view. The observer adds
+   these classes only after hydration, keeping server-rendered content visible
+   when JavaScript is unavailable. */
+.scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0) scale(0.99);
+  transition:
+    opacity 520ms var(--ease),
+    transform 520ms var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.scroll-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+@media (hover: hover) {
+  .scroll-reveal.is-revealed[data-slot="card"]:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes menu-enter {
+  from { opacity: 0; transform: translateY(-7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+#site-menu {
+  animation: menu-enter var(--dur-base) var(--ease) both;
+  transform-origin: top;
+}
+
+@keyframes certificate-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.certificate-art {
+  animation: certificate-float 6s var(--ease) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal,
+  .scroll-reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+  #site-menu,
+  .certificate-art {
+    animation: none;
+  }
+}
+
+/* Buttons acknowledge a press, everywhere, cheaply. */
+button:not(:disabled),
+[role="button"]:not(:disabled) {
+  transition:
+    transform var(--dur-fast) var(--ease),
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+button:not(:disabled):active,
+[role="button"]:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Text inputs settle their border colour rather than snapping it. */
+input,
+textarea,
+select {
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+input[data-slot="input"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus-ring) 22%, transparent);
+}
+
+/* The password wrapper owns the focus ring; suppress the global input outline
+   so it does not draw a second ring inside the same field. */
+.password-field input:focus-visible {
+  outline: none;
+  outline-offset: 0;
+}
+
+/* The join flow gets a short, staggered entrance so the form feels guided. */
+@keyframes field-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.join-field {
+  animation: field-enter var(--dur-slow) var(--ease) both;
+}
+.join-form > .join-field:nth-child(1) { animation-delay: 40ms; }
+.join-form > .join-field:nth-child(2) { animation-delay: 80ms; }
+.join-form > .join-field:nth-child(3) { animation-delay: 120ms; }
+.join-form > .join-field:nth-child(4) { animation-delay: 160ms; }
+.join-form > .join-field:nth-child(5) { animation-delay: 200ms; }
+.join-form > .join-field:nth-child(6) { animation-delay: 240ms; }
+
+/* Links in prose underline on hover with a draw-on feel. */
+.prose-links a {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--dur-fast) var(--ease);
+  text-decoration-color: color-mix(in oklab, var(--text-muted) 45%, transparent);
+}
+.prose-links a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* --------------------------------------------------------------------------
    <Table stacked> on a phone.
    Each row becomes a card and each cell grows a label from its data-label,
    which needs ::before and attr() - neither of which a utility can express.

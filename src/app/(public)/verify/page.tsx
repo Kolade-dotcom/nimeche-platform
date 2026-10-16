@@ -39,7 +39,7 @@ export default async function VerifyLandingPage({ searchParams }: Props) {
             type="text"
             inputMode="text"
             autoCapitalize="characters"
-            placeholder="e.g. NM-7K4Q-2X9"
+            placeholder="Enter the code printed on the certificate"
             required
             className="border-border-strong bg-surface min-h-[50px] rounded-lg border px-4 font-mono text-base tracking-[0.06em] focus:outline focus:outline-2 focus:outline-offset-0"
           />

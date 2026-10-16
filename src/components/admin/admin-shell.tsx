@@ -13,7 +13,7 @@ import {
 } from "@/components/admin/admin-nav-items";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { RoleKey } from "@prisma/client";
+import { RoleKey } from "@prisma/client";
 
 function titleFor(pathname: string): string {
   const match = [...ADMIN_NAV_ITEMS]
@@ -37,11 +37,13 @@ export function AdminShell({
 
   const rolesLabel = roles
     .map((r) => {
-      if (r === "ADMIN") return "Admin";
+      if (r === "ADMIN") return "Tech Admin";
+      if (r === "PRESIDENT") return "President";
       if (r === "EXECUTIVE") return "Executive";
       return r;
     })
     .join(", ");
+  const navItems = ADMIN_NAV_ITEMS;
 
   return (
     <div className="bg-background min-h-dvh lg:flex">
@@ -56,10 +58,10 @@ export function AdminShell({
         </Link>
 
         <p className="text-muted-foreground mb-1 px-3 text-[11px] font-semibold tracking-[0.09em] uppercase">
-          Admin Console
+          Executive Dashboard
         </p>
 
-        <NavList items={ADMIN_NAV_ITEMS} pathname={pathname} />
+        <NavList items={navItems} pathname={pathname} />
 
         <div className="mt-auto space-y-2 pt-4">
           <div className="px-3 py-2">
@@ -110,7 +112,7 @@ export function AdminShell({
             className="border-border bg-surface border-b px-4 py-3 lg:hidden"
             onClick={close}
           >
-            <NavList items={ADMIN_NAV_ITEMS} pathname={pathname} />
+            <NavList items={navItems} pathname={pathname} />
             <form action="/sign-out" method="post" className="mt-3">
               <Button
                 type="submit"

@@ -74,7 +74,7 @@ export default async function GalleryPage() {
               <li key={album.id}>
                 <Link
                   href={`/gallery/${album.slug}`}
-                  className="group border-border bg-surface shadow-e1 flex flex-col overflow-hidden rounded-xl border transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="group border-border bg-surface shadow-e1 hover:shadow-e2 hover:-translate-y-0.5 flex flex-col overflow-hidden rounded-xl border transition-[box-shadow,transform] duration-200 ease-[var(--ease)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {/* Cover */}
                   <div className="h-[160px]">

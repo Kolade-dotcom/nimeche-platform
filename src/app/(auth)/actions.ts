@@ -87,6 +87,7 @@ export async function joinAction(
   const parsed = joinSchema.safeParse({
     fullName: formData.get("fullName"),
     email: formData.get("email"),
+    matricNo: formData.get("matricNo"),
     password: formData.get("password"),
     department: formData.get("department"),
     level: formData.get("level"),
@@ -96,7 +97,7 @@ export async function joinAction(
     return { fieldErrors: flatten(parsed.error) };
   }
 
-  const { fullName, email, password, department, level } = parsed.data;
+  const { fullName, email, matricNo, password, department, level } = parsed.data;
 
   const existing = await db.member.findUnique({
     where: { email },
@@ -110,10 +111,19 @@ export async function joinAction(
     };
   }
 
+  const existingMatric = await db.member.findUnique({
+    where: { matricNo },
+    select: { id: true },
+  });
+  if (existingMatric) {
+    return { fieldErrors: { matricNo: "That matric number is already linked to an account." } };
+  }
+
   const member = await db.member.create({
     data: {
       fullName,
       email,
+      matricNo,
       passwordHash: await hashPassword(password),
       department,
       level: Number(level),

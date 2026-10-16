@@ -3,10 +3,8 @@ import { z } from "zod";
 /**
  * The email domain is the gate.
  *
- * Every member already has firstname.lastname@tech-u.edu.ng, already knows it,
- * and it is the one identifier that ties an account to a real student without
- * anyone typing a matric number. Accepting only this domain is what lets
- * sign-up skip "which institution?" entirely (design plan section 1.1).
+ * The official Tech-U address identifies the institution, and the matric number
+ * collected during sign-up ties the account to the student's school record.
  */
 export const TECH_U_DOMAIN = "tech-u.edu.ng";
 
@@ -48,6 +46,10 @@ export const joinSchema = z.object({
     .min(2, "Enter your full name.")
     .max(120, "That is longer than we can store."),
   email: techUEmail,
+  matricNo: z
+    .string()
+    .trim()
+    .regex(/^\d{3}\/\d{2}\/[12]\/\d{4}$/, "Enter your matric number in the format 125/22/1/0178."),
   password,
   department: z.enum(["MECHANICAL", "MECHATRONICS"], {
     message: "Choose your department.",

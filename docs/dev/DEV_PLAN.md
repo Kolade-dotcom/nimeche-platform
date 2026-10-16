@@ -251,10 +251,7 @@ AuditLog        id, actor_id, action, entity_type, entity_id, diff(jsonb), creat
 
 ## 5. Authentication and authorisation
 
-**Authentication is email and password, and the email is the Tech-U student address.** Every member
-already has `firstname.lastname@tech-u.edu.ng`, every member already knows it, and it is the one
-identifier that ties an account to a real student without asking anyone to type a matric number.
-
+**Authentication is email and password, and the email is the Tech-U student address.** Join also collects the student's matric number, which an executive checks during approval.
 - **Sign in: student email + password.** Nothing else on the screen. The email field is typed once at sign-up and remembered by the browser thereafter.
 - **The email domain is the gate.** Registration accepts `@tech-u.edu.ng` only. This is what lets us skip the "which institution?" question entirely and what makes the roll match in section 6.1 possible. A non-Tech-U address gets a plain-words rejection that says where to get a student address, not a validation error.
 - **One password field at sign-up.** No confirm box, no strength meter, no composition rules beyond a minimum length of 8. A show-password toggle does the work a confirm box pretends to do, and does it better on a phone.
@@ -308,15 +305,7 @@ personal addresses with plain-language copy, not a regex error.
 500`. Model them as enums, not free text: it keeps the data clean for analytics and lets the form
 use buttons instead of dropdowns.
 
-**The matric number is never typed by anyone.** It is what the executive checks against the
-department roll — but a `firstname.lastname@tech-u.edu.ng` address already carries the name, so the
-server matches the applicant to a roll entry and *reads* the matric number off it. The reviewer sees
-"matched to MEE/2022/0431 on the Mechanical roll" rather than a field someone had to fill in.
-
-That is the rule in section 1.1 applied to its hardest case: a value the association genuinely needs,
-obtained without asking a single person for it. It costs one thing — the department has to share the
-roll (design plan section 17.7). Without that, the fallback is asking for the matric number in the
-profile after approval, where it is not in the way of anyone joining.
+**The matric number is collected at sign-up and verified during approval.** The form validates the standard `123/45/1/0123` shape, and each matric number is unique across member accounts. If the department shares its student roll in future, executives can use it to verify the submitted number more easily.
 
 **Progressive profiling** fills the rest, in context and always skippable: interests are asked the
 first time the member opens the Opportunities Hub ("so we can match you — skip for now"); a photo is

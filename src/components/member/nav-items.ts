@@ -47,14 +47,12 @@ export const MAIN_NAV: NavItem[] = [
     label: "Opportunities",
     short: "Openings",
     icon: BriefcaseIcon,
-    soon: true,
   },
   {
     href: "/me/activity",
     label: "My activity",
     short: "Activity",
     icon: HistoryIcon,
-    soon: true,
   },
 ];
 
@@ -65,7 +63,6 @@ export const ACCOUNT_NAV: NavItem[] = [
     label: "Settings",
     short: "Settings",
     icon: SettingsIcon,
-    soon: true,
   },
 ];
 

@@ -12,9 +12,9 @@ export function HeroCertificate() {
     <div className="bg-primary-subtle flex aspect-[4/3] w-full items-center justify-center rounded-2xl p-6">
       <svg
         viewBox="0 0 420 320"
-        className="h-full w-full"
+        className="certificate-art h-full w-full"
         role="img"
-        aria-label="A certificate of completion carrying a verification code"
+          aria-label="Illustration of a certificate. It contains no valid member code."
       >
         <rect
           x="70"
@@ -110,7 +110,7 @@ export function HeroCertificate() {
           letterSpacing="1"
           fill="var(--text-muted)"
         >
-          NM-7K4Q-2X9
+          SAMPLE ONLY
         </text>
         <circle cx="326" cy="90" r="23" fill="var(--primary)" />
         <path

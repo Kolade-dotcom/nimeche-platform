@@ -33,7 +33,9 @@ export function renderCertificateHtml(data: CertificateData): string {
   const details: string[] = [];
   if (data.sessions > 1) details.push(`${data.sessions} sessions`);
   if (data.contactHours > 0) details.push(`${data.contactHours} contact hours`);
-  if (data.events.length > 0) details.push(data.events.join(", "));
+  // Event titles themselves contain commas, so a comma join reads as one
+  // long list. A plus keeps each session's name legible.
+  if (data.events.length > 0) details.push(data.events.join(" + "));
 
   return `<!doctype html>
 <html lang="en">

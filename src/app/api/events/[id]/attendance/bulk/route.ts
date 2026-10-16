@@ -19,7 +19,7 @@ export async function POST(
 ) {
   // Auth check
   const session = await auth();
-  if (!session?.user?.isAdmin) {
+  if (!session?.user?.isExecutive) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 

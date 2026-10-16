@@ -26,9 +26,11 @@ export function PasswordField({
   return (
     <div
       className={cn(
-        "bg-surface flex h-12 w-full items-center gap-2 rounded-sm border pr-2 pl-4",
-        invalid ? "border-destructive" : "border-input",
-        "focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-[var(--focus-ring)]",
+        "password-field bg-surface flex h-12 w-full items-center gap-2 rounded-sm border pr-2 pl-4",
+        "transition-[border-color,box-shadow,background-color] duration-200",
+        invalid
+          ? "border-destructive"
+        : "border-input focus-within:border-[var(--focus-ring)] focus-within:ring-2 focus-within:ring-[var(--focus-ring)]/20",
         className
       )}
     >
@@ -38,17 +40,16 @@ export function PasswordField({
         type={visible ? "text" : "password"}
         autoComplete={autoComplete}
         aria-invalid={invalid || undefined}
-        className="placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-base outline-none"
+        // The container carries the focus treatment, so the input's own ring
+        // is suppressed — otherwise the field draws two.
+        className="placeholder:text-muted-foreground min-w-0 flex-1 bg-transparent text-base outline-none focus-visible:outline-none"
         {...props}
       />
       <button
         type="button"
         onClick={() => setVisible((v) => !v)}
-        // The toggle is a convenience, not a field. Keeping it out of the tab
-        // order means Tab goes straight from the password to the submit button.
-        tabIndex={-1}
         aria-pressed={visible}
-        className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1.5 rounded-sm px-2 py-1.5 text-[13px] font-semibold"
+        className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1.5 rounded-sm px-2 py-1.5 text-[13px] font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus-ring)]"
       >
         {visible ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
         {visible ? "Hide" : "Show"}

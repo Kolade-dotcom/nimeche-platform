@@ -83,43 +83,98 @@ export async function generatePdf(credentialId: string): Promise<string> {
 async function printPdf(html: string): Promise<Buffer> {
   const puppeteer = await import("puppeteer-core");
 
-  let executablePath: string | undefined;
-  let args: string[] = [];
-  try {
+  if (process.platform === "linux") {
+    // Serverless (Vercel): the Lambda-compatible Chromium launches and stays
+    // attached, so puppeteer's own handshake works.
     const chromium = (await import("@sparticuz/chromium")).default;
-    executablePath = await chromium.executablePath();
-    args = chromium.args;
-  } catch {
-    // Not the serverless runtime — find a browser installed on this machine.
-    executablePath = await findLocalBrowser();
+    const browser = await puppeteer.launch({
+      executablePath: await chromium.executablePath(),
+      args: chromium.args,
+      headless: true,
+    });
+    try {
+      return await printViaPage(browser, html);
+    } finally {
+      await browser.close();
+    }
   }
 
-  const browser = await puppeteer.launch({
+  // Windows/macOS development: Edge and Chrome's launcher stub exits
+  // immediately when spawned with pipes, which breaks puppeteer's launch
+  // handshake (the browser itself runs on fine as a detached process). Spawn
+  // detached and drive the browser over the DevTools protocol instead.
+  const executablePath = await findLocalBrowser();
+  const port = 30000 + Math.floor(Math.random() * 20000);
+  const os = await import("node:os");
+  const { mkdtemp } = await import("node:fs/promises");
+  const profileDir = await mkdtemp(path.join(os.tmpdir(), "nimeche-cert-"));
+
+  const { spawn } = await import("node:child_process");
+  const child = spawn(
     executablePath,
-    args: [...args, "--no-sandbox", "--disable-setuid-sandbox"],
-    headless: true,
-  });
+    [
+      "--headless",
+      "--no-first-run",
+      "--disable-gpu",
+      "--no-sandbox",
+      `--user-data-dir=${profileDir}`,
+      `--remote-debugging-port=${port}`,
+      "about:blank",
+    ],
+    { detached: true, stdio: "ignore" }
+  );
+  child.unref();
 
-  try {
-    const page = await browser.newPage();
-    await page.setContent(html, { waitUntil: "load", timeout: 30_000 });
-    // The webfonts load asynchronously after "load" — a certificate printed
-    // with fallback fonts is not the same document. Fonts live on Google's
-    // CDN; if they never arrive we still print, just with system faces.
-    await page
-      .evaluate(() => Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 5000))]))
-      .catch(() => undefined);
-    return Buffer.from(
-      await page.pdf({
-        width: "297mm",
-        height: "210mm",
-        printBackground: true,
-        margin: { top: 0, right: 0, bottom: 0, left: 0 },
-      })
-    );
-  } finally {
-    await browser.close();
+  // The DevTools server takes a moment; poll rather than assume.
+  let up = false;
+  for (let i = 0; i < 30; i++) {
+    try {
+      const res = await fetch(`http://127.0.0.1:${port}/json/version`);
+      if (res.ok) {
+        up = true;
+        break;
+      }
+    } catch {
+      // Not listening yet.
+    }
+    await new Promise((r) => setTimeout(r, 500));
   }
+  if (!up) {
+    throw new Error("Started the browser but could not reach it to print. Try again.");
+  }
+
+  const browser = await puppeteer.connect({ browserURL: `http://127.0.0.1:${port}` });
+  try {
+    return await printViaPage(browser, html);
+  } finally {
+    await browser.close().catch(() => undefined);
+  }
+}
+
+type BrowserLike = Awaited<ReturnType<typeof import("puppeteer-core").connect>>;
+
+async function printViaPage(
+  browser: BrowserLike,
+  html: string
+): Promise<Buffer> {
+  const page = await browser.newPage();
+  await page.setContent(html, { waitUntil: "load", timeout: 30_000 });
+  // The webfonts load asynchronously after "load" — a certificate printed
+  // with fallback fonts is not the same document. Fonts live on Google's
+  // CDN; if they never arrive we still print, just with system faces.
+  await page
+    .evaluate(() =>
+      Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 5000))])
+    )
+    .catch(() => undefined);
+  return Buffer.from(
+    await page.pdf({
+      width: "297mm",
+      height: "210mm",
+      printBackground: true,
+      margin: { top: 0, right: 0, bottom: 0, left: 0 },
+    })
+  );
 }
 
 /** Common Chrome/Edge install paths, checked in order. */

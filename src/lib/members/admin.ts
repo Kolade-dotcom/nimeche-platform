@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { logAudit } from "@/lib/auth/audit";
-import { grantRole, revokeRole } from "@/lib/auth/roles";
+import { getMemberRoles, grantRole, revokeRole } from "@/lib/auth/roles";
 import { sendMemberApprovalEmail } from "@/lib/email";
 import type { RoleKey } from "@prisma/client";
 
@@ -15,6 +15,7 @@ export type MemberListItem = {
   memberNo: string | null;
   createdAt: Date;
   joinedAt: Date | null;
+  roles: RoleKey[];
 };
 
 export type MemberDetail = MemberListItem & {
@@ -70,13 +71,15 @@ export async function getMemberList(filter?: {
       memberNo: true,
       createdAt: true,
       joinedAt: true,
+      memberRoles: { select: { role: { select: { key: true } } } },
     },
   });
 
-  return rows.map((row) => ({
+  return rows.map(({ memberRoles, ...row }) => ({
     ...row,
     department: row.department as string | null,
     status: row.status as string,
+    roles: memberRoles.map(({ role }) => role.key),
   }));
 }
 
@@ -203,6 +206,34 @@ export async function updateMemberRoleAdmin(
   roleKey: RoleKey,
   grant: boolean
 ): Promise<void> {
+  const actorRoles = await getMemberRoles(actorId);
+  const isTechAdmin = actorRoles.includes("ADMIN");
+  const isPresident = actorRoles.includes("PRESIDENT");
+
+  if (roleKey === "PRESIDENT" && !isTechAdmin) {
+    throw new Error("Only a tech admin can assign or remove the President role.");
+  }
+  if (roleKey === "EXECUTIVE" && !isTechAdmin && !isPresident) {
+    throw new Error("Only the President or a tech admin can manage Executive access.");
+  }
+  if (roleKey !== "PRESIDENT" && roleKey !== "EXECUTIVE" && !isTechAdmin) {
+    throw new Error("Only a tech admin can manage this role.");
+  }
+
+  if (grant && (roleKey === "PRESIDENT" || roleKey === "EXECUTIVE")) {
+    const target = await db.member.findUnique({
+      where: { id: memberId },
+      select: { status: true },
+    });
+    if (!target || target.status !== "ACTIVE") {
+      throw new Error("Only active members can be assigned executive roles.");
+    }
+  }
+
+  if (roleKey === "EXECUTIVE" && !grant && actorId === memberId && !isTechAdmin) {
+    throw new Error("The President cannot remove their own Executive access.");
+  }
+
   if (grant) {
     await grantRole(actorId, memberId, roleKey);
   } else {

@@ -5,8 +5,8 @@ import { authConfig } from "@/auth.config";
 /**
  * Next.js 16 renamed the middleware convention to `proxy`. This runs before
  * every matched request and applies the `authorized` callback in
- * `auth.config.ts`: signed-out visitors asking for /me or /admin are sent to
- * sign-in with a callbackUrl, signed-in members are kept off the auth screens.
+ * `auth.config.ts`: signed-out visitors asking for /me, /exco or /admin are
+ * sent to sign-in with a callbackUrl, and dashboard roles are checked there.
  *
  * It uses the edge-safe half of the config only - no Prisma, no bcrypt.
  *

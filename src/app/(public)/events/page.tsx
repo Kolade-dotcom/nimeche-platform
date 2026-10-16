@@ -104,7 +104,7 @@ export default async function EventsPage({ searchParams }: Props) {
               <li key={event.id}>
                 <Link
                   href={`/events/${event.slug}`}
-                  className="border-border bg-surface shadow-e1 hover:bg-muted flex h-full items-start gap-4 rounded-xl border p-5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  className="border-border bg-surface shadow-e1 hover:bg-muted hover:shadow-e2 hover:-translate-y-0.5 flex h-full items-start gap-4 rounded-xl border p-5 transition-[background-color,box-shadow,transform] duration-200 ease-[var(--ease)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   <DateBox
                     day={format(event.startsAt, "dd")}

@@ -82,11 +82,10 @@ possible, and dev plan §9.5 gates them in CI.
 | Testing     | **Vitest** (unit), **Playwright** (E2E, desktop + mobile)   |                                                                                                                                                 |
 | Hosting     | **Vercel** (app) + **Neon** (data)                          | Zero-ops deploys, preview per pull request, free tier on both                                                                                   |
 
-**Authentication is email and password, and the email is the Tech-U address.** Every member already
-has `firstname.lastname@tech-u.edu.ng`, already knows it, and it is the one identifier that ties an
-account to a real student without anyone typing a matric number. The domain is the gate, which is
-what lets sign-up skip "which institution?" entirely. An emailed link survives in exactly one place:
-forgetting the password.
+**Authentication is email and password, and the email is the Tech-U address.** Join also collects a
+matric number in the school's standard format; an executive verifies it during approval. The email
+domain identifies the institution, and the matric number ties the account to the student's school
+record. An emailed link survives in exactly one place: forgetting the password.
 
 ## Getting started
 
@@ -123,11 +122,14 @@ Push the schema to your database:
 npm run db:push
 ```
 
-Seed a couple of placeholder members so there is something to sign in as:
+Seed the reference skills and role definitions used by the app:
 
 ```bash
 npm run db:seed
 ```
+
+The seed command does not create sample accounts, events, attendance, certificates or
+opportunities. Add real records through the app's executive screens.
 
 Start the dev server:
 
@@ -214,13 +216,12 @@ src/
     auth/               Password hashing, single-use email and reset tokens
     email.ts            Transactional email — prints to the console with no API key
     validation/         Zod schemas shared by the form and the server action
-    content/            Placeholder copy, replaced by database queries
   auth.ts               Auth.js instance — the credentials provider
   auth.config.ts        The edge-safe half, shared with the proxy
   proxy.ts              Runs before every request: session check and redirects
 prisma/
   schema.prisma         Data model (built out table by table)
-  seed.ts               A full member record for development, dated relative to today
+  seed.ts               Reference skill and role definitions; no sample accounts or activity
 docs/
   design/               Design plan, tokens, 16 built screens, the 81-artboard canvas
   dev/                  Development plan
@@ -298,7 +299,8 @@ the dev plan states the enforcement.
 
 ## Status
 
-**The public homepage, the whole authentication flow and the member dashboard are built.**
+**The MVP is in progress.** The public site, authentication, member area and executive console now
+cover the main account, event, attendance, certificate, opportunity, gallery and project flows.
 
 | Built                | Route              |
 | -------------------- | ------------------ |
@@ -316,8 +318,22 @@ the dev plan states the enforcement.
 | My certificates      | `/me/certificates` |
 | My skills            | `/me/skills`       |
 | My profile           | `/me/profile`      |
+| Public events        | `/events`          |
+| Event details        | `/events/[slug]`   |
+| Public gallery       | `/gallery`         |
+| Public opportunities | `/opportunities`   |
+| Certificate check    | `/verify/[code]`   |
+| Executive console    | `/exco`            |
+| Executive projects   | `/exco/projects`   |
+| Tech Admin panel     | `/admin`           |
+| Public projects      | `/projects`        |
 
-`src/proxy.ts` runs before every request: it sends a signed-out visitor asking for `/me` or
+`/exco` is the operational dashboard for Executive and President roles. The separate
+`/admin` panel is for Tech Admins only and is intentionally absent from site navigation; hiding the
+link is only a convenience, while role checks on the route enforce access. Sign out and back in once
+after this role separation is deployed so the session receives the updated dashboard permissions.
+
+`src/proxy.ts` runs before every request: it sends a signed-out visitor asking for `/me`, `/exco` or
 `/admin` to sign-in carrying where they were going, and keeps a signed-in member off the auth
 screens. Auth.js writes that destination as an absolute `?callbackUrl=`; the sign-in page accepts
 either that or a plain `?next=` path and normalises both, refusing anything pointing off-site. The
@@ -325,15 +341,18 @@ destination survives the round trip because the two-tap budget for an event link
 only holds if it does.
 
 Everything under `/me` reads the database — events, attendance, certificates, derived skills and
-the member's own record. Nothing on those pages is hard-coded copy. `prisma/seed.ts` writes a
-complete record for one member, with every date relative to the day it runs, so a dashboard whose
-"coming up" section is empty means the page is broken rather than that the fixtures went stale.
+the member's own record. Nothing on those pages is hard-coded sample activity. An empty dashboard
+means no corresponding real records have been added yet. `prisma/seed.ts` creates only the
+reference skills and role definitions required by the app.
 
-Sign-up, sign-in, duplicate rejection, wrong-password handling, the uniform password-reset
-response and all five member pages are covered by end-to-end tests that run against a real
-database (`npm run e2e:db`), on a desktop and a phone viewport.
+Authentication and member flows have end-to-end coverage against a real database (`npm run e2e:db`).
+The public and executive feature set is still being completed and needs broader workflow coverage.
 
-Next up: the executive dashboard, then the public events and gallery pages.
+The next MVP gaps are member CSV import, event feedback and assessment, registration reminders,
+reporting/analytics, and the remaining public information pages (news and resources). Project and
+opportunity workflows also need to be rounded out. Offline attendance needs a real event pilot
+before it is considered launch-ready. The responsive references in `docs/design/screens/` and the
+broader state canvas in `docs/design/canvas/` remain the visual source for those screens.
 
 Outstanding:
 
@@ -343,8 +362,8 @@ Outstanding:
   outside Tech-U.
 - **What happens to a member at graduation**, which at branch scale is the main event, not an edge
   case.
-- **Whether the departments will share their student rolls.** With them, approving a member is a
-  glance instead of a judgement call, and nobody ever types a matric number.
+- **Whether the departments will share their student rolls.** Until then, members enter a matric
+  number at sign-up and an executive verifies it during approval.
 
 Open questions are tracked in design plan §17 (they change the interface) and dev plan §13 (they
 change the build).

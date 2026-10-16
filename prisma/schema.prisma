@@ -52,6 +52,7 @@ enum TokenPurpose {
 enum RoleKey {
   MEMBER
   EXECUTIVE
+  PRESIDENT
   ADMIN
   CONTENT_MANAGER
   PROJECT_LEAD

@@ -169,7 +169,9 @@ export default async function DashboardPage() {
             </Link>
           </div>
           <ul className="flex flex-col gap-3">
-            {credentials.slice(0, 2).map((credential) => (
+            {credentials.length === 0 ? (
+              <li><Well>No certificates yet. They’ll appear here after you complete a qualifying activity.</Well></li>
+            ) : credentials.slice(0, 2).map((credential) => (
               <li key={credential.id} className="flex items-start gap-3">
                 <AwardIcon className="text-primary-text mt-0.5 size-[18px] shrink-0" />
                 <div className="flex min-w-0 flex-col gap-0.5">
@@ -195,7 +197,9 @@ export default async function DashboardPage() {
             </Link>
           </div>
           <div className="flex flex-wrap gap-2">
-            {skills.slice(0, 5).map((skill) => (
+            {skills.length === 0 ? (
+              <p className="text-muted-foreground text-sm">No skills recorded yet. Attend events and complete activities to start building your skills record.</p>
+            ) : skills.slice(0, 5).map((skill) => (
               <Badge
                 key={skill.id}
                 variant={
@@ -217,10 +221,12 @@ export default async function DashboardPage() {
         <Card className="gap-4 p-5">
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-heading text-lg font-bold">Matched to you</h2>
-            <span className="text-muted-foreground text-[13px]">Soon</span>
+            <Link href="/me/opportunities" className="text-primary-text text-[13px] font-semibold">See all</Link>
           </div>
           <ul className="flex flex-col gap-3">
-            {opportunities.map((opportunity) => (
+            {opportunities.length === 0 ? (
+              <li className="text-muted-foreground text-sm">No matching opportunities are open right now.</li>
+            ) : opportunities.map((opportunity) => (
               <li key={opportunity.id} className="flex flex-col gap-0.5">
                 <strong className="text-sm font-semibold">{opportunity.title}</strong>
                 <span className="text-muted-foreground text-[13px]">
@@ -238,7 +244,9 @@ export default async function DashboardPage() {
       <Card className="mt-5 gap-4 p-5">
         <h2 className="font-heading text-lg font-bold">Recent activity</h2>
         <ul className="flex flex-col">
-          {activity.map((entry, index) => (
+          {activity.length === 0 ? (
+            <li className="text-muted-foreground text-sm">No activity recorded yet. Events, certificates and skill updates will appear here.</li>
+          ) : activity.map((entry, index) => (
             <li
               key={entry.id}
               className={
@@ -260,10 +268,10 @@ export default async function DashboardPage() {
           ))}
         </ul>
         <Link
-          href="/me/events"
+          href="/me/activity"
           className="text-primary-text inline-flex items-center gap-1.5 text-[13px] font-semibold"
         >
-          See your events <ArrowRightIcon className="size-4" />
+          View activity <ArrowRightIcon className="size-4" />
         </Link>
       </Card>
     </>

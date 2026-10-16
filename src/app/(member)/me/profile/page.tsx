@@ -4,8 +4,6 @@ import {
   AwardIcon,
   DatabaseIcon,
   GlobeIcon,
-  QrCodeIcon,
-  SmartphoneIcon,
 } from "lucide-react";
 
 import { BrandLockup } from "@/components/brand-mark";
@@ -21,9 +19,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ProfileCardActions } from "@/components/member/profile-card-actions";
 import { getCredentials, getProfileTotals, getSkills } from "@/lib/member/queries";
 import { requireMember } from "@/lib/member/session";
 import { monthYear } from "@/lib/format";
+import { togglePublicProfileAction } from "./actions";
 
 export const metadata: Metadata = { title: "My profile" };
 
@@ -40,7 +40,11 @@ const STATUSES: Record<string, string> = {
 };
 
 export default async function MemberProfilePage() {
-  const member = await requireMember();
+  const account = await requireMember();
+  const member = {
+    ...account,
+    joinedAt: academicEntryDate(account.level) ?? account.joinedAt,
+  };
 
   const [totals, skills, credentials] = await Promise.all([
     getProfileTotals(member.id),
@@ -81,7 +85,7 @@ export default async function MemberProfilePage() {
             <div className="flex flex-col gap-1">
               <h2 className="font-heading text-lg font-bold">Membership record</h2>
               <span className="text-muted-foreground text-[13px]">
-                Kept for you. You do not fill any of this in.
+                Collected at sign-up and checked by an executive.
               </span>
             </div>
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -101,11 +105,7 @@ export default async function MemberProfilePage() {
                 value={member.expectedGraduation ?? "—"}
               />
             </div>
-            <Well>
-              Your matric number came from the department roll when an executive approved
-              you. Nobody typed it, and if it is wrong, tell an executive rather than
-              editing it here — it is what ties this record to the school&rsquo;s.
-            </Well>
+            <Well>Your matric number is collected at sign-up and verified during approval. Contact an executive if it needs correcting.</Well>
           </Card>
 
           <Card className="gap-4 p-5">
@@ -131,7 +131,9 @@ export default async function MemberProfilePage() {
               </Link>
             </div>
             <ul className="flex flex-col gap-4">
-              {skills.slice(0, 4).map((skill) => (
+              {skills.length === 0 ? (
+                <li><Well>No skills recorded yet. Your skills will appear here as you attend events and complete activities.</Well></li>
+              ) : skills.slice(0, 4).map((skill) => (
                 <li key={skill.id} className="flex flex-col gap-2">
                   <div className="flex items-center justify-between gap-3">
                     <strong className="text-sm font-semibold">{skill.name}</strong>
@@ -194,12 +196,13 @@ export default async function MemberProfilePage() {
               </div>
             </div>
             <div className="bg-surface flex flex-wrap gap-2 px-5 py-4">
-              <Button variant="outline" size="sm" disabled>
-                <SmartphoneIcon /> Save to phone
-              </Button>
-              <Button variant="outline" size="sm" disabled>
-                <QrCodeIcon /> Show QR
-              </Button>
+              <ProfileCardActions
+                fullName={member.fullName}
+                email={member.email}
+                department={department}
+                memberNumber={member.memberNo}
+                profilePath={member.publicProfile && member.publicSlug ? `/u/${member.publicSlug}` : null}
+              />
             </div>
           </Card>
 
@@ -209,18 +212,28 @@ export default async function MemberProfilePage() {
               <div className="flex flex-col gap-1">
                 <h2 className="font-heading font-bold">Public profile</h2>
                 <p className="text-muted-foreground text-[13px]">
-                  {member.publicProfile ? "On" : "Off"}. Turn it on and you get a
-                  shareable page at{" "}
-                  <span className="font-mono text-[12px]">
-                    /u/{member.publicSlug ?? "your-name"}
-                  </span>{" "}
-                  — useful on a CV, and you choose what shows.
+                  {member.publicProfile
+                    ? "On. Your name, department, level and executive title are visible on your shareable page. Your email and matric number stay private."
+                    : "Off. Turn it on to create a shareable page for your CV. Your email and matric number stay private."}
                 </p>
               </div>
             </div>
-            <Button variant="outline" size="sm" disabled>
-              Preview and turn on
-            </Button>
+            {member.publicProfile && member.publicSlug ? (
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" size="sm" asChild>
+                  <Link href={`/u/${member.publicSlug}`} target="_blank" rel="noreferrer">View public profile</Link>
+                </Button>
+                <form action={togglePublicProfileAction}>
+                  <Button variant="outline" size="sm" type="submit">Turn off</Button>
+                </form>
+              </div>
+            ) : member.status === "ACTIVE" ? (
+              <form action={togglePublicProfileAction}>
+                <Button variant="outline" size="sm" type="submit">Turn on public profile</Button>
+              </form>
+            ) : (
+              <p className="text-muted-foreground text-sm">Public profiles are available after membership approval.</p>
+            )}
           </Card>
 
           <Card className="gap-4 p-5">
@@ -234,7 +247,9 @@ export default async function MemberProfilePage() {
               </Link>
             </div>
             <ul className="flex flex-col gap-3">
-              {credentials.slice(0, 2).map((credential) => (
+              {credentials.length === 0 ? (
+                <li><Well>No certificates yet. Certificates will appear here when you complete a qualifying event or programme.</Well></li>
+              ) : credentials.slice(0, 2).map((credential) => (
                 <li key={credential.id} className="flex items-start gap-3">
                   <AwardIcon className="text-primary-text mt-0.5 size-[18px] shrink-0" />
                   <div className="flex min-w-0 flex-col gap-1">
@@ -275,4 +290,14 @@ export default async function MemberProfilePage() {
       </div>
     </>
   );
+}
+
+/** Estimate the student's entry set from their current level and session. */
+function academicEntryDate(level: number | null): Date | null {
+  if (level === null) return null;
+  const now = new Date();
+  const sessionStartYear = now.getFullYear() - (now.getMonth() < 9 ? 1 : 0);
+  const entryYear = sessionStartYear - Math.floor(level / 100);
+  // The branch typically resumes in October or November.
+  return new Date(entryYear, 10, 1);
 }

@@ -588,19 +588,20 @@ a sitemap. Public project and news pages are what make NiMechE discoverable.
 (Home · Events · Opportunities · Credentials · Profile). Students live on phones, and a hamburger
 menu buries the two things the platform exists to surface.
 
-### 9.3 Admin console
+### 9.3 Executive console
 
 ```
-/admin                Overview — engagement KPIs, pending approvals, alerts
-/admin/members        Directory, verification queue, roles, bulk actions, CSV export
-/admin/events         CRUD, registrations, attendance capture, feedback, completion rules
-/admin/certificates   Templates, issuance (single + bulk), revocation, verification log
-/admin/opportunities  Submission review queue, publishing, registration tracking, outcomes
-/admin/projects       Projects, teams, milestones
-/admin/content        News, spotlights, resources, homepage highlights
-/admin/analytics      Participation, completion, growth, programme popularity
-/admin/settings       Roles and permissions, branding, integrations, audit log
+/exco                 Overview — engagement KPIs, pending approvals, alerts
+/exco/members        Directory, verification queue, roles, bulk actions, CSV export
+/exco/events         CRUD, registrations, attendance capture, feedback, completion rules
+/exco/certificates   Templates, issuance (single + bulk), revocation, verification log
+/exco/opportunities  Submission review queue, publishing, registration tracking, outcomes
+/exco/projects       Projects, teams, milestones
+/exco/content        News, spotlights, resources, homepage highlights
+/exco/analytics      Participation, completion, growth, programme popularity
 ```
+
+Technical administration lives separately at `/admin`, is limited to Tech Admin accounts, and is intentionally omitted from public navigation. The URL is not a security control; role checks protect the route and its server actions. This area can grow with the Tech Team.
 
 **The attendance capture screen is the highest-risk screen in the product.** It is used by an exec
 standing at a hall door, on a phone, probably on bad network. It needs: search-as-you-type over the
@@ -611,7 +612,7 @@ downstream all depend on it. Design it first, prototype it with real execs at a 
 treat it as P0.
 
 Roles map to the proposal's section 14 — Member, Executive/Admin, Content Manager, Project Lead, Partner
-Contributor. Navigation is filtered by permission: a Project Lead sees `/admin/projects` only, not a
+Contributor. Navigation is filtered by permission: a Project Lead sees `/exco/projects` only, not a
 greyed-out full console.
 
 ---
@@ -672,7 +673,7 @@ The certificate renders at true aspect ratio, always in its light theme, with ac
 Download PDF · Share link · Add to profile · Copy verification code. Below it: the activity that
 produced it, the skills it evidences, and the verification record.
 
-### 10.5 Admin analytics (`/admin/analytics`)
+### 10.5 Admin analytics (`/exco/analytics`)
 
 A row of stat tiles (members · active members · events held · certificates issued · opportunity
 registrations) → engagement trend over time → programme popularity → completion funnel
@@ -791,7 +792,7 @@ have never heard of the platform.
 - **Always the light theme, in both app themes**, and identical on screen, in PDF and in print.
 - Verification code in monospace, grouped for readability, with a QR to `/verify/:code`.
 - Generated **server-side as PDF from a single HTML template**, so screen and print can never diverge.
-- Templates are configurable per programme type in `/admin/certificates`, but the layout skeleton, crest placement and verification block are **locked** — an admin must not be able to issue a certificate without a verification code.
+- Templates are configurable per programme type in `/exco/certificates`, but the layout skeleton, crest placement and verification block are **locked** — an admin must not be able to issue a certificate without a verification code.
 - A matching **1200×630 share image** is generated per credential for LinkedIn/X: green field, orange gear-rule, crest, holder name, programme.
 
 OG images are similarly templated for events, opportunities and project pages, so anything shared
@@ -930,7 +931,7 @@ because they change the interface *and* the data model, which is why they should
 4. **Public profile default** — opt-in or opt-out? This plan assumes **opt-in**; section 9.1 of the proposal supports keeping application detail private.
 5. **Verification authority** — who signs off a "verified" skill? The chip in section 8.2 is worthless if the process behind it isn't defined.
 6. **Certificate signatories** — which two offices sign, and how the signatures are stored.
-7. **Will the Mechanical and Mechatronics departments share their student rolls?** This is the highest-leverage ask in the project. With the rolls, the executive reviewing a new member sees "matched on the roll" and approves with a glance, and nobody ever types a matric number. Without them, review is a judgement call and the matric number becomes a field someone has to fill in. Ask before build, not after.
+7. **Will the Mechanical and Mechatronics departments share their student rolls?** The current sign-up flow collects a matric number and an executive verifies it during approval. If departments share their rolls, the team can add an automatic match to speed up verification.
 8. **Language** — English only in v1? Assumed yes.
 9. **A permanent domain.** `nimeche-aatu.vercel.app` is the working address and is fine for building and reviewing. But it is printed on every certificate an employer will check years from now, and it belongs to a hosting account rather than to the branch — so a branch-owned domain, held by the office and not by a student, should be settled before the first real certificate is issued (dev plan section 11).
 
