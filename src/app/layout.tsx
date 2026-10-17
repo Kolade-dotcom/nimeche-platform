@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | NiMechE-SF, Tech-U",
   },
   description:
-    "The NiMechE student branch at Abiola Ajimobi Technical University, Ibadan. Events, certificates that verify, and a skill record you did not have to fill in.",
+    "The NiMechE Student Forum at Abiola Ajimobi Technical University (AATU), also known as Tech-U, Ibadan. Events, certificates that verify, and a skill record you did not have to fill in.",
 };
 
 export default function RootLayout({

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowRightIcon, DownloadIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { BRANCH_CONTENT } from "@/lib/content/about";
@@ -78,6 +78,32 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Constitution */}
+      <section
+        id="constitution"
+        className="border-border bg-surface mb-14 flex flex-wrap items-center justify-between gap-5 rounded-xl border p-6 sm:p-8"
+        aria-labelledby="constitution-heading"
+      >
+        <div className="max-w-[620px]">
+          <h2
+            id="constitution-heading"
+            className="font-heading mb-2 text-[22px] font-bold sm:text-[26px]"
+          >
+            Our constitution
+          </h2>
+          <p className="text-muted-foreground text-sm/relaxed">
+            Read the NiMechE-SF constitution for the branch&apos;s guiding rules and
+            structure.
+          </p>
+        </div>
+        <Button asChild>
+          <a href="/documents/nimeche-constitution.pdf" download>
+            <DownloadIcon className="size-4" aria-hidden />
+            Download constitution
+          </a>
+        </Button>
       </section>
 
       {/* Executive team */}

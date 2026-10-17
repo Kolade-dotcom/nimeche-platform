@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Gallery — NiMechE-SF, Tech-U",
   description:
-    "Photographs and video from every event, project and competition run by the NiMechE Student Faculty at Tech-U.",
+    "Photographs and video from events, projects and competitions run by the NiMechE Student Forum at Abiola Ajimobi Technical University (AATU), also known as Tech-U.",
 };
 
 export default async function GalleryPage() {

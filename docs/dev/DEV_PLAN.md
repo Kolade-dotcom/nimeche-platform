@@ -2,7 +2,7 @@
 
 **Status:** Draft v1 for technical review
 **Scope:** Engineering plan for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
-**Whose platform this is:** **NiMechE-SF, AATU** — the branch at **Abiola Ajimobi Technical University (Tech-U)**. One campus, a few hundred members, two departments. Not the national institution. This sets the scale for every number below (design plan section 2.4).
+**Whose platform this is:** **NiMechE-SF (Student Forum), AATU** — the branch at **Abiola Ajimobi Technical University (AATU)**, also known as **Tech-U**. One campus, a few hundred members, two departments. Not the national institution. This sets the scale for every number below (design plan section 2.4).
 **Companion document:** [`docs/design/DESIGN_PLAN.md`](../design/DESIGN_PLAN.md) — brand, colour, components, screens, accessibility.
 
 This document covers **how the platform gets built**: architecture, stack, data model, subsystems,

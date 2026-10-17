@@ -38,14 +38,15 @@ export function SiteFooter() {
         <div className="flex flex-col gap-3">
           <BrandLockup />
           <p className="text-muted-foreground max-w-[34ch] text-sm">
-            The student branch of the Nigerian Institution of Mechanical Engineers at
-            Abiola Ajimobi Technical University, Ibadan.
+            The Student Forum of the Nigerian Institution of Mechanical Engineers
+            (NiMechE) at Abiola Ajimobi Technical University (AATU), also known as
+            Tech-U, Ibadan.
           </p>
           <a
-            href="mailto:nimeche-sf@tech-u.edu.ng"
+            href="mailto:nimechesfaatu@gmail.com"
             className="text-muted-foreground text-sm underline underline-offset-4"
           >
-            nimeche-sf@tech-u.edu.ng
+            nimechesfaatu@gmail.com
           </a>
         </div>
 

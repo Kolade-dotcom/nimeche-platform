@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Events — NiMechE-SF, Tech-U",
   description:
-    "Plant visits, workshops, lectures and competitions run by the NiMechE Student Faculty at Tech-U.",
+    "Plant visits, workshops, lectures and competitions run by the NiMechE Student Forum at Abiola Ajimobi Technical University (AATU), also known as Tech-U.",
 };
 
 const KIND_LABELS: Record<EventKind, string> = {

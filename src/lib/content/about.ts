@@ -30,10 +30,10 @@ export type BranchContent = {
 
 export const BRANCH_CONTENT: BranchContent = {
   shortName: "NiMechE-SF",
-  fullName: "Nigerian Institution of Mechanical Engineers — Student Faculty",
-  institution: "Tech-U, Ibadan",
+  fullName: "Nigerian Institution of Mechanical Engineers — Student Forum",
+  institution: "Abiola Ajimobi Technical University (AATU), also known as Tech-U",
   description:
-    "The NiMechE Student Faculty at the University of Technology, Ibadan (Tech-U) is the student arm of the Nigerian Institution of Mechanical Engineers, one of Africa's oldest engineering professional bodies. We connect mechanical and mechatronics students with industry, deepen their practical skills, and build a professional network that outlasts graduation.",
+    "The NiMechE Student Forum at Abiola Ajimobi Technical University (AATU), also known as Tech-U, is the student arm of the Nigerian Institution of Mechanical Engineers. We connect mechanical and mechatronics students with industry, deepen their practical skills, and build a professional network that outlasts graduation.",
   mission:
     "To develop technically excellent, professionally aware, and industry-ready engineers through hands-on activities, peer learning, and sustained engagement with the profession.",
   departments: [

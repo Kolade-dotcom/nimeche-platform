@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Verify a certificate — NiMechE-SF, Tech-U",
-  description: "Enter a certificate code to verify it was issued by the NiMechE Student Faculty at Tech-U.",
+  description: "Enter a certificate code to verify it was issued by the NiMechE Student Forum at Abiola Ajimobi Technical University (AATU), also known as Tech-U.",
 };
 
 type Props = {
