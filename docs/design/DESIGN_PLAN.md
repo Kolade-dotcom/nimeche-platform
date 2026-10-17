@@ -2,8 +2,8 @@
 
 **Status:** Draft v1 for executive review
 **Scope:** Visual and interaction design for the platform described in *NiMechE Digital Member Development Platform — Presidential Proposal*.
-**Whose platform this is:** **NiMechE-SF, AATU** — the student branch at **Abiola Ajimobi Technical University**, known as **Tech-U** — not the national institution. Everything below is sized and worded for one campus of a few hundred members. See section 2.4.
-**Still to confirm:** what **SF** expands to in formal use. It appears on certificates, so it is not guessed anywhere in this plan.
+**Whose platform this is:** **NiMechE-SF (Student Forum), AATU** — the student branch at **Abiola Ajimobi Technical University (AATU)**, also known as **Tech-U** — not the national institution. Everything below is sized and worded for one campus of a few hundred members. See section 2.4.
+**Confirmed naming:** **SF** means **Student Forum**; **AATU** means **Abiola Ajimobi Technical University**; **Tech-U** is the university's nickname.
 **Companion document:** [`docs/dev/DEV_PLAN.md`](../dev/DEV_PLAN.md) — the engineering plan (stack, data model, subsystems, delivery, operations).
 **Companion file:** `docs/design/tokens.css` — the implementable token layer for everything in sections 3–6.
 

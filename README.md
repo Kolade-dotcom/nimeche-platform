@@ -5,8 +5,8 @@
 <h1 align="center">NiMechE-SF Member Platform</h1>
 
 <p align="center">
-  The member platform for the <strong>Nigerian Institution of Mechanical Engineers</strong><br>
-  student branch at <strong>Abiola Ajimobi Technical University</strong>, Ibadan.
+  The member platform for the <strong>Nigerian Institution of Mechanical Engineers Student Forum (NiMechE-SF)</strong><br>
+  at <strong>Abiola Ajimobi Technical University (AATU)</strong>, also known as Tech-U, Ibadan.
 </p>
 
 <p align="center">
