@@ -72,7 +72,7 @@ export function JoinForm() {
         <Input
           id="matricNo"
           name="matricNo"
-          inputMode="numeric"
+          inputMode="text"
           autoComplete="off"
           placeholder="125/22/1/0178"
           maxLength={13}
