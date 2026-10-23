@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/lib/db";
 import { longDate } from "@/lib/format";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import {
   addProjectMemberAction,
@@ -88,9 +89,16 @@ export default async function AdminProjectDetailPage({
             </label>
             <label className="flex flex-col gap-2 text-sm font-medium">
               Status
-              <select name="status" defaultValue={project.status} className="h-11 rounded-md border bg-surface px-3 font-normal">
-                {STATUSES.map((status) => <option key={status} value={status}>{status.toLowerCase()}</option>)}
-              </select>
+              <Select name="status" defaultValue={project.status} required>
+                <SelectTrigger className="h-11 rounded-md px-3 text-sm font-normal">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {STATUSES.map((status) => (
+                    <SelectItem key={status} value={status}>{status.toLowerCase()}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </label>
             <label className="flex flex-col gap-2 text-sm font-medium sm:col-span-2">
               Description
@@ -128,10 +136,18 @@ export default async function AdminProjectDetailPage({
           {members.length ? (
             <form action={addProjectMemberAction.bind(null, id)} className="grid gap-3 border-t pt-5 sm:grid-cols-[1fr_1fr_auto]">
               <label className="flex flex-col gap-2 text-sm font-medium">Member
-                <select name="memberId" required className="h-11 rounded-md border bg-surface px-3 font-normal">
-                  <option value="">Choose an active member</option>
-                  {members.map((member) => <option key={member.id} value={member.id}>{member.fullName} · {member.email}</option>)}
-                </select>
+                <Select name="memberId" required defaultValue="">
+                  <SelectTrigger className="h-11 rounded-md px-3 text-sm font-normal">
+                    <SelectValue placeholder="Choose an active member" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {members.map((member) => (
+                      <SelectItem key={member.id} value={member.id}>
+                        {member.fullName} ({member.email})
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </label>
               <label className="flex flex-col gap-2 text-sm font-medium">Project role
                 <input name="role" required minLength={2} maxLength={80} className="h-11 rounded-md border bg-surface px-3 font-normal" placeholder="Design lead" />

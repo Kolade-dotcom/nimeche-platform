@@ -10,7 +10,8 @@ export async function createAlbumAction(formData: FormData) {
 
   const title = formData.get("title") as string;
   const description = (formData.get("description") as string) || undefined;
-  const eventId = (formData.get("eventId") as string) || undefined;
+  const selectedEventId = formData.get("eventId") as string;
+  const eventId = selectedEventId && selectedEventId !== "none" ? selectedEventId : undefined;
 
   if (!title || title.trim().length < 2) {
     throw new Error("Album title must be at least 2 characters.");

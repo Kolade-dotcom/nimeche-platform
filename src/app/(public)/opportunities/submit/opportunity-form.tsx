@@ -6,6 +6,7 @@ import {
   submitOpportunityAction,
   type OpportunityFormState,
 } from "@/app/(public)/opportunities/actions";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const initial: OpportunityFormState = {};
 
@@ -96,21 +97,23 @@ export function OpportunityForm() {
         <label htmlFor="type" className="text-sm font-semibold">
           Type
         </label>
-        <select
-          id="type"
-          name="type"
-          required
-          aria-invalid={Boolean(state.fieldErrors?.type) || undefined}
-          aria-describedby={state.fieldErrors?.type ? "type-error" : undefined}
-          className="border-border-strong bg-surface min-h-[50px] rounded-lg border px-4 text-base focus:outline focus:outline-2 focus:outline-offset-0"
-        >
-          <option value="">Choose a type…</option>
-          {OPPORTUNITY_TYPES.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
-            </option>
-          ))}
-        </select>
+        <Select name="type" required defaultValue="">
+          <SelectTrigger
+            id="type"
+            aria-invalid={Boolean(state.fieldErrors?.type) || undefined}
+            aria-describedby={state.fieldErrors?.type ? "type-error" : undefined}
+            className="min-h-[50px] rounded-lg border-border-strong px-4"
+          >
+            <SelectValue placeholder="Choose a type…" />
+          </SelectTrigger>
+          <SelectContent>
+            {OPPORTUNITY_TYPES.map((t) => (
+              <SelectItem key={t.value} value={t.value}>
+                {t.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         {state.fieldErrors?.type && (
           <p id="type-error" role="alert" className="text-danger-text text-[13px]">
             {state.fieldErrors.type}

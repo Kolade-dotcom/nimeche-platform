@@ -11,6 +11,7 @@ import { Field } from "@/components/field";
 import { FormAlert } from "@/components/form-alert";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const initial: FresherFormState = {};
 
@@ -63,20 +64,19 @@ export function FresherSignupForm() {
       </Field>
 
       <Field id="department" label="Department" error={state.fieldErrors?.department}>
-        <select
-          id="department"
-          name="department"
-          defaultValue=""
-          required
-          aria-invalid={Boolean(state.fieldErrors?.department) || undefined}
-          className="border-input bg-surface focus-visible:ring-ring h-12 w-full rounded-sm border px-4 text-base outline-none focus-visible:ring-2"
-        >
-          <option value="" disabled>
-            Choose your department
-          </option>
-          <option value="MECHANICAL">Mechanical Engineering</option>
-          <option value="MECHATRONICS">Mechatronics Engineering</option>
-        </select>
+        <Select name="department" defaultValue="" required>
+          <SelectTrigger
+            id="department"
+            aria-invalid={Boolean(state.fieldErrors?.department) || undefined}
+            aria-describedby={state.fieldErrors?.department ? "department-error" : undefined}
+          >
+            <SelectValue placeholder="Choose your department" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="MECHANICAL">Mechanical Engineering</SelectItem>
+            <SelectItem value="MECHATRONICS">Mechatronics Engineering</SelectItem>
+          </SelectContent>
+        </Select>
       </Field>
 
       <SubmitButton pendingLabel="Getting your support page ready" className="w-full">

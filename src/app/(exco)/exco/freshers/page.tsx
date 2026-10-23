@@ -4,6 +4,7 @@ import { MessageSquareTextIcon, PhoneIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { db } from "@/lib/db";
 import { DEFAULT_FRESHER_CONTACTS, FRESHER_CONTACT_SETTINGS_ID } from "@/lib/freshers/contacts";
 
@@ -194,16 +195,20 @@ export default async function FresherSupportQueuePage() {
                     <label className="sr-only" htmlFor={`status-${submission.id}`}>
                       Update status for {submission.subject}
                     </label>
-                    <select
-                      id={`status-${submission.id}`}
-                      name="status"
-                      defaultValue={submission.status}
-                      className="border-input bg-surface h-10 min-w-36 flex-1 rounded-sm border px-3 text-sm sm:flex-none"
-                    >
-                      <option value="NEW">New</option>
-                      <option value="IN_PROGRESS">In progress</option>
-                      <option value="RESOLVED">Resolved</option>
-                    </select>
+                    <Select name="status" defaultValue={submission.status}>
+                      <SelectTrigger
+                        id={`status-${submission.id}`}
+                        aria-label={`Update status for ${submission.subject}`}
+                        className="h-10 min-w-36 flex-1 rounded-sm px-3 text-sm sm:flex-none"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="NEW">New</SelectItem>
+                        <SelectItem value="IN_PROGRESS">In progress</SelectItem>
+                        <SelectItem value="RESOLVED">Resolved</SelectItem>
+                      </SelectContent>
+                    </Select>
                     <button
                       type="submit"
                       className="bg-primary text-primary-foreground min-h-10 rounded-md px-4 text-sm font-semibold"

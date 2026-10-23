@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { db } from "@/lib/db";
 import { createAlbumAction } from "@/app/(exco)/exco/gallery/actions";
 
@@ -60,18 +61,19 @@ export default async function NewAlbumPage() {
                   Linked event
                   <span className="text-muted-foreground font-normal"> (optional)</span>
                 </Label>
-                <select
-                  id="eventId"
-                  name="eventId"
-                  className="border-input bg-surface h-11 w-full rounded-sm border px-4 text-sm"
-                >
-                  <option value="">— No event —</option>
-                  {publishedEvents.map((event) => (
-                    <option key={event.id} value={event.id}>
-                      {event.title}
-                    </option>
-                  ))}
-                </select>
+                <Select name="eventId" defaultValue="none">
+                  <SelectTrigger id="eventId" className="h-11 rounded-sm px-4 text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No event</SelectItem>
+                    {publishedEvents.map((event) => (
+                      <SelectItem key={event.id} value={event.id}>
+                        {event.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             )}
 

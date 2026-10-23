@@ -11,6 +11,7 @@ import { Field } from "@/components/field";
 import { FormAlert } from "@/components/form-alert";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const initial: FresherFormState = {};
 
@@ -30,38 +31,42 @@ export function FresherIssueForm() {
       ) : null}
 
       <Field id="type" label="What do you need?" error={state.fieldErrors?.type}>
-        <select
-          id="type"
-          name="type"
-          defaultValue="REQUEST"
-          required
-          aria-invalid={Boolean(state.fieldErrors?.type) || undefined}
-          className="border-input bg-surface focus-visible:ring-ring h-12 w-full rounded-sm border px-4 text-base outline-none focus-visible:ring-2"
-        >
-          <option value="REQUEST">I need help with something</option>
-          <option value="INQUIRY">I have a question</option>
-          <option value="COMPLAINT">I want to report a problem</option>
-          <option value="OTHER">Something else</option>
-        </select>
+        <Select name="type" defaultValue="REQUEST" required>
+          <SelectTrigger
+            id="type"
+            aria-invalid={Boolean(state.fieldErrors?.type) || undefined}
+            aria-describedby={state.fieldErrors?.type ? "type-error" : undefined}
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="REQUEST">I need help with something</SelectItem>
+            <SelectItem value="INQUIRY">I have a question</SelectItem>
+            <SelectItem value="COMPLAINT">I want to report a problem</SelectItem>
+            <SelectItem value="OTHER">Something else</SelectItem>
+          </SelectContent>
+        </Select>
       </Field>
 
       <Field id="area" label="Topic" error={state.fieldErrors?.area}>
-        <select
-          id="area"
-          name="area"
-          defaultValue="ROOM_AND_HOSTEL"
-          required
-          aria-invalid={Boolean(state.fieldErrors?.area) || undefined}
-          className="border-input bg-surface focus-visible:ring-ring h-12 w-full rounded-sm border px-4 text-base outline-none focus-visible:ring-2"
-        >
-          <option value="ROOM_AND_HOSTEL">Room or hostel</option>
-          <option value="ARRIVAL_AND_DIRECTIONS">Arrival or directions</option>
-          <option value="REGISTRATION">Registration or clearance</option>
-          <option value="FEES">Fees or payment</option>
-          <option value="ACADEMIC">Academic or department</option>
-          <option value="SAFETY">Safety</option>
-          <option value="OTHER">Other</option>
-        </select>
+        <Select name="area" defaultValue="ROOM_AND_HOSTEL" required>
+          <SelectTrigger
+            id="area"
+            aria-invalid={Boolean(state.fieldErrors?.area) || undefined}
+            aria-describedby={state.fieldErrors?.area ? "area-error" : undefined}
+          >
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="ROOM_AND_HOSTEL">Room or hostel</SelectItem>
+            <SelectItem value="ARRIVAL_AND_DIRECTIONS">Arrival or directions</SelectItem>
+            <SelectItem value="REGISTRATION">Registration or clearance</SelectItem>
+            <SelectItem value="FEES">Fees or payment</SelectItem>
+            <SelectItem value="ACADEMIC">Academic or department</SelectItem>
+            <SelectItem value="SAFETY">Safety</SelectItem>
+            <SelectItem value="OTHER">Other</SelectItem>
+          </SelectContent>
+        </Select>
       </Field>
 
       <Field id="subject" label="Short subject" error={state.fieldErrors?.subject}>
