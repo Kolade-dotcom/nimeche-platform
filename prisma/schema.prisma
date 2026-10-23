@@ -376,6 +376,15 @@ model FresherIntake {
   @@index([createdAt])
 }
 
+/// Public call and WhatsApp contacts shown to incoming students.
+model FresherContactSettings {
+  id                    String   @id @default("default")
+  presidentPhone        String   @default("09131644974")
+  executiveSupportPhone String   @default("09157294525")
+  staffAdviserPhone     String   @default("")
+  updatedAt             DateTime @updatedAt
+}
+
 /// Requests, inquiries, complaints and other issues sent by freshers. Every
 /// submission is visible to executives in the shared fresher support queue.
 model FresherSubmission {

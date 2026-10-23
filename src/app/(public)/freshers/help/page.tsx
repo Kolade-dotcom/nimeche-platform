@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import { FresherIssueForm } from "@/app/(public)/freshers/help/issue-form";
 import { getCurrentFresher } from "@/lib/freshers/session";
+import { DEFAULT_FRESHER_CONTACTS, FRESHER_CONTACT_SETTINGS_ID, formatPhoneForWhatsApp } from "@/lib/freshers/contacts";
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 
@@ -26,26 +27,25 @@ const STATUS_LABELS = {
   RESOLVED: "Resolved",
 } as const;
 
-const CONTACTS = [
-  { title: "President", phone: process.env.FRESHERS_PRESIDENT_PHONE },
-  { title: "Executive support", phone: process.env.FRESHERS_EXECUTIVE_PHONE },
-  { title: "Staff adviser", phone: process.env.FRESHERS_ADVISOR_PHONE },
-];
-
-function digitsOnly(phone: string) {
-  return phone.replace(/\D/g, "");
-}
-
 export default async function FresherHelpPage() {
   const fresher = await getCurrentFresher();
   if (!fresher) redirect("/freshers");
 
-  const submissions = await db.fresherSubmission.findMany({
-    where: { fresherId: fresher.id },
-    orderBy: { createdAt: "desc" },
-    take: 10,
-    select: { id: true, type: true, subject: true, status: true, createdAt: true },
-  });
+  const [submissions, savedContacts] = await Promise.all([
+    db.fresherSubmission.findMany({
+      where: { fresherId: fresher.id },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+      select: { id: true, type: true, subject: true, status: true, createdAt: true },
+    }),
+    db.fresherContactSettings.findUnique({ where: { id: FRESHER_CONTACT_SETTINGS_ID } }),
+  ]);
+  const contacts = savedContacts ?? DEFAULT_FRESHER_CONTACTS;
+  const contactList = [
+    { title: "President", phone: contacts.presidentPhone },
+    { title: "Executive support", phone: contacts.executiveSupportPhone },
+    { title: "Staff adviser", phone: contacts.staffAdviserPhone },
+  ];
 
   return (
     <section className="mx-auto w-full max-w-[1080px] px-4 py-8 sm:px-7 sm:py-12">
@@ -75,11 +75,10 @@ export default async function FresherHelpPage() {
           <div className="border-border bg-surface rounded-2xl border p-5">
             <h2 className="font-heading text-lg font-bold">Call or WhatsApp</h2>
             <p className="text-muted-foreground mt-1 text-sm/relaxed">
-              You can contact someone directly too. We’ll add the team and staff adviser
-              numbers here when they are ready.
+              You can call or message the team directly using the contact options below.
             </p>
             <ul className="mt-4 space-y-3">
-              {CONTACTS.map(({ title, phone }) => (
+              {contactList.map(({ title, phone }) => (
                 <li key={title} className="border-border rounded-xl border p-3">
                   <p className="text-sm font-semibold">{title}</p>
                   {phone ? (
@@ -91,7 +90,7 @@ export default async function FresherHelpPage() {
                         <PhoneIcon className="size-4" /> {phone}
                       </a>
                       <a
-                        href={`https://wa.me/${digitsOnly(phone)}`}
+                        href={`https://wa.me/${formatPhoneForWhatsApp(phone)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="bg-primary-subtle text-primary-text inline-flex min-h-10 items-center gap-2 rounded-md px-3 text-sm font-semibold"
@@ -105,14 +104,6 @@ export default async function FresherHelpPage() {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="bg-warning-subtle text-accent-text rounded-2xl p-5">
-            <h2 className="font-heading font-bold">Need urgent help?</h2>
-            <p className="mt-1 text-sm/relaxed">
-              If you are in immediate danger, go to the nearest campus staff member or
-              official campus security point. Do not wait for a reply to this form.
-            </p>
           </div>
 
           <div className="border-border bg-surface rounded-2xl border p-5">

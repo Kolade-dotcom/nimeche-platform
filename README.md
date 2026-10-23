@@ -127,9 +127,9 @@ Incoming students can use `/freshers` with their name, WhatsApp number, and depa
 requests, inquiries, complaints, and other messages appear together in the executive dashboard at
 `/exco/freshers`, where executives can update each message's follow-up status. The fresher page
 keeps an access cookie in the browser used at signup; it lasts 30 days. The contact cards on
-`/freshers/help` are populated by the optional `FRESHERS_PRESIDENT_PHONE`,
-`FRESHERS_EXECUTIVE_PHONE`, and `FRESHERS_ADVISOR_PHONE` environment variables. Add only numbers
-their owners have agreed to share, in international format such as `+2348012345678`.
+`/freshers/help` use the contacts saved on the Fresher support page in the Exco dashboard. The
+president and executive support numbers are prefilled; the staff adviser number can be left blank
+until it is available.
 
 Seed the reference skills and role definitions used by the app:
 

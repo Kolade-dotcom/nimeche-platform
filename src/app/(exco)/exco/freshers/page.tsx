@@ -5,8 +5,10 @@ import { MessageSquareTextIcon, PhoneIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { db } from "@/lib/db";
+import { DEFAULT_FRESHER_CONTACTS, FRESHER_CONTACT_SETTINGS_ID } from "@/lib/freshers/contacts";
 
 import { updateFresherSubmissionStatus } from "./actions";
+import { FresherContactsForm } from "./contacts-form";
 
 export const metadata: Metadata = {
   title: "Fresher support queue",
@@ -48,7 +50,7 @@ function whatsappNumber(phone: string) {
 }
 
 export default async function FresherSupportQueuePage() {
-  const [submissions, totalFreshers] = await Promise.all([
+  const [submissions, totalFreshers, savedContacts] = await Promise.all([
     db.fresherSubmission.findMany({
       orderBy: { createdAt: "desc" },
       take: 200,
@@ -59,7 +61,10 @@ export default async function FresherSupportQueuePage() {
       },
     }),
     db.fresherIntake.count(),
+    db.fresherContactSettings.findUnique({ where: { id: FRESHER_CONTACT_SETTINGS_ID } }),
   ]);
+
+  const contacts = savedContacts ?? DEFAULT_FRESHER_CONTACTS;
 
   const openCount = submissions.filter((item) => item.status !== "RESOLVED").length;
 
@@ -107,6 +112,20 @@ export default async function FresherSupportQueuePage() {
           </div>
         </Card>
       </div>
+
+      <Card className="gap-4 p-4 sm:p-5">
+        <div>
+          <h2 className="font-heading text-lg font-bold">Fresher contact numbers</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            These phone and WhatsApp links appear on the fresher help page.
+          </p>
+        </div>
+        <FresherContactsForm
+          presidentPhone={contacts.presidentPhone}
+          executiveSupportPhone={contacts.executiveSupportPhone}
+          staffAdviserPhone={contacts.staffAdviserPhone}
+        />
+      </Card>
 
       {submissions.length ? (
         <ul className="space-y-4">
