@@ -40,6 +40,7 @@ It covers four areas:
 | ----------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Public site**         | Anyone, signed out   | What the branch is, what is on, photographs and video from past events, and a page where an employer checks a certificate code without making an account |
 | **Joining**             | Prospective members  | Five fields: name, Tech-U email, password, department, level. An executive approves against the department roll                                          |
+| **Fresher support**    | Incoming students    | A shareable `/freshers` signup asking for name, WhatsApp number, and department, private issue follow-up, direct contact links, and an executive-shared queue |
 | **Member dashboard**    | Members              | What is next, certificates earned, the skills they have built, their full participation record                                                           |
 | **Executive dashboard** | The branch executive | Approving members, running events, capturing attendance at the door with no network, issuing a cohort's certificates in one action                       |
 
@@ -121,6 +122,14 @@ Push the schema to your database:
 ```bash
 npm run db:push
 ```
+
+Incoming students can use `/freshers` with their name, WhatsApp number, and department, before they have a matric number or school email. Their
+requests, inquiries, complaints, and other messages appear together in the executive dashboard at
+`/exco/freshers`, where executives can update each message's follow-up status. The fresher page
+keeps an access cookie in the browser used at signup; it lasts 30 days. The contact cards on
+`/freshers/help` are populated by the optional `FRESHERS_PRESIDENT_PHONE`,
+`FRESHERS_EXECUTIVE_PHONE`, and `FRESHERS_ADVISOR_PHONE` environment variables. Add only numbers
+their owners have agreed to share, in international format such as `+2348012345678`.
 
 Seed the reference skills and role definitions used by the app:
 
