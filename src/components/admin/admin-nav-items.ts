@@ -6,6 +6,7 @@ import {
   ImageIcon,
   LayoutDashboardIcon,
   FolderKanbanIcon,
+  LifeBuoyIcon,
   UsersIcon,
 } from "lucide-react";
 
@@ -30,6 +31,7 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { href: "/exco/certificates", label: "Certificates", icon: AwardIcon },
   { href: "/exco/opportunities", label: "Opportunities", icon: BriefcaseIcon },
   { href: "/exco/gallery", label: "Gallery", icon: ImageIcon },
+  { href: "/exco/freshers", label: "Fresher support", icon: LifeBuoyIcon },
 ];
 
 export function isAdminNavActive(item: AdminNavItem, pathname: string): boolean {
